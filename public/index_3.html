@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 3 · The Central Limit Theorem — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card.recall{border-left:4px solid var(--ok);background:var(--ok-dim)}
+.card.warn{border-left:4px solid var(--stop);background:#FDF3F0}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.card.recall .tagline{color:var(--ok)}
+.card.warn .tagline{color:var(--stop)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:12px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{border-left:3px solid var(--saffron);background:var(--saffron-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#7A4E02;max-width:74ch}
+.later b{font-weight:600}
+.later::before{content:"COMING LATER";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:#A8720B;margin:0 0 3px}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap;min-width:132px}
+input[type=range]{flex:1;min-width:170px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:52px;text-align:right}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.chip{appearance:none;border:1px solid var(--rule);background:#fff;border-radius:20px;font:inherit;font-size:.86rem;padding:7px 15px;cursor:pointer;color:var(--ink)}
+.chip:hover{border-color:var(--teal);background:var(--teal-dim)}
+.chip[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
+.chip:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.twoup{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 6px}
+@media(max-width:720px){.twoup{grid-template-columns:1fr}}
+.pane h5{margin:0 0 2px;font-size:.88rem;font-weight:600}
+.pane p.cap{margin:0 0 6px;font-size:.79rem;color:var(--ink-soft)}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.16rem;font-weight:600;line-height:1.25;color:var(--teal)}
+.stat.hi .v{color:var(--stop)}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btn.ghost{background:#fff;color:var(--teal);border:1px solid var(--teal)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 3 of 8</p>
+    <h1>The Central Limit Theorem</h1>
+    <p class="lede">Take the average of a handful of values, do it again and again, and the averages arrange themselves into a bell curve — no matter what the original values looked like. This is the result the rest of statistics is built on.</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">Why sample averages behave so much better than the values they came from, and what that buys you.</p>
+
+  <div class="card recall">
+    <p class="tagline">From Concepts 1 and 2</p>
+    <p style="margin-bottom:0">You need the <strong>mean</strong> and the <strong>standard deviation</strong> from Concept 1, and from Concept 2 the <strong>normal curve</strong> along with the <strong>68–95–99.7 rule</strong> — that 68 percent of values sit within one standard deviation of the mean, 95 percent within two, and 99.7 percent within three. Everything else here is new.</p>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Population</dt>
+      <dd>Everything you would like to know about. Every household in a city, every part the factory will ever produce, every customer the shop will ever serve. Usually far too large to measure completely.</dd>
+      <dt>Sample</dt>
+      <dd>The part of it you actually measured. Thirty households, fifty parts, two hundred customers.</dd>
+      <dt>Sample mean</dt>
+      <dd>The mean of your sample. It is not the same thing as the population mean, and the gap between the two is what this whole concept is about.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3>The problem this solves</h3>
+    <p>You measure 40 students and find a mean mark of 63. What you actually want to know is the mean mark of all 900 students in the institute — and those two numbers are not the same. Measure a different 40 students and you would get a different answer.</p>
+    <p>So the honest question is not "what is the mean" but <strong>"how far from the truth is my answer likely to be?"</strong> Without an answer to that, a sample mean is just a number with no weight behind it.</p>
+    <p style="margin-bottom:0">The Central Limit Theorem answers it, and it does so in a way that seems almost too convenient — which is why it is worth watching happen rather than being told.</p>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Sampling variation</dt>
+      <dd>The fact that two different samples from the same population give two different answers. It is not a mistake and not carelessness — it is unavoidable, and it happens even when every sample is drawn perfectly. The whole of this concept is about measuring how large it is.</dd>
+    </dl>
+  </div>
+
+  <h3>Watch it happen</h3>
+  <p>Below, the left panel is a whole population. The right panel is what you get when you take a sample from it, work out that sample's mean, write the mean down, and repeat two thousand times.</p>
+  <p>Start with the very lopsided population and a sample size of 1. The two panels look identical — with a sample of one, the "mean" is just a single value. Now raise the sample size and watch the right panel.</p>
+
+  <div class="livebox">
+    <div class="chips" id="popchips"></div>
+    <div class="sliderow">
+      <label for="nn">Sample size</label>
+      <input type="range" id="nn" min="1" max="50" step="1" value="1">
+      <span class="readout" id="nnv">1</span>
+    </div>
+    <div class="twoup">
+      <div class="pane">
+        <h5>The population</h5>
+        <p class="cap">4,000 values — this shape never changes</p>
+        <div id="popplot"></div>
+      </div>
+      <div class="pane">
+        <h5>2,000 sample means</h5>
+        <p class="cap">each one the mean of a fresh sample</p>
+        <div id="meanplot"></div>
+      </div>
+    </div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Population mean</div><div class="v" id="s_pm">—</div></div>
+      <div class="stat"><div class="l">Mean of the sample means</div><div class="v" id="s_mm">—</div></div>
+      <div class="stat hi"><div class="l">Population spread</div><div class="v" id="s_ps">—</div></div>
+      <div class="stat hi"><div class="l">Spread of sample means</div><div class="v" id="s_ms">—</div></div>
+      <div class="stat"><div class="l">Predicted: spread ÷ √n</div><div class="v" id="s_pred">—</div></div>
+    </div>
+  </div>
+  <p class="legend">Three things happen as you raise the sample size, and all three are worth noticing separately. The right-hand shape becomes a bell however lopsided the left-hand one is. Its centre stays put, sitting on the population mean throughout. And it gets narrower — the last two readouts should stay close to each other whatever you do.</p>
+
+  <div class="card key">
+    <p class="tagline">★ The Central Limit Theorem</p>
+    <p><strong>Take many samples of the same size from any population at all, and work out each sample's mean. Those means arrange themselves into a normal curve.</strong></p>
+    <p>Read it again, because the surprising part is easy to skim past: <strong>the shape of the original population does not matter</strong>. It can be lopsided, flat, or split into two humps. The sample means still form a bell.</p>
+    <p style="margin-bottom:0">This is not a rough approximation that usually works out. It is a mathematical result, and it holds for almost any population you could construct.</p>
+  </div>
+
+  <h3>The three facts you actually use</h3>
+  <p>The theorem is usually stated as one sentence, but it gives you three separate pieces of information, and each does a different job.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>What it says</th><th>In words</th><th>What it lets you do</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1. The shape</strong></td>
+          <td>The sample means form a normal curve</td>
+          <td>Use the 68–95–99.7 rule on them, whatever the original data looked like</td>
+        </tr>
+        <tr>
+          <td><strong>2. The centre</strong></td>
+          <td>The sample means centre on the population mean</td>
+          <td>Trust that your method is not systematically too high or too low</td>
+        </tr>
+        <tr>
+          <td><strong>3. The spread</strong></td>
+          <td>The sample means have a spread of <span class="mono">σ ÷ √n</span></td>
+          <td>Put a number on how far your one sample mean is likely to be from the truth</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Standard error</dt>
+      <dd>The standard deviation of the sample means — the third fact above. It is given by the population's standard deviation divided by the square root of the sample size, written <span class="mono">σ ÷ √n</span>. It is called an "error" because it measures how far a typical sample mean lands from the population mean.</dd>
+    </dl>
+    <p style="margin:12px 0 0;font-size:.94rem">Be careful not to confuse it with the standard deviation. The <strong>standard deviation</strong> describes how spread out the individual values are. The <strong>standard error</strong> describes how spread out the sample <em>means</em> are — and it is always the smaller of the two, because averaging smooths things out.</p>
+  </div>
+
+  <h3>The square root, and why it matters so much</h3>
+  <p>The <span class="mono">√n</span> in the formula is the single most practically important part of this concept, because it governs what more data buys you.</p>
+
+  <div class="livebox">
+    <div class="sliderow">
+      <label for="sn">Sample size</label>
+      <input type="range" id="sn" min="1" max="400" step="1" value="25">
+      <span class="readout" id="snv">25</span>
+    </div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="seplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Population spread</div><div class="v">20.0</div></div>
+      <div class="stat hi"><div class="l">Standard error</div><div class="v" id="se_val">—</div></div>
+      <div class="stat"><div class="l">To halve it, you need</div><div class="v" id="se_need">—</div></div>
+    </div>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ Four times the data to halve the error</p>
+    <p>Because the sample size sits under a square root, the returns fall away quickly:</p>
+    <div class="tablewrap" style="margin:0 0 12px">
+      <table>
+        <thead><tr><th class="mono">n</th><th class="mono">√n</th><th>Standard error when σ = 20</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">25</td><td class="mono">5</td><td class="mono">4.00</td></tr>
+          <tr><td class="mono">100</td><td class="mono">10</td><td class="mono">2.00</td></tr>
+          <tr><td class="mono">400</td><td class="mono">20</td><td class="mono">1.00</td></tr>
+          <tr><td class="mono">1600</td><td class="mono">40</td><td class="mono">0.50</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0">Each halving of the error costs four times the data. That is why surveys reach a few thousand people and then stop — going further buys very little for a great deal of money, and this is the arithmetic behind that decision.</p>
+  </div>
+
+  <div class="card tip">
+    <p class="tagline">💡 How large does n need to be?</p>
+    <p>The usual rule of thumb is <strong>n of 30 or more</strong>, and the widget above shows where it comes from — by 30 the right-hand panel looks convincingly like a bell even for the most lopsided population offered.</p>
+    <p style="margin-bottom:0">It is a rule of thumb rather than a law. The more lopsided the population, the larger n needs to be, and a population with a few enormous values may need considerably more than 30. If the population is already bell-shaped, on the other hand, the sample means are bell-shaped at any n at all — try it with the bell population and a sample size of 2.</p>
+  </div>
+
+  <h3>Putting it to work</h3>
+  <p>Here is the whole point of the concept in one worked line. A factory fills bags to a mean of 500 g with a standard deviation of 20 g. You weigh a sample of 25 bags.</p>
+  <ul class="plain">
+    <li>The standard error is <span class="mono">20 ÷ √25 = 20 ÷ 5 = 4</span> grams.</li>
+    <li>By the 68–95–99.7 rule, about 95 percent of samples of 25 will give a mean within 2 standard errors of 500 — that is, between <strong>492 and 508 g</strong>.</li>
+    <li>So if your sample of 25 comes out at 510 g, something has changed. That result is beyond where 95 percent of honest samples land.</li>
+  </ul>
+  <p>Notice what just happened. You knew nothing about the shape of individual bag weights, you measured only 25 bags out of millions, and yet you could say something precise about how far your answer might be from the truth. That is what the theorem buys.</p>
+
+  <div class="card warn">
+    <p class="tagline">Where it does not apply</p>
+    <p>Three situations where reaching for the theorem would be a mistake:</p>
+    <ul class="plain" style="margin-bottom:0">
+      <li><strong>Your sample is not drawn fairly.</strong> The theorem assumes every member of the population has an equal chance of being picked. Surveying only the people who answer the phone breaks that, and no sample size repairs it — a larger biased sample is simply a more confident wrong answer.</li>
+      <li><strong>You are asking about one individual, not an average.</strong> The theorem describes sample means. It says nothing about how a single value behaves, and confusing the two is the commonest error made with it.</li>
+      <li><strong>The sample is small and the population strongly lopsided.</strong> With n of 5 from a population with a few enormous values, the sample means are still visibly lopsided. Try it in the widget above.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Why this concept is the hinge of the course</h3>
+    <p>Concepts 1 and 2 described data. This one is the first that lets you make a claim about something you did not measure — and almost everything that follows depends on it.</p>
+    <p style="margin-bottom:0">When somebody reports a survey result "give or take three percent", or says two groups differ "more than chance would explain", the reasoning underneath is the one on this page. Those methods have their own names and their own concepts ahead of them, and every one of them assumes what you have just watched happen.</p>
+  </div>
+
+  <div class="later">
+    <b>What gets built on this.</b> Two things follow directly. The first is a way of stating a result as a range rather than a single number, using the standard error to say how wide that range must be. The second is a way of deciding whether a difference between two groups is larger than sampling variation alone would produce. Both have concepts of their own ahead, and both would be impossible without the standard error you have just met.
+  </div>
+
+  <h3>Demonstrating it yourself in Python</h3>
+  <pre class="code"><span class="cm"># build a deliberately lopsided population, then average samples from it</span>
+import numpy as np
+rng = np.random.default_rng(0)
+
+population = rng.exponential(10, 100000)      <span class="cm"># nothing like a bell</span>
+print("population mean", round(population.mean(), 2))
+print("population sd  ", round(population.std(), 2))
+
+for n in [1, 5, 30, 100]:
+    means = [rng.choice(population, n).mean() for _ in range(2000)]
+    print(f"n = {n:3d}   mean of the means {np.mean(means):6.2f}"
+          f"   spread {np.std(means):5.2f}"
+          f"   predicted {population.std()/np.sqrt(n):5.2f}")</pre>
+  <pre class="out">population mean 9.99
+population sd   9.98
+
+n =   1   mean of the means   9.94   spread  9.82   predicted  9.98
+n =   5   mean of the means  10.02   spread  4.45   predicted  4.46
+n =  30   mean of the means   9.97   spread  1.80   predicted  1.82
+n = 100   mean of the means  10.02   spread  1.00   predicted  1.00</pre>
+  <p class="legend">The middle column barely moves — the sample means always centre on the population mean. The last two columns track each other closely at every sample size, which is the <span class="mono">σ ÷ √n</span> rule confirming itself.</p>
+
+  <div class="card">
+    <h3>What this concept deliberately leaves out</h3>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Idea</th><th>What it will add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Stating a result as a range</strong></td><td>Turning a sample mean and a standard error into a stated range, with a stated level of confidence</td></tr>
+          <tr><td><strong>Testing a claim</strong></td><td>Deciding whether an observed difference is bigger than sampling variation would produce on its own</td></tr>
+          <tr><td><strong>When σ is unknown</strong></td><td>What to do when you do not know the population's spread and have to estimate it from the sample — this is where the t distribution earns its place</td></tr>
+          <tr><td><strong>Choosing a sample size</strong></td><td>Working backwards from the precision you need to the number of measurements you must take</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">Six places where the standard error, and the bell shape of sample means, decides what can honestly be claimed.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">Each one turns a single measured number into a number <strong>with a margin attached</strong>. That margin is the standard error, and attaching it is the difference between reporting a result and reporting a fact. A figure quoted without one is a figure whose reliability nobody can judge — including the person who computed it.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six situations where sampling variation, and the ability to measure it, changed what could be said.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Six problems. The arithmetic is light throughout — the difficulty is in knowing which number goes where, and in the last two, in knowing when the theorem does not apply.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions, each with an answer worth giving and a note on what is really being checked. This topic is asked about constantly, and it is asked badly by candidates constantly.</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions using only this concept and the two before it.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  uses:[
+    {
+      name:"Reporting a survey result honestly",
+      what:"You survey 400 customers and 62 percent say they would recommend the product. What do you put in the report?",
+      how:"Not 62 percent on its own. Survey another 400 customers and you would get a different figure, and the standard error says by how much. With 400 responses the standard error on a percentage near 60 works out at about 2.4 percentage points, so about 95 percent of samples land within 2 of those either side of the truth. The honest report says 62 percent, give or take about 5 points.",
+      code:"import numpy as np\n\nn, p = 400, 0.62\nse = np.sqrt(p * (1 - p) / n)\n\nprint('standard error   ', round(se * 100, 1), 'points')\nprint('roughly 95% range', round((p - 2*se) * 100, 1), 'to', round((p + 2*se) * 100, 1))\n# standard error    2.4 points\n# roughly 95% range 57.1 to 66.9",
+      note:"Notice the square root of n in the denominator again. Doubling the survey to 800 people does not halve the margin — it shrinks it by about 30 percent."
+    },
+    {
+      name:"Deciding how much data you need",
+      what:"Before collecting anything, somebody asks how many measurements will be enough. Guessing is expensive in both directions.",
+      how:"Work backwards from the precision you need. If you want a margin of 1 unit and the population spread is about 12, then you need the standard error at roughly half a unit, so 12 ÷ √n = 0.5 gives n = 576. The calculation takes seconds and it settles an argument that otherwise runs on opinion.",
+      code:"sigma  = 12      # rough idea of the population spread\ntarget = 0.5     # standard error you want\n\nn = (sigma / target) ** 2\nprint('measurements needed:', round(n))\n# measurements needed: 576",
+      note:"You need a rough figure for the population spread before you start, which usually comes from a small pilot study or from previous data of the same kind."
+    },
+    {
+      name:"Knowing when a model's score is real",
+      what:"A model scores 84 percent on a test set of 200 rows. A second model scores 86 percent. Is the second one better?",
+      how:"Both scores were measured on a sample of rows, so both carry sampling variation. On 200 rows a score near 85 percent has a standard error of about 2.5 percentage points, which means a 2-point gap is well inside what would happen by chance if the two models were equally good. Reporting the second as better would be reading noise.",
+      code:"import numpy as np\n\nn, acc = 200, 0.85\nse = np.sqrt(acc * (1 - acc) / n)\nprint('standard error on the score:', round(se * 100, 1), 'points')\n# standard error on the score: 2.5 points\n# a 2-point gap is smaller than that -> not evidence of a real difference",
+      note:"This is one of the commonest mistakes in applied machine learning: treating a small difference in test score as a real difference in quality. A larger test set is what shrinks the margin."
+    },
+    {
+      name:"Monitoring a process with sample checks",
+      what:"A production line cannot weigh every item. It weighs 25 every hour and needs a rule for when to stop and investigate.",
+      how:"The mean of 25 items has a standard error of σ ÷ 5, so it wanders far less than a single item does. Draw the limits at 3 standard errors either side of the target: under normal running the hourly sample mean falls outside them about 3 times in 1,000. Using the standard deviation instead of the standard error here would make the limits five times too wide and the check useless.",
+      code:"import numpy as np\n\ntarget, sigma, n = 500, 20, 25\nse = sigma / np.sqrt(n)\n\nprint(f'investigate if the sample mean leaves '\n      f'{target - 3*se:.0f} to {target + 3*se:.0f} g')\n# investigate if the sample mean leaves 488 to 512 g",
+      note:"Sample means and single values need different limits. A single bag between 488 and 512 g is entirely ordinary; a mean of 25 bags outside that range is not."
+    },
+    {
+      name:"Comparing two groups",
+      what:"Method A gives a mean mark of 68 across 40 students; method B gives 64 across 38. Is A better, or did the classes just differ?",
+      how:"Each mean carries its own standard error, so before comparing them you need to know how much each could have wandered. With a spread of about 12 marks in each class, each mean has a standard error near 1.9 — so a 4-mark gap is roughly two standard errors, which is on the edge of what sampling variation alone produces. That is a result worth investigating rather than a settled conclusion.",
+      code:"import numpy as np\n\nse_a = 12 / np.sqrt(40)\nse_b = 12 / np.sqrt(38)\nprint('standard error, A:', round(se_a, 2))\nprint('standard error, B:', round(se_b, 2))\nprint('observed gap     :', 68 - 64)\n# 1.90  1.95  gap 4",
+      note:"The formal way to settle this — combining the two margins into one test — is a later concept. What this concept gives you is the reason such a test is needed at all."
+    },
+    {
+      name:"Reading a dashboard without being fooled",
+      what:"A daily conversion rate on a dashboard jumps from 3.1 percent to 3.6 percent. Somebody wants to know what changed.",
+      how:"Often nothing changed. If the day covered 1,200 visitors, the standard error on a rate near 3 percent is about 0.5 percentage points — so a half-point jump is exactly the size of an ordinary day-to-day wobble. Knowing the standard error for your daily traffic tells you how big a move has to be before it is worth investigating, and stops a great deal of wasted effort.",
+      code:"import numpy as np\n\nvisitors, rate = 1200, 0.031\nse = np.sqrt(rate * (1 - rate) / visitors)\nprint('ordinary daily wobble:', round(se * 100, 2), 'points')\n# ordinary daily wobble: 0.5 points",
+      note:"Smaller segments have larger wobbles, because n is smaller. A dashboard broken down by city will show wild-looking swings in the small cities that mean nothing at all."
+    }
+  ],
+
+  examples:[
+    {
+      title:"Why an election poll asks about a thousand people",
+      color:"var(--teal)",
+      body:"A country has 90 crore voters. A polling organisation asks 1,000 of them and reports a result within a couple of percentage points. People routinely find this hard to believe — a thousand out of ninety crore is a vanishingly small fraction.",
+      numbers:"With n = 1,000 the standard error on a percentage near 50 is about 1.6 points, so roughly 95 percent of such polls land within about 3 points of the truth. Asking 4,000 people would halve that to 1.6 points — four times the cost for one and a half points of precision.",
+      lesson:"What governs the margin is the sample size, not the fraction of the population sampled. This is why national polls and city polls use samples of similar size, and why they stop at a few thousand."
+    },
+    {
+      title:"Weighing a lorry-load of grain",
+      color:"var(--blue)",
+      body:"A buyer cannot weigh every sack in a consignment of ten thousand. He weighs forty, takes the mean, and multiplies up to estimate the total.",
+      numbers:"Individual sacks vary with a standard deviation of about 1.5 kg. The mean of 40 sacks has a standard error of 1.5 ÷ √40 ≈ 0.24 kg — so the estimate of the average sack weight is good to about half a kilogram either way, and the estimate of the total to about 5,000 kg.",
+      lesson:"Averaging is what makes the estimate usable. Any one sack tells you very little; the mean of forty tells you a great deal, and the standard error says exactly how much."
+    },
+    {
+      title:"A quality check that catches a drifting machine",
+      color:"var(--stop)",
+      body:"A filling machine is set to 500 g. Individual bags vary with a standard deviation of 20 g, so a single bag at 530 g means nothing at all. The line takes a sample of 25 bags every hour instead.",
+      numbers:"The mean of 25 bags has a standard error of 4 g. Under normal running that mean stays between 488 and 512 g about 999 times in 1,000. An hourly mean of 515 g is therefore a genuine signal, even though a single bag at 515 g would be unremarkable.",
+      lesson:"Averaging turns a noisy measurement into a sensitive one. The same machine, the same scales, and a check that is five times sharper simply because it looks at a mean."
+    },
+    {
+      title:"Two adverts that were never actually different",
+      color:"var(--saffron)",
+      body:"A team runs two versions of an advert for a day. Version A converts 4.2 percent of 900 viewers, version B converts 5.1 percent of 900. The team declares B the winner and rolls it out.",
+      numbers:"With 900 viewers, the standard error on a rate near 5 percent is about 0.7 points. The observed gap of 0.9 points is barely more than one standard error — well within what two identical adverts would produce by chance on a single day.",
+      lesson:"The gap was real in the data and not evidence of a real difference. Running longer to raise n is what would settle it, and the standard error says how much longer."
+    },
+    {
+      title:"Estimating a city's average water use",
+      color:"var(--teal)",
+      body:"A municipal body wants the average household water consumption for a ward of 40,000 households. Metering all of them is out of the question, so it meters 200.",
+      numbers:"Household use is strongly lopsided — most households use a moderate amount and a few use enormous quantities. Even so, with n = 200 the sample means form a bell shape, and with a population spread of about 120 litres the standard error is 120 ÷ √200 ≈ 8.5 litres.",
+      lesson:"The lopsidedness of the underlying households does not stop the method working. That is precisely the theorem's promise, and it is what makes sample-based public statistics possible at all."
+    },
+    {
+      title:"A survey that a bigger sample could not save",
+      color:"var(--blue)",
+      body:"An institute surveys student satisfaction by leaving forms at the library exit. It collects 2,000 responses and reports a high satisfaction score with a very small margin.",
+      numbers:"The standard error on 2,000 responses is genuinely small — under one percentage point. And the sample only ever contained students who use the library, who are not a fair cross-section of the institute.",
+      lesson:"The theorem assumes every member of the population had an equal chance of being sampled. When that fails, a larger sample gives a narrower margin around the wrong answer — which is more dangerous than a small sample, not less."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — The standard error of a sample mean",
+      prompt:"A machine fills bags to a mean of 500 g with a standard deviation of 20 g. You weigh a sample of 25 bags. (a) What is the standard error of the sample mean? (b) Between which weights do about 95 percent of such sample means fall? (c) Your sample comes out at 508 g — how surprising is that?",
+      steps:[
+        {h:"(a) Compute the standard error",
+         b:"The standard error is the population's standard deviation divided by the square root of the sample size.<br><br><code class='inl'>20 ÷ √25 = 20 ÷ 5 = 4</code> grams<br><br>Note how much smaller this is than the 20 g spread of individual bags. Averaging 25 bags has cut the wobble by a factor of five."},
+        {h:"(b) Apply the 68–95–99.7 rule",
+         b:"The theorem says the sample means form a bell shape centred on 500 with a spread of 4. So the rule from Concept 2 applies directly to them.<br><br>95 percent within 2 standard errors: <code class='inl'>500 ± (2 × 4)</code><br><br>About 95 percent of samples of 25 give a mean between <strong>492 and 508 g</strong>."},
+        {h:"(c) Place 508 on that scale",
+         b:"508 sits exactly 2 standard errors above 500, right at the upper edge of the 95 percent range.<br><br>The exact figure is <code class='inl'>1 - cdf(508, 500, 4) = 0.0228</code>, so about <strong>2.3 percent</strong> of honest samples would come out at 508 g or above.<br><br>Uncommon, then, but not extraordinary — it happens roughly once in 44 samples. Worth noting and watching, not yet worth stopping the line."},
+        {h:"A trap to avoid",
+         b:"If you had used the standard deviation of 20 instead of the standard error of 4, you would have said 95 percent of samples fall between 460 and 540 — and concluded that 508 was entirely unremarkable.<br><br>That is the single commonest mistake with this material. <strong>Individual bags</strong> vary with a spread of 20. <strong>Means of 25 bags</strong> vary with a spread of 4. Which one you need depends on which one you measured."}
+      ],
+      answer:"(a) 4 g. (b) Between 492 and 508 g. (c) 508 g sits exactly 2 standard errors out, which happens in about 2.3 percent of samples — uncommon but not alarming."
+    },
+    {
+      title:"Problem 2 — How many measurements do you need?",
+      prompt:"A quantity has a population standard deviation of about 12. You want the standard error of your sample mean to be no more than 1. How large must the sample be? And how large for a standard error of 0.5?",
+      steps:[
+        {h:"Write down what you know",
+         b:"Standard error = <code class='inl'>σ ÷ √n</code>, with σ = 12 and the target standard error being 1.<br><br>So you need <code class='inl'>12 ÷ √n = 1</code>"},
+        {h:"Rearrange for n",
+         b:"<code class='inl'>√n = 12 ÷ 1 = 12</code><br><code class='inl'>n = 12² = 144</code><br><br>You need <strong>144 measurements</strong>.<br><br>The general form is worth remembering: <code class='inl'>n = (σ ÷ target)²</code>"},
+        {h:"Now halve the target",
+         b:"<code class='inl'>n = (12 ÷ 0.5)² = 24² = 576</code><br><br><strong>576 measurements</strong> — exactly four times as many."},
+        {h:"Read what that means",
+         b:"Halving the margin cost four times the data. That relationship holds everywhere in this concept, and it comes straight from the square root: to divide the standard error by 2 you must multiply n by 4.<br><br>It is why data collection has a natural stopping point. Going from 144 to 576 measurements buys you half a unit of precision; going from 576 to 2,304 buys you a quarter of a unit."}
+      ],
+      answer:"144 measurements for a standard error of 1, and 576 for a standard error of 0.5 — four times as many for half the margin."
+    },
+    {
+      title:"Problem 3 — One value against a mean of forty",
+      prompt:"Marks have a mean of 60 and a standard deviation of 12. (a) What is the chance that one randomly chosen student scored above 66? (b) What is the chance that a random group of 40 students has a mean mark above 66? Explain why the two answers differ so much.",
+      steps:[
+        {h:"(a) One student",
+         b:"For a single value you use the population's own spread of 12.<br><br>66 sits <code class='inl'>(66 − 60) ÷ 12 = 0.5</code> standard deviations above the mean.<br><br><code class='inl'>1 - cdf(66, 60, 12) = 0.3085</code><br><br>About <strong>31 percent</strong> — roughly one student in three scores above 66. Not remarkable at all."},
+        {h:"(b) Find the standard error first",
+         b:"For a mean of 40 students you need the standard error, not the standard deviation.<br><br><code class='inl'>12 ÷ √40 = 12 ÷ 6.32 = 1.897</code><br><br>The means of 40 students wobble with a spread of about 1.9 marks, compared with 12 for individual students."},
+        {h:"(b) Now place 66 on that scale",
+         b:"66 sits <code class='inl'>(66 − 60) ÷ 1.897 = 3.16</code> standard errors above the mean.<br><br><code class='inl'>1 - cdf(66, 60, 1.897) = 0.00078</code><br><br>About <strong>0.08 percent</strong> — fewer than 1 group in 1,200."},
+        {h:"Why the enormous difference",
+         b:"31 percent against 0.08 percent, for the same number 66 and the same population. The reason is that averaging cancels things out. For one student to score above 66 requires only that one student did well. For forty students to <em>average</em> above 66 requires the high scorers to outweigh every low scorer in the group, and that is very much harder.<br><br>This is the whole reason sample means are useful. They are far more stable than the values they are built from, and the standard error is the measurement of how much more."}
+      ],
+      answer:"(a) About 31 percent. (b) About 0.08 percent. Averaging 40 values cuts the spread from 12 to 1.9, so the same distance from the mean becomes far less likely."
+    },
+    {
+      title:"Problem 4 — A lopsided population",
+      prompt:"A helpdesk receives calls at an average of 2 per hour. Counts like these are not remotely bell-shaped — the commonest outcome is 1 or 2 and there is a long run of busier hours. The spread of the hourly counts is about 1.41. You record 50 hours and take the mean. (a) Can the theorem be used here? (b) What is the standard error? (c) What is the chance your 50-hour mean comes out above 2.4?",
+      steps:[
+        {h:"(a) Check whether the theorem applies",
+         b:"Yes — and this is exactly the case it was made for. The theorem places <strong>no requirement at all</strong> on the shape of the population. Hourly call counts are lopsided and that does not matter.<br><br>What does matter is the sample size. With n = 50, comfortably above the rule of thumb of 30, the means will be close to bell-shaped even though the counts are not."},
+        {h:"(b) Compute the standard error",
+         b:"<code class='inl'>1.41 ÷ √50 = 1.41 ÷ 7.07 = 0.20</code> calls per hour<br><br>So the mean of 50 hours wobbles with a spread of about a fifth of a call, against a spread of 1.41 for individual hours."},
+        {h:"(c) Place 2.4 on that scale",
+         b:"2.4 sits <code class='inl'>(2.4 − 2.0) ÷ 0.20 = 2.0</code> standard errors above the mean.<br><br><code class='inl'>1 - cdf(2.4, 2.0, 0.2) = 0.0228</code><br><br>About <strong>2.3 percent</strong>."},
+        {h:"What this is good for",
+         b:"The helpdesk can now tell a busy fortnight from a real change in demand. If a 50-hour stretch averages 2.4 calls an hour, that happens about once in 44 stretches by chance — so it is a signal worth investigating rather than ordinary noise.<br><br>None of this required knowing the shape of the hourly counts, which is the point. The theorem let you reason about the mean of a strongly lopsided quantity using nothing but a bell curve."}
+      ],
+      answer:"(a) Yes — the theorem places no requirement on the population's shape, and n = 50 is comfortably large enough. (b) 0.20 calls per hour. (c) About 2.3 percent."
+    },
+    {
+      title:"Problem 5 — Reading a survey margin",
+      prompt:"A poll of 1,000 voters finds 47 percent support for a proposal. The standard error on a percentage near 50 with n = 1,000 is about 1.6 percentage points. (a) Give a range covering about 95 percent of such polls. (b) A rival poll of 1,000 reports 51 percent. Do the two polls contradict each other?",
+      steps:[
+        {h:"(a) Two standard errors either side",
+         b:"<code class='inl'>2 × 1.6 = 3.2</code> percentage points<br><br><code class='inl'>47 − 3.2 = 43.8</code> and <code class='inl'>47 + 3.2 = 50.2</code><br><br>So about 95 percent of polls of this size would land between roughly <strong>44 and 50 percent</strong> if the truth were 47."},
+        {h:"(b) Do the same for the rival poll",
+         b:"The rival poll of 51 percent has the same margin, giving a range of roughly <strong>48 to 54 percent</strong>.<br><br>The two ranges overlap between 48 and 50."},
+        {h:"Interpret the overlap",
+         b:"Because the ranges overlap, the two polls are <strong>not in contradiction</strong>. Both are consistent with a true value somewhere around 49 percent — one happened to land a little low and the other a little high, which is exactly what sampling variation produces.<br><br>Newspapers frequently report such pairs as a dramatic disagreement. Usually they are two samples behaving normally."},
+        {h:"A caution on the reasoning",
+         b:"Comparing two ranges by asking whether they overlap is a rough guide rather than a proper test — the correct method combines the two margins into a single calculation and can occasionally disagree with the eyeball version.<br><br>That method is a later concept. For now the useful habit is simply to draw the margin around every reported figure before comparing anything, because a great many apparent disagreements disappear once you do."}
+      ],
+      answer:"(a) Roughly 44 to 50 percent. (b) No — the rival poll's range of roughly 48 to 54 percent overlaps it, so both are consistent with a true value near 49."
+    },
+    {
+      title:"Problem 6 — When the theorem cannot help you",
+      prompt:"For each situation, say whether the Central Limit Theorem applies, and why. (a) A sample of 5 households drawn from a population where a few households are enormous. (b) An online poll answered by 50,000 self-selected visitors. (c) The mean of 200 measurements from a strongly lopsided population. (d) Predicting whether one particular customer will spend more than ₹5,000.",
+      steps:[
+        {h:"(a) Five households from a lopsided population",
+         b:"<strong>Not reliably.</strong> The theorem is a statement about what happens as the sample size grows, and 5 is far below the rule of thumb of 30. With a strongly lopsided population the means of 5 are still visibly lopsided — one enormous household in the five drags that sample's mean a long way.<br><br>The fix is more data, and the more lopsided the population the more you need."},
+        {h:"(b) Fifty thousand self-selected responses",
+         b:"<strong>No, and the size makes it worse rather than better.</strong> The theorem assumes each member of the population had an equal chance of being sampled. People who choose to answer an online poll are not a fair cross-section — they tend to hold stronger opinions.<br><br>A biased sample of 50,000 produces a very small standard error around the wrong answer, which is more misleading than a small sample would be. No sample size repairs a broken sampling method."},
+        {h:"(c) Two hundred measurements, lopsided population",
+         b:"<strong>Yes.</strong> This is the theorem working exactly as advertised. The population's shape is irrelevant, and 200 is comfortably large enough for the sample means to be close to bell-shaped.<br><br>You could compute a standard error and apply the 68–95–99.7 rule to it with confidence."},
+        {h:"(d) One particular customer",
+         b:"<strong>No — the theorem is not about individuals.</strong> It describes how <em>means of samples</em> behave. It says nothing about a single value, and using the standard error to reason about one customer would understate the uncertainty by a factor of √n.<br><br>For a single value you need the population's own spread, and if that population is not bell-shaped you cannot use the 68–95–99.7 rule on it either."},
+        {h:"The two failure modes worth remembering",
+         b:"Cases (a) and (c) differ only in the sample size — that failure is fixable with more data.<br><br>Cases (b) and (d) are different in kind. A biased sample cannot be fixed by collecting more of it, and a question about an individual cannot be answered by a theorem about averages. Recognising which kind of failure you are looking at matters more than either calculation."}
+      ],
+      answer:"(a) Not reliably — n is too small for a lopsided population. (b) No — the sample is not fairly drawn, and its size makes the wrong answer look more precise. (c) Yes — shape is irrelevant and n is ample. (d) No — the theorem describes means, not individual values."
+    }
+  ],
+
+  interview:[
+    {
+      q:"State the Central Limit Theorem in your own words.",
+      a:"If you take many samples of the same size from a population and compute each sample's mean, those means form a normal curve — regardless of what the population itself looks like. The means centre on the population mean, and their spread is the population's standard deviation divided by the square root of the sample size.<br><br>The part worth emphasising is that the population's shape does not matter. It can be lopsided, flat, or split into two humps; the sample means still form a bell.",
+      probe:"Almost every interview covering statistics asks this. A definition that omits either the centring or the spread is half an answer — the three facts together are what make it useful."
+    },
+    {
+      q:"What is the difference between the standard deviation and the standard error?",
+      a:"The standard deviation describes how spread out the individual values are. The standard error describes how spread out the sample <em>means</em> are, and equals the standard deviation divided by the square root of the sample size.<br><br>So the standard error is always the smaller of the two, and it shrinks as the sample grows while the standard deviation does not — the population's spread is a fixed fact about the population, whereas the standard error is a property of your sampling.<br><br>Confusing them is the commonest error with this material, and it typically makes a result look far more or far less surprising than it is.",
+      probe:"This is the discriminating question of the whole topic. Candidates who can state both definitions and say which one shrinks with n have understood it; those who recite a formula usually cannot say when to use which."
+    },
+    {
+      q:"Why is there a square root in the standard error formula?",
+      a:"The practical consequence matters more than the derivation: it means precision is expensive. To halve the standard error you must quadruple the sample. Going from 100 measurements to 400 halves your margin; going from 400 to 1,600 halves it again.<br><br>This is why surveys settle at a few thousand responses and stop. Beyond that point each additional slice of precision costs several times what the last one did, and the money is better spent on sampling more fairly than on sampling more.",
+      probe:"They are usually testing whether you know the practical consequence rather than the mathematics. The four-times-for-half relationship is the thing to say."
+    },
+    {
+      q:"How large does the sample need to be for the theorem to apply?",
+      a:"The usual rule of thumb is 30 or more, and it is genuinely a rule of thumb rather than a threshold. What actually governs it is how far the population is from a bell shape.<br><br>If the population is already roughly bell-shaped, the sample means are bell-shaped at any size at all — even 2 or 3. If the population is strongly lopsided, with a few enormous values, 30 may not be enough and several hundred might be needed.<br><br>The honest answer is that 30 is a reasonable default and the right check is to look at the data's shape before relying on it.",
+      probe:"Answering just '30' is the weak answer. Saying that it depends on the population's shape, and giving both extremes, is what shows understanding rather than recall."
+    },
+    {
+      q:"Does the Central Limit Theorem mean my data will be normally distributed?",
+      a:"No, and this is the most frequent misunderstanding of it. The theorem says nothing whatsoever about the shape of your data. Household incomes stay lopsided however many you collect.<br><br>What becomes normal is the distribution of <em>sample means</em> — a different quantity entirely, and one you never observe directly unless you deliberately take many samples. The theorem is about a thing you compute, not about the thing you measured.",
+      probe:"A deliberate trap, and a lot of candidates walk into it. Drawing the distinction between the data and the means computed from the data is the whole answer."
+    },
+    {
+      q:"You have a sample mean of 63 from 40 students. What can you say about the population mean?",
+      a:"That 63 is your best single estimate, and that the honest answer is a range rather than a number. Compute the standard error — the spread divided by the square root of 40 — and the theorem says the sample means are bell-shaped around the truth with that spread. So about 95 percent of samples land within 2 standard errors of the population mean.<br><br>With a spread of around 12, the standard error is about 1.9, so a range of roughly 59 to 67 would cover the population mean in about 95 percent of samples like this one. The formal name and the precise construction of such a range come slightly later.",
+      probe:"They want to see you refuse to report a bare number. Reaching for the standard error unprompted is the behaviour being looked for."
+    },
+    {
+      q:"A colleague has 50,000 responses to an online poll and says the margin is tiny. What do you say?",
+      a:"That the margin is indeed tiny and may be beside the point. The theorem assumes every member of the population had an equal chance of being sampled, and people who choose to answer an online poll do not satisfy that — they tend to hold stronger opinions than those who ignore it.<br><br>What 50,000 responses buys is a very precise estimate of what self-selecting respondents think. If that is not the population of interest, the size makes the situation worse rather than better, because the wrong answer now carries an air of authority.<br><br>The general point is that sample size fixes sampling variation and does nothing at all for bias.",
+      probe:"A judgement question rather than a calculation. The sentence they are listening for is that a bigger sample narrows the margin around the wrong answer."
+    },
+    {
+      q:"Why does averaging make a measurement more reliable?",
+      a:"Because the errors partly cancel. When you average 25 values, an unusually high one is likely to be offset by an unusually low one, and what survives the averaging is the underlying level rather than the noise.<br><br>The standard error quantifies exactly how much cancelling happens: the spread drops by a factor of the square root of the sample size. Twenty-five values give a mean that wobbles a fifth as much as a single value does.<br><br>It is why sample checks in manufacturing are so much more sensitive than single-item checks, using the same instrument and the same process.",
+      probe:"An intuition question. The cancelling explanation, tied back to the √n factor, is the complete answer."
+    },
+    {
+      q:"Two models score 84 and 86 percent on a test set of 200 rows. Is the second better?",
+      a:"Not on that evidence. Both scores were measured on a sample of rows, so both carry sampling variation. On 200 rows a score near 85 percent has a standard error of roughly 2.5 percentage points, and the observed gap of 2 points is smaller than that — well inside what two equally good models would produce by chance.<br><br>What would settle it is a larger test set, which shrinks the margin, or evaluating both models on the same rows and comparing where they disagree.",
+      probe:"An applied version of the same idea, and a very common real mistake. Recognising that a test-set score is itself a sample statistic is what is being checked."
+    },
+    {
+      q:"What would go wrong if you used the standard deviation instead of the standard error when judging a sample mean?",
+      a:"You would treat the sample mean as though it wobbled as much as an individual value, which makes your limits far too wide and the check almost useless.<br><br>Concretely: bags filled to 500 g with a standard deviation of 20 g, sampled 25 at a time. Using the standard deviation you would accept any sample mean between 460 and 540 as normal. Using the correct standard error of 4, the normal range is 492 to 508 — five times narrower. A drifting machine producing sample means of 515 g would sail through the first check and be caught immediately by the second.<br><br>The error is always in the same direction: it makes you far too slow to notice that something has changed.",
+      probe:"A practical version of the standard deviation versus standard error question. Being able to describe the consequence with a concrete example is much stronger than restating the definitions."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"What exactly does the Central Limit Theorem say becomes normally distributed?",
+      opts:[
+        {t:"The original data, once enough of it has been collected",
+         fb:"The data keeps whatever shape it always had. Collecting more lopsided incomes gives you more lopsided incomes."},
+        {t:"The means of many samples taken from that population", ok:true,
+         fb:"Right, and the distinction matters enormously. It is a statement about a quantity you compute, not about the quantity you measured."},
+        {t:"The population itself, provided it is large enough",
+         fb:"The theorem makes no claim about the population at all. Its indifference to the population's shape is precisely what makes it useful."},
+        {t:"Both the data and the sample means, since the two converge on the same shape once the sample size passes about thirty",
+         fb:"They do not converge. The data keeps its shape while the means become bell-shaped — those are two different distributions."}
+      ]
+    },
+    {
+      stem:"A population has a standard deviation of 30. What is the standard error of the mean of a sample of 36?",
+      opts:[
+        {t:"30, the same as the population",
+         fb:"That is the spread of individual values. The mean of 36 wobbles far less than a single value does."},
+        {t:"0.83, which is 30 divided by 36",
+         fb:"Close, but it is the square root of the sample size in the denominator, not the sample size itself."},
+        {t:"5, which is 30 divided by the square root of 36", ok:true,
+         fb:"Right: √36 = 6, and 30 ÷ 6 = 5. The mean of 36 values wobbles with a spread of 5 against 30 for individual values."},
+        {t:"It cannot be worked out without knowing the shape of the population that the sample was drawn from",
+         fb:"The shape is exactly what you do not need. That is the theorem's central promise."}
+      ]
+    },
+    {
+      stem:"You currently have 100 measurements and want to halve your standard error. How many do you need?",
+      opts:[
+        {t:"200",
+         fb:"Doubling the sample divides the standard error by √2, which is about 1.41 — a reduction of roughly 30 percent rather than a half."},
+        {t:"400 — four times as many", ok:true,
+         fb:"Right. The sample size sits under a square root, so quadrupling n halves the standard error. This is why precision gets expensive quickly."},
+        {t:"1,000",
+         fb:"More than you need. Ten times the data would divide the standard error by about 3.2, which is rather more than halving it."},
+        {t:"It depends on the population's standard deviation, since that is the quantity sitting on top of the fraction in the formula",
+         fb:"The population spread affects the size of the standard error but not the ratio between two of them. Whatever σ is, quadrupling n halves the result."}
+      ]
+    },
+    {
+      stem:"Marks have a mean of 70 and a standard deviation of 10. Which is more likely?",
+      opts:[
+        {t:"One student scoring above 75", ok:true,
+         fb:"Right. A single value wobbles with a spread of 10, so 75 is only half a standard deviation out. The mean of 25 wobbles with a spread of just 2, making 75 more than two standard errors out and far rarer."},
+        {t:"A group of 25 students averaging above 75",
+         fb:"Far less likely. For one student to beat 75 needs one good performance; for twenty-five to average above 75 needs the whole group to be good, which is much harder."},
+        {t:"They are equally likely, since both questions concern the same value of 75 measured against the same population mean of 70",
+         fb:"The value is the same but the quantity is not. A single mark and the mean of 25 marks have very different spreads."},
+        {t:"It cannot be determined without knowing whether the marks follow a bell shape",
+         fb:"For the group of 25 the theorem handles it whatever the shape. And the comparison itself follows from the standard error being smaller than the standard deviation."}
+      ]
+    },
+    {
+      stem:"An online poll gets 80,000 self-selected responses. What is the effect of that large number?",
+      opts:[
+        {t:"It makes the result reliable, since sampling variation is now negligible",
+         fb:"Sampling variation is indeed negligible. That is not the same as the result being reliable, because a different problem remains untouched."},
+        {t:"It has no effect at all on the quality of the result either way",
+         fb:"It does have an effect — it shrinks the margin. The difficulty is what that margin is drawn around."},
+        {t:"It produces a very narrow margin around a figure that may not describe the population at all", ok:true,
+         fb:"Right, and this is the dangerous case. Sample size fixes sampling variation and does nothing whatsoever for a sample that was not fairly drawn."},
+        {t:"It means the theorem no longer applies, because the theorem requires samples of moderate size and breaks down once the sample becomes very large",
+         fb:"Larger samples make the theorem's conclusion stronger, not weaker. What fails here is its assumption about fair sampling, not its conclusion about size."}
+      ]
+    },
+    {
+      stem:"A population of hourly call counts is strongly lopsided. You take samples of 60 and record the means. What shape will those means take?",
+      opts:[
+        {t:"Lopsided, in the same way the population is",
+         fb:"That is the intuition the theorem overturns. The means take on a bell shape even though the counts do not."},
+        {t:"Roughly a bell shape, because the sample size is comfortably large", ok:true,
+         fb:"Right. The population's shape places no restriction on the theorem — only the sample size matters, and 60 is well past the usual rule of thumb of 30."},
+        {t:"Flat, with every possible mean equally likely",
+         fb:"That would be a uniform shape, which is not what averaging produces. Means cluster around the population mean rather than spreading evenly."},
+        {t:"Impossible to say without first checking whether the hourly counts follow one of the standard distributions covered so far",
+         fb:"The whole strength of the theorem is that this check is unnecessary. It works for almost any population you could construct."}
+      ]
+    },
+    {
+      stem:"Bags are filled to a mean of 500 g with a standard deviation of 20 g. A quality check weighs 25 bags each hour. Which range should trigger an investigation?",
+      opts:[
+        {t:"A sample mean outside 440 to 560 g",
+         fb:"That is three population standard deviations, which is the right rule applied to the wrong quantity. A mean of 25 bags never wanders that far."},
+        {t:"A sample mean outside 488 to 512 g", ok:true,
+         fb:"Right. The standard error is 20 ÷ √25 = 4, so three standard errors gives 500 ± 12. Using the population spread instead would make the check five times too loose."},
+        {t:"A sample mean outside 496 to 504 g",
+         fb:"That is one standard error either side, which would trigger an investigation on about a third of all hours even when nothing is wrong."},
+        {t:"Any single bag outside 488 to 512 g, since that range is where the process should be operating when the machine is set correctly",
+         fb:"Individual bags vary far more than sample means do. A single bag at 515 g is entirely ordinary; a mean of 25 bags at 515 g is not."}
+      ]
+    },
+    {
+      stem:"Which statement about the mean of the sample means is correct?",
+      opts:[
+        {t:"It is larger than the population mean, because averaging pulls values upward",
+         fb:"Averaging does not favour either direction. The high and low samples balance out."},
+        {t:"It is smaller than the population mean by a factor of the square root of the sample size",
+         fb:"That factor applies to the spread, not to the centre. The centre does not move at all."},
+        {t:"It sits on the population mean, whatever the sample size happens to be", ok:true,
+         fb:"Right. This is the second of the three facts: the method is not systematically too high or too low. Only the spread changes with the sample size."},
+        {t:"It moves closer to the population mean as the sample size grows, having started some distance away when the samples are small",
+         fb:"It is centred on the population mean at every sample size, including 1. What changes with n is how tightly the individual sample means cluster around it."}
+      ]
+    },
+    {
+      stem:"A survey of 400 people gives a result with a margin of about 5 percentage points. The client asks for a margin of 2.5 points. Roughly what sample is needed?",
+      opts:[
+        {t:"800, which is simply twice as many as the survey already has",
+         fb:"Doubling shrinks the margin by about 30 percent, taking 5 points to roughly 3.5 — not to 2.5."},
+        {t:"1,600 — four times the present sample", ok:true,
+         fb:"Right. Halving the margin needs four times the sample, so 400 becomes 1,600. Worth quoting the cost implication when a client asks for more precision."},
+        {t:"600",
+         fb:"That would shrink the margin only slightly, from about 5 points to about 4."},
+        {t:"There is no sample size that achieves it, because a margin of 2.5 points is below what any survey of individual people can deliver",
+         fb:"Margins well below 2.5 points are routinely achieved. It is a question of cost rather than possibility."}
+      ]
+    },
+    {
+      stem:"Why does the Central Limit Theorem matter so much for the rest of statistics?",
+      opts:[
+        {t:"Because it proves that most real-world data is normally distributed",
+         fb:"It proves nothing of the kind, and most real data is not. It is a statement about sample means rather than about data."},
+        {t:"Because it removes the need to take samples at all",
+         fb:"It is the reason sampling works, not a replacement for it. Without sampling there would be no sample means for it to describe."},
+        {t:"Because it lets you attach a measurable margin to a result computed from a sample, whatever the underlying data looks like", ok:true,
+         fb:"Right. That is what turns a number into a claim you can defend, and every later method that reports a range or compares two groups rests on it."},
+        {t:"Because it guarantees that a large enough sample will give exactly the right answer",
+         fb:"No sample gives exactly the right answer. What grows with the sample size is the precision, and the theorem is what lets you state that precision."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [1,2,3,0,2,1,3,2,1,3];
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+/* ============ the CLT simulation ============ */
+let seed = 12345;
+function rnd(){ seed = (seed*1103515245 + 12345) & 0x7fffffff; return seed/0x7fffffff; }
+function gauss(){ let s=0; for(let i=0;i<4;i++) s+=rnd(); return (s-2)/0.577; }
+
+const POPS = [
+  {id:"lop",  name:"Very lopsided", gen:()=>Math.min(19.9, -Math.log(1-rnd()*0.999)*10)},
+  {id:"flat", name:"Flat",          gen:()=>rnd()*20},
+  {id:"two",  name:"Two humps",     gen:()=>Math.max(0,Math.min(19.9,(rnd()<0.5?4:16)+gauss()*1.4))},
+  {id:"bell", name:"Bell",          gen:()=>Math.max(0,Math.min(19.9,10+gauss()*4))}
+];
+let currentPop = POPS[0], population = [], popMean=0, popSd=0;
+
+function buildPopulation(p){
+  seed = 12345;
+  population = Array.from({length:4000}, p.gen);
+  popMean = population.reduce((a,b)=>a+b,0)/population.length;
+  popSd = Math.sqrt(population.reduce((a,b)=>a+(b-popMean)**2,0)/population.length);
+}
+function histogram(vals, lo, hi, bins){
+  const h = new Array(bins).fill(0), w=(hi-lo)/bins;
+  vals.forEach(v=>{ const i=Math.floor((v-lo)/w); if(i>=0&&i<bins) h[i]++; });
+  return h;
+}
+function histSVG(counts, lo, hi, colour, markers){
+  const W=310,H=176,L=30,R=12,T=14,BM=28;
+  const mx=Math.max(...counts,1);
+  const bw=(W-L-R)/counts.length;
+  const sy=v=>H-BM-(v/mx)*(H-BM-T);
+  const sx=v=>L+((v-lo)/(hi-lo))*(W-L-R);
+  let bars=counts.map((c,i)=>`<rect x="${(L+i*bw).toFixed(1)}" y="${sy(c).toFixed(1)}" width="${Math.max(1,bw-0.7).toFixed(1)}" height="${(H-BM-sy(c)).toFixed(1)}" fill="${colour}" opacity="0.66"/>`).join("");
+  let g="";
+  for(let v=0;v<=20;v+=5) g+=`<text x="${sx(v)}" y="${H-BM+16}" font-size="10" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  let mk="";
+  (markers||[]).forEach(m=>{
+    mk+=`<line x1="${sx(m.v)}" y1="${T-4}" x2="${sx(m.v)}" y2="${H-BM}" stroke="${m.c}" stroke-width="1.8" stroke-dasharray="${m.d||"0"}"/>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="histogram">
+    ${g}${bars}${mk}<line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/></svg>`;
+}
+function runSim(){
+  const n = +$("#nn").value;
+  $("#nnv").textContent = n;
+  const means = [];
+  for(let s=0;s<2000;s++){
+    let t=0;
+    for(let k=0;k<n;k++) t += population[(rnd()*population.length)|0];
+    means.push(t/n);
+  }
+  const mm = means.reduce((a,b)=>a+b,0)/means.length;
+  const ms = Math.sqrt(means.reduce((a,b)=>a+(b-mm)**2,0)/means.length);
+
+  $("#popplot").innerHTML  = histSVG(histogram(population,0,20,40), 0,20, "#0F5B4F",
+                                     [{v:popMean,c:"#12312B",d:"4 3"}]);
+  $("#meanplot").innerHTML = histSVG(histogram(means,0,20,40), 0,20, "#3C6E8F",
+                                     [{v:popMean,c:"#12312B",d:"4 3"}]);
+  $("#s_pm").textContent   = popMean.toFixed(2);
+  $("#s_mm").textContent   = mm.toFixed(2);
+  $("#s_ps").textContent   = popSd.toFixed(2);
+  $("#s_ms").textContent   = ms.toFixed(2);
+  $("#s_pred").textContent = (popSd/Math.sqrt(n)).toFixed(2);
+}
+$("#popchips").innerHTML = POPS.map(p=>
+  `<button class="chip" data-pop="${p.id}" aria-pressed="${p.id==='lop'}">${p.name}</button>`).join("");
+document.querySelectorAll("#popchips .chip").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll("#popchips .chip").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    currentPop = POPS.find(p=>p.id===b.dataset.pop);
+    buildPopulation(currentPop); runSim();
+  };
+});
+$("#nn").addEventListener("input", runSim);
+buildPopulation(currentPop); runSim();
+
+/* ============ standard error against n ============ */
+function drawSE(){
+  const n=+$("#sn").value, sigma=20;
+  $("#snv").textContent=n;
+  const se=sigma/Math.sqrt(n);
+  $("#se_val").textContent=se.toFixed(2);
+  $("#se_need").textContent = "n = " + (n*4);
+  const W=640,H=210,L=48,R=18,T=16,BM=36, nMax=400, yMax=20;
+  const sx=v=>L+(v/nMax)*(W-L-R), sy=v=>H-BM-(v/yMax)*(H-BM-T);
+  let pts=[];
+  for(let v=1;v<=nMax;v+=2) pts.push(`${sx(v).toFixed(1)},${sy(sigma/Math.sqrt(v)).toFixed(1)}`);
+  let g="";
+  for(let v=0;v<=400;v+=100) g+=`<line x1="${sx(v)}" y1="${T}" x2="${sx(v)}" y2="${H-BM}" stroke="#EDF2F0"/>`+
+    `<text x="${sx(v)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  for(let v=5;v<=20;v+=5) g+=`<line x1="${L}" y1="${sy(v)}" x2="${W-R}" y2="${sy(v)}" stroke="#EDF2F0"/>`+
+    `<text x="${L-8}" y="${sy(v)+4}" font-size="10.5" fill="#4A6862" text-anchor="end" font-family="IBM Plex Mono">${v}</text>`;
+  const mark=`<line x1="${sx(n)}" y1="${sy(se)}" x2="${sx(n)}" y2="${H-BM}" stroke="#A63A1E" stroke-dasharray="3 3"/>`+
+    `<circle cx="${sx(n)}" cy="${sy(se)}" r="5" fill="#A63A1E"/>`+
+    `<text x="${sx(n)+9}" y="${sy(se)-6}" font-size="11.5" fill="#A63A1E" font-family="IBM Plex Mono">n=${n}, se=${se.toFixed(2)}</text>`;
+  $("#seplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Standard error falling as the sample size grows">
+    ${g}<polyline points="${pts.join(" ")}" fill="none" stroke="#0F5B4F" stroke-width="2.2"/>${mark}
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <text x="${W/2}" y="${H-4}" font-size="11" fill="#4A6862" text-anchor="middle">sample size n</text></svg>`;
+}
+$("#sn").addEventListener("input", drawSE);
+drawSE();
+
+/* ============ content ============ */
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card">
+    <h3>${i+1}. ${u.name}</h3>
+    <p>${u.what}</p><p>${u.how}</p>
+    <pre class="code">${esc(u.code)}</pre>
+    <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p>
+  </div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}">
+    <h3>${e.title}</h3>
+    <p>${e.body}</p>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+    <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p>
+  </div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card">
+    <h3>${p.title}</h3>
+    <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+    ${p.steps.map((s,si)=>`
+      <div class="step" id="st${pi}_${si}">
+        <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+        <div class="body"><p>${s.b}</p></div>
+      </div>`).join("")}
+    <div class="step" id="st${pi}_ans">
+      <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+      <div class="body"><div class="answerline"><b>${p.answer}</b></div></div>
+    </div>
+  </div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div>
+  </div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pc=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pc} percent.</p>
+      <p style="margin-bottom:0">${pc>=80
+        ? "This is the concept the rest of the course leans on hardest, and you have it. The next one builds on the standard error directly."
+        : "Go back to the simulation in the Fundamentals tab and change the population while watching the right-hand panel. Most of the questions here come straight from what it shows."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>

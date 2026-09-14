@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 1 · Central Tendency and Spread — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:11px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{
+  border-left:3px solid var(--saffron);background:var(--saffron-dim);
+  border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;
+  font-size:.9rem;color:#7A4E02;max-width:74ch;
+}
+.later b{font-weight:600}
+.later::before{
+  content:"COMING LATER";display:block;font-size:.68rem;font-weight:700;
+  letter-spacing:.07em;color:#A8720B;margin:0 0 3px;
+}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+.yes{color:var(--ok);font-weight:600}
+.no{color:var(--stop);font-weight:600}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 6px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap}
+input[type=range]{flex:1;min-width:220px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:74px;text-align:right}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.2rem;font-weight:600;line-height:1.25}
+.stat.mean .v,.stat.sd .v,.stat.rng .v{color:var(--stop)}
+.stat.med .v{color:var(--blue)}
+.movetag{font-size:.78rem;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+.keyline{display:flex;gap:18px;flex-wrap:wrap;font-size:.86rem;color:var(--ink-soft);margin:0 0 18px}
+.keyline span{display:flex;align-items:center;gap:6px}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 1 of 8</p>
+    <h1>Measures of Central Tendency and Spread</h1>
+    <p class="lede">Mean, median and mode; range, variance and standard deviation. Six numbers built from nothing but addition, division and sorting — and they sit underneath everything else in this course.</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">Why these six numbers exist, how each one is built, and the single property that divides them into two groups.</p>
+
+  <div class="card">
+    <h3>This is the first concept in the course</h3>
+    <p>Everything here is built from arithmetic you already have: adding, dividing, sorting a list, and squaring a number. Nothing else is assumed.</p>
+    <p style="margin-bottom:0">Where a word is new, it appears in a blue <strong>New word</strong> box with a plain definition. Where an idea belongs to a later concept, an amber <strong>Coming later</strong> note says so rather than leaving you to wonder whether you missed something. You should not meet a term anywhere in this concept that has not been either explained or flagged.</p>
+  </div>
+
+  <div class="card">
+    <h3>The question these numbers answer</h3>
+    <p>A column in a spreadsheet holds ten thousand numbers. Nobody can read ten thousand numbers. So you replace them with a handful that captures the essentials, and every summary number is an attempt to answer one of two questions:</p>
+    <ul class="plain">
+      <li><strong>Where does the data sit?</strong> — the <em>centre</em>: mean, median, mode</li>
+      <li><strong>How far apart are the values?</strong> — the <em>spread</em>: range, variance, standard deviation</li>
+    </ul>
+    <p style="margin-bottom:0">Every one of these throws information away, and that is the whole point of a summary. The skill is knowing <em>which</em> information each one discards, because that decides when you can trust it.</p>
+  </div>
+
+  <h3>Centre: three ways to say "typical"</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Measure</th><th>How you build it</th><th>What it ignores</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Mean</td><td>Add every value, divide by how many there are</td><td>Nothing — every value has a say, which is both its strength and its weakness</td></tr>
+        <tr><td class="mono">Median</td><td>Sort the values, then take the middle one</td><td>How big each value is. Only its position in the sorted list matters</td></tr>
+        <tr><td class="mono">Mode</td><td>The value that appears most often</td><td>Everything except how often each value occurs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h4>An important detail about the median</h4>
+    <p>If there is an odd number of values, the median is simply the middle one. If there is an even number, there is no single middle, so you take the mean of the two middle values.</p>
+    <p style="margin-bottom:0">Nine values sorted → the median is the 5th. Ten values sorted → the median is the mean of the 5th and the 6th. <strong>Sort first, always.</strong> Forgetting to sort is the commonest mistake made with the median.</p>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Unusual value</dt>
+      <dd>A value sitting far away from the rest of the data — a salary of ₹250,000 in a list where everything else is near ₹45,000. Statistics has a formal name for these and a set of rules for identifying them properly, both of which come in a later concept. For now, "far away from the rest" is all you need.</dd>
+    </dl>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ The core idea</p>
+    <p style="margin-bottom:0">The mean uses <strong>every value</strong>. The median uses only <strong>position</strong>. That single difference produces everything else in this concept — including why one of them can be dragged around by a single unusual value and the other cannot.</p>
+  </div>
+
+  <h3>See it move</h3>
+  <p>Seven monthly salaries at a small firm, in thousands of rupees. Six are ordinary. Drag the seventh — the founder's — and watch which numbers follow it and which refuse to.</p>
+
+  <div class="livebox">
+    <div class="sliderow">
+      <label for="sl">Founder's salary</label>
+      <input type="range" id="sl" min="50" max="400" step="5" value="50">
+      <span class="readout" id="slv">₹50k</span>
+    </div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="dotplot"></div></div>
+    <div class="keyline">
+      <span><i class="dot" style="background:#A63A1E"></i>Mean, range and standard deviation — all get dragged</span>
+      <span><i class="dot" style="background:#3C6E8F"></i>Median — holds still</span>
+    </div>
+    <div class="statgrid">
+      <div class="stat mean"><div class="l">Mean</div><div class="v" id="s_mean">—</div><div class="movetag" id="m_mean">&nbsp;</div></div>
+      <div class="stat med"><div class="l">Median</div><div class="v" id="s_med">—</div><div class="movetag" id="m_med">&nbsp;</div></div>
+      <div class="stat rng"><div class="l">Range</div><div class="v" id="s_rng">—</div><div class="movetag">max − min</div></div>
+      <div class="stat sd"><div class="l">Std dev</div><div class="v" id="s_sd">—</div><div class="movetag">uses every value</div></div>
+    </div>
+  </div>
+  <p class="legend">Push the slider to ₹400k. The mean climbs past every actual salary in the firm and now describes nobody. The median has moved by ₹500. That single comparison is the whole argument for reporting the median when one value sits far from the rest.</p>
+
+  <h3>Spread: why the centre alone is not enough</h3>
+  <p>Two sets of numbers can share exactly the same mean and be nothing alike. If these were delivery times from two suppliers, you would care enormously about the difference — and a table reporting only the mean would hide it completely.</p>
+  <div class="plotwrap"><div id="spreadplot"></div></div>
+
+  <h3>The three measures of spread</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Measure</th><th>How you build it</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Range</td><td>Largest value minus smallest value</td><td>The simplest of the three, and it uses only two values — so one unusual value defines it entirely</td></tr>
+        <tr><td class="mono">Variance</td><td>The mean of the squared distances from the mean</td><td>Its units are the data's units multiplied by themselves — "rupees squared" — which no reader can interpret</td></tr>
+        <tr><td class="mono">Standard deviation</td><td>The square root of the variance</td><td>Back in the original units. Read it as "the typical distance of a value from the mean"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h4>Building the standard deviation, one step at a time</h4>
+    <ol class="plain">
+      <li><strong>Find the mean.</strong> This is the point everything else will be measured from.</li>
+      <li><strong>Subtract the mean from each value.</strong> You now have a list of distances, some positive and some negative.</li>
+      <li><strong>Square each one.</strong> This is the step that needs explaining, and it gets its own box below.</li>
+      <li><strong>Add the squares and divide.</strong> The result is the variance.</li>
+      <li><strong>Take the square root.</strong> The result is the standard deviation.</li>
+    </ol>
+    <p style="margin-bottom:0">Five steps, all arithmetic. Problem 3 in the Solved Problems tab works through every one of them on a small set of numbers.</p>
+  </div>
+
+  <div class="card">
+    <h4>Why square the distances?</h4>
+    <p>Try the obvious approach first: take each value's distance from the mean and average those distances. It fails, and it fails completely — the distances always add up to <strong>exactly zero</strong>, for any set of numbers whatsoever. The values above the mean and those below it cancel out precisely, because that is what being the mean means.</p>
+    <p>So the signs have to go. Squaring removes them, since a negative number squared is positive. It also has a useful side effect: a distance of 10 contributes 100 while a distance of 5 contributes only 25, so squaring treats one large miss as worse than two small ones.</p>
+    <p style="margin-bottom:0">The price is that the units are now squared and meaningless to a reader. Taking the square root at the end undoes exactly that damage, which is why the standard deviation and not the variance is what goes into a report.</p>
+  </div>
+
+  <div class="card tip">
+    <p class="tagline">💡 Divide by n or by n − 1?</p>
+    <p>When you divide the sum of squares at step 4, there are two possible divisors, and different software makes different choices. In Python, pandas' <code class="inl">.std()</code> divides by <strong>n − 1</strong> while NumPy's <code class="inl">np.std()</code> divides by <strong>n</strong>. The same column can therefore give you two slightly different answers.</p>
+    <p>Use <strong>n − 1</strong>. Here is the reason in plain terms: your data is almost always a small part of something bigger, and you measured the distances from <em>your own</em> mean rather than from the true mean of the whole. Your mean sits, by construction, right in the middle of your own numbers, so those distances come out slightly too short. Dividing by n − 1 instead of n makes the answer slightly larger and corrects the shortfall.</p>
+    <p style="margin-bottom:0">Pass <code class="inl">ddof=1</code> to make NumPy agree with pandas. The difference matters when you have very few values and all but disappears once you have a few hundred.</p>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ Two groups of measures</p>
+    <p><strong>Mean, range and standard deviation</strong> are all built from the actual sizes of the values, so a single value far from the rest pulls all three.</p>
+    <p><strong>Median and mode</strong> are built from position and from counting, so they barely notice such a value.</p>
+    <p style="margin-bottom:0">Neither group is better than the other — they answer different questions. A complete summary reports both, and <strong>the gap between the mean and the median is itself worth reading</strong>: when the two are close, the values are evenly balanced; when they are far apart, something is pulling hard on one side.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Measure</th><th>What it tells you</th><th>Dragged by one unusual value?</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Mean</td><td>Centre, using every value</td><td class="no">Yes</td></tr>
+        <tr><td class="mono">Median</td><td>Centre, by position in the sorted list</td><td class="yes">No</td></tr>
+        <tr><td class="mono">Mode</td><td>The most common value; works on words as well as numbers</td><td class="yes">No</td></tr>
+        <tr><td class="mono">Range</td><td>Total spread, largest minus smallest</td><td class="no">Yes, entirely</td></tr>
+        <tr><td class="mono">Variance</td><td>Spread, in squared units</td><td class="no">Yes</td></tr>
+        <tr><td class="mono">Standard deviation</td><td>Typical distance from the mean, in original units</td><td class="no">Yes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="later">
+    <b>A measure of spread that is not dragged.</b> You may have spotted a gap in that table — every measure of spread here is pulled by an unusual value, while two of the three centre measures are not. There is a measure of spread that holds steady, built by cutting the sorted data into four equal parts instead of using every value. It needs ideas we have not covered yet, so it waits for a later concept. For now, when a column contains a value far from the rest, report the median for the centre and say plainly that the spread measures are affected by it.
+  </div>
+
+  <h3>All six in Python</h3>
+  <pre class="code"><span class="cm"># the six numbers from this concept, on one column</span>
+import pandas as pd
+
+marks = pd.Series([72, 85, 90, 66, 78, 95, 58, 78])
+
+print("mean     ", round(marks.mean(), 2))
+print("median   ", marks.median())
+print("mode     ", marks.mode().tolist())
+print("range    ", marks.max() - marks.min())
+print("variance ", round(marks.var(), 2))
+print("std dev  ", round(marks.std(), 2))</pre>
+  <pre class="out">mean      77.75
+median    78.0
+mode      [78]
+range     37
+variance  151.64
+std dev   12.31</pre>
+  <p class="legend"><code class="inl">.mode()</code> gives back a list rather than a single number, because a set of values can have two or more equally common values — or none at all, if every value appears exactly once.</p>
+
+  <div class="card">
+    <h3>What this concept deliberately leaves out</h3>
+    <p>Each concept in this course builds on the one before it. Here is what is being held back on purpose, so that when you meet these words elsewhere you know they are coming rather than assuming you have missed something:</p>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Idea</th><th>What it will add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cutting data into quarters</strong></td><td>A measure of spread that ignores the extreme values, and the numbers behind a common chart type</td></tr>
+          <tr><td><strong>Measuring lopsidedness</strong></td><td>A single number for how unbalanced a set of values is, instead of judging it from the mean-median gap</td></tr>
+          <tr><td><strong>Rules for unusual values</strong></td><td>A defensible test for deciding whether a value sits far enough from the rest to be worth investigating</td></tr>
+          <tr><td><strong>Bell-shaped data</strong></td><td>Why the standard deviation turns out to be a universal ruler, and what fraction of values sit within one, two or three of them</td></tr>
+          <tr><td><strong>Samples and populations</strong></td><td>The full reason behind the n − 1 divisor, and how far a summary built from a small sample can be trusted</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">These are not just numbers you print at the top of a notebook and move past. Each one below is a decision a working data scientist makes using nothing more than the six measures from the previous tab.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">In every one of these the question is the same: <strong>does this column contain values sitting far from the rest?</strong> Compare the mean against the median to find out — it costs one line and takes seconds. If they are close, the mean and standard deviation are safe and use more of the information available. If they are far apart, lean on the median.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six places where the choice between these measures changed a decision, a policy or a headline.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Five problems of the kind that appear in examinations and in interviews. Work each one on paper first, then open the steps one at a time to check your reasoning rather than only your answer.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions that come up repeatedly, each with an answer worth giving and a note on what the interviewer is really checking. Try to answer aloud before opening each one.</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions, using only the ideas from this concept. A wrong choice is not simply marked wrong — it explains where the reasoning went astray, so read the feedback either way.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  uses:[
+    {
+      name:"Filling in missing values",
+      what:"Almost every real dataset has gaps — a survey answer left blank, a reading nobody took. Most methods refuse to run at all when a value is missing, so the gaps have to be filled, and the commonest repair is to fill them with a measure of centre.",
+      how:"Which measure you choose is decided by comparing the mean and the median of that column. If the two are close, the values are evenly balanced and the mean is the better fill because it uses every value. If the mean sits well above the median, a few large values are pulling it up, and filling with the mean would push every repaired row upward — use the median instead. For a column of words rather than numbers, neither applies and the mode is the only choice available.",
+      code:"# compare the two before deciding\nprint(df['income'].mean(), df['income'].median())\n# 68000.0  41000.0   -> far apart, so a few large values are pulling the mean up\n\ndf['income'] = df['income'].fillna(df['income'].median())",
+      note:"Whichever you choose, say so in your write-up. Filling gaps changes the data, and a reader is entitled to know how."
+    },
+    {
+      name:"Finding values worth checking",
+      what:"Before trusting any column you want to know whether it contains values that cannot possibly be right — a mark of 105 out of 100, an age of 200, a price of one rupee.",
+      how:"Three of the six measures do this work between them. The <strong>smallest and largest values</strong> show you the two ends and catch impossible entries fastest of all. The gap between the <strong>mean and the median</strong> tells you whether something is pulling hard on one side. And the <strong>standard deviation</strong> gives you a yardstick: a value sitting four or five standard deviations away from the mean is worth a second look, because most values sit far closer than that.",
+      code:"print('smallest  ', df['marks'].min())\nprint('largest   ', df['marks'].max())\nprint('mean      ', df['marks'].mean())\nprint('median    ', df['marks'].median())\nprint('std dev   ', df['marks'].std())\n\n# how many standard deviations is the largest value from the mean?\n(df['marks'].max() - df['marks'].mean()) / df['marks'].std()",
+      note:"Careful — an unusual value inflates the very standard deviation you are measuring it against, so this yardstick raises a suspicion rather than settling it. A proper rule for deciding comes in a later concept."
+    },
+    {
+      name:"Putting two columns on a comparable footing",
+      what:"One column holds salaries running into hundreds of thousands. Another holds ages running from 18 to 60. The two are not comparable, and many later methods in this course work by measuring how far apart two rows are — which means the salary column would swamp the age column entirely.",
+      how:"The standard repair uses exactly two numbers from this concept: subtract the column's mean from every value, then divide by that column's standard deviation. Every column treated this way ends up centred at zero with a standard deviation of one, so no column can dominate another simply because of the units it happens to be measured in. Each value now reads as \"how many standard deviations from its own mean\".",
+      code:"# put two columns on a common footing\ndf['salary_std'] = (df['salary'] - df['salary'].mean()) / df['salary'].std()\ndf['age_std']    = (df['age']    - df['age'].mean())    / df['age'].std()\n\nprint(round(df['salary_std'].mean(), 2), round(df['salary_std'].std(), 2))\n# 0.0  1.0",
+      note:"The methods that need this come later in the course. What matters now is that the repair is built from a mean and a standard deviation and nothing else."
+    },
+    {
+      name:"Comparing two groups fairly",
+      what:"Two teaching methods are tried on two classes. One class averages 68 marks and the other 64. Is the first method better?",
+      how:"Not on that evidence alone. A four-mark gap between two averages means one thing if the marks within each class are packed tightly between 62 and 70, and something quite different if they run all the way from 30 to 95. The standard deviation is what tells those two situations apart, which is why a comparison of means with no measure of spread beside it is not yet an argument.",
+      code:"summary = df.groupby('method')['marks'].agg(['count', 'mean', 'std'])\nprint(summary.round(2))\n\n#         count   mean    std\n# method\n# A          40  68.00   3.10\n# B          38  64.00  17.40",
+      note:"Deciding whether such a gap is real rather than an accident of who happened to be in each class needs tools from a later concept. Reporting the spread alongside the mean is the honest first step."
+    },
+    {
+      name:"Measuring how wrong a prediction is",
+      what:"Once you build something that predicts a number — next month's sales, a house price — you need a single figure for how far off it typically is.",
+      how:"The answer reuses the standard deviation almost exactly. Take each prediction, subtract the true value to get the error, square the errors, average them, and take the square root. Those are the same five steps you used to build a standard deviation, applied to the errors instead of to the data. It even inherits the same property: because the errors are squared, a handful of badly missed predictions dominate the result.",
+      code:"errors = predicted - actual\n\ntypical_error = (errors ** 2).mean() ** 0.5\nprint('typical error:', round(typical_error, 2))\n\n# the simplest thing to beat: predict the mean for every row\nbaseline = ((actual - actual.mean()) ** 2).mean() ** 0.5\nprint('baseline    :', round(baseline, 2))",
+      note:"Notice the baseline. The easiest possible prediction is the mean of the column, so anything you build has to beat that before it has earned its place."
+    },
+    {
+      name:"Reporting to people who will act on it",
+      what:"The number you put on a slide decides what people believe and what they do next.",
+      how:"A mean printed on its own is not a summary — it is one point of a story. If a report says the average response time is 2 seconds, that is equally consistent with almost every user waiting 2 seconds and with most waiting half a second while a large minority wait 20. Reporting the mean beside the median and the standard deviation lets a reader tell those apart, and it takes no more room on the slide.",
+      code:"df.groupby('service')['response_sec'].agg(\n    n='count', mean='mean', median='median', spread='std'\n).round(2)",
+      note:"When somebody shows you a table with only a mean in it, the right question is always \"and what is the spread?\" before drawing any conclusion from it."
+    }
+  ],
+
+  examples:[
+    {
+      title:"Why governments report the median income",
+      color:"var(--teal)",
+      body:"Household income is unbalanced in every country in the world: most households cluster at the lower end, and a very small number earn enormous amounts. Because the mean gives every value a say, those few very large incomes pull it well above what a typical household actually receives.",
+      numbers:"Where the mean household income is ₹42,000 a month and the median is ₹26,000, more than sixty percent of households earn less than the mean. Quoting the mean would describe a household that barely exists.",
+      lesson:"Statistics agencies almost everywhere report median income for this reason. When a headline quotes an average income, the first question to ask is which average was used."
+    },
+    {
+      title:"Two couriers, one decision",
+      color:"var(--blue)",
+      body:"A firm compares two delivery partners over the same hundred shipments. Both average close to five days. One delivers between four and six days almost every time; the other is often quicker but occasionally takes a fortnight.",
+      numbers:"Courier A: mean 5.0 days, standard deviation 0.5. Courier B: mean 4.8 days, standard deviation 2.7. B has the better average and would win on any table reporting only the mean.",
+      lesson:"The firm chose A. A promise to a customer is about the worst case, not the average case, and the standard deviation is where the worst case lives. Spread is often more decision-relevant than centre."
+    },
+    {
+      title:"A batting average that hides two different players",
+      color:"var(--saffron)",
+      body:"Two batters both average 42 runs across a season. One scores between 30 and 55 in nearly every innings. The other alternates centuries with single-figure failures.",
+      numbers:"Batter A: mean 42, standard deviation 9. Batter B: mean 42, standard deviation 38. Identical averages, and entirely different players to build a side around.",
+      lesson:"Selection arguments are almost always about the second number while quoting the first. Consistency is a claim about the standard deviation."
+    },
+    {
+      title:"Why factories watch the spread, not the average",
+      color:"var(--stop)",
+      body:"A component must measure 20 mm. A production line whose output averages exactly 20 mm can still be failing badly, if the individual parts scatter widely around that average.",
+      numbers:"The allowed error is 0.3 mm either way. A line with a standard deviation of 0.05 mm produces almost nothing outside the limit. A line with the same mean and a standard deviation of 0.2 mm scraps roughly one part in eight.",
+      lesson:"Quality control targets the standard deviation. An average sitting exactly on target tells you almost nothing on its own about whether the parts can be used."
+    },
+    {
+      title:"The one place where only the mode works",
+      color:"var(--teal)",
+      body:"A retailer wants to know which shirt size to stock most of. The sizes are S, M, L and XL — there is no arithmetic to be done on them at all. You cannot add S to XL, and there is no sensible middle of a list of size labels.",
+      numbers:"Across 4,000 sales: S 620, M 1,540, L 1,210, XL 630. The mode is M, and that is the entire answer.",
+      lesson:"The mean and the median need numbers. For a column of words the mode is not merely the best measure of centre — it is the only one that exists."
+    },
+    {
+      title:"An average temperature that misleads",
+      color:"var(--blue)",
+      body:"Two cities both report a mean annual temperature of 26 °C. One sits near the coast and stays between 22 and 31 all year. The other swings from 8 °C in January to 45 °C in May.",
+      numbers:"Same mean, standard deviations of 2.4 and 11.6. Anyone planning building insulation, crop choice or electricity supply needs the second number far more than the first.",
+      lesson:"A mean with no spread beside it is not a summary. This is why weather reports give a range for the day rather than a single average."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — Which centre should you report?",
+      prompt:"Eight students scored: 72, 85, 90, 66, 78, 95, 58, 78. Find the mean, the median and the mode, and say which figure you would report as the typical mark.",
+      steps:[
+        {h:"Find the mean",
+         b:"Add all eight values, then divide by 8.<br><br><code class='inl'>72 + 85 + 90 + 66 + 78 + 95 + 58 + 78 = 622</code><br><code class='inl'>622 ÷ 8 = 77.75</code>"},
+        {h:"Find the median",
+         b:"Sort first. This is the step people skip, and it is where marks are lost.<br><br><code class='inl'>58, 66, 72, 78, 78, 85, 90, 95</code><br><br>There are 8 values, an even number, so there is no single middle one. Take the mean of the 4th and the 5th: <code class='inl'>(78 + 78) ÷ 2 = 78</code>"},
+        {h:"Find the mode",
+         b:"78 appears twice; every other value appears once. The mode is <code class='inl'>78</code>.<br><br>Remember that a set of values can have two or more modes, or none at all if nothing repeats."},
+        {h:"Decide what to report",
+         b:"All three land within a quarter of a mark of one another. That agreement is itself the finding — it tells you no single value is pulling the mean away from the middle of the class.<br><br>When the three agree, report the <strong>mean</strong>. It uses every value, so it carries more information than the median does."}
+      ],
+      answer:"Mean 77.75, median 78, mode 78. Report the mean, and note that the close agreement between the three shows the marks are evenly balanced."
+    },
+    {
+      title:"Problem 2 — Measure the damage one value can do",
+      prompt:"Six monthly salaries at a firm, in thousands of rupees: 38, 41, 44, 45, 47, 49. A founder is then added on ₹250k. Find the mean and median before and after, and state how far each one moved.",
+      steps:[
+        {h:"Before: the six salaries",
+         b:"<code class='inl'>38 + 41 + 44 + 45 + 47 + 49 = 264</code>, so the mean is <code class='inl'>264 ÷ 6 = 44.0</code><br><br>Six values, an even number, so the median is the mean of the 3rd and the 4th: <code class='inl'>(44 + 45) ÷ 2 = 44.5</code>"},
+        {h:"After: add the founder",
+         b:"<code class='inl'>264 + 250 = 514</code>, so the mean is <code class='inl'>514 ÷ 7 = 73.43</code><br><br>Seven values now, an odd number, so the median is simply the 4th: <code class='inl'>45</code>"},
+        {h:"Measure how far each one moved",
+         b:"Mean: 44.0 → 73.43, a jump of <strong>29.43</strong><br>Median: 44.5 → 45.0, a shift of <strong>0.5</strong><br><br>One value moved the mean nearly sixty times as far as it moved the median."},
+        {h:"Read what that means",
+         b:"The mean of ₹73,430 is now higher than six of the seven salaries in the firm. It is arithmetically correct and useless as a description of a typical employee.<br><br>This is the mechanism behind almost every misleading 'average' you will meet, and the reason the median is the standard measure for incomes, house prices and waiting times."}
+      ],
+      answer:"Before: mean 44.0, median 44.5. After: mean 73.43, median 45.0. The mean moved 29.43 and the median moved 0.5."
+    },
+    {
+      title:"Problem 3 — Variance and standard deviation by hand",
+      prompt:"Find the variance and the standard deviation of 4, 8, 6, 5, 3, dividing by n − 1. Then work out what dividing by n would have given, and say why the two differ.",
+      steps:[
+        {h:"Step 1 — find the mean",
+         b:"<code class='inl'>4 + 8 + 6 + 5 + 3 = 26</code>, so the mean is <code class='inl'>26 ÷ 5 = 5.2</code><br><br>Everything else is measured from this number."},
+        {h:"Steps 2 and 3 — distances from the mean, then squared",
+         b:"<table style='font-size:.88rem;border-collapse:collapse'><tr><th style='padding:4px 14px 4px 0'>value</th><th style='padding:4px 14px 4px 0'>value − 5.2</th><th style='padding:4px 0'>squared</th></tr>"+
+           "<tr><td>4</td><td>−1.2</td><td>1.44</td></tr><tr><td>8</td><td>+2.8</td><td>7.84</td></tr>"+
+           "<tr><td>6</td><td>+0.8</td><td>0.64</td></tr><tr><td>5</td><td>−0.2</td><td>0.04</td></tr>"+
+           "<tr><td>3</td><td>−2.2</td><td>4.84</td></tr></table><br>"+
+           "Add the middle column and you get exactly zero — which is why it cannot be averaged directly, and why the squaring is needed. The squares add to <strong>14.8</strong>."},
+        {h:"Step 4 — divide to get the variance",
+         b:"There are 5 values, so divide by <code class='inl'>5 − 1 = 4</code>:<br><br><code class='inl'>variance = 14.8 ÷ 4 = 3.70</code><br><br>Divide by 4, not by 5. Your five numbers are a small part of something larger, so n − 1 is the right divisor."},
+        {h:"Step 5 — take the square root",
+         b:"<code class='inl'>standard deviation = √3.70 = 1.92</code><br><br>The units are back to the original scale, and you can now read the answer as a sentence: a typical value sits about 1.9 away from the mean of 5.2. Check it against the data — the distances were 1.2, 2.8, 0.8, 0.2 and 2.2, and 1.9 is a fair description of those."},
+        {h:"What dividing by n would have given",
+         b:"<code class='inl'>14.8 ÷ 5 = 2.96</code>, and the square root of that is <code class='inl'>1.72</code>.<br><br>Smaller — and that is the point. The distances were measured from your own mean, which sits right in the middle of your own five numbers, so they come out slightly too short. Dividing by 4 rather than 5 makes the answer a little larger and corrects for it. With 5 values the difference is noticeable; with 500 it is almost nothing."}
+      ],
+      answer:"Variance 3.70 and standard deviation 1.92 using n − 1. Dividing by n gives 2.96 and 1.72, which are smaller because distances measured from your own mean come out slightly too short."
+    },
+    {
+      title:"Problem 4 — Same job, two suppliers",
+      prompt:"Delivery times in days over ten orders. Supplier A: 4, 5, 5, 5, 5, 5, 5, 5, 6, 5. Supplier B: 1, 2, 3, 4, 5, 6, 7, 8, 9, 3. Find the mean and standard deviation for each, then recommend one.",
+      steps:[
+        {h:"Supplier A",
+         b:"The ten values add to 50, so the mean is <code class='inl'>50 ÷ 10 = 5.0</code> days.<br><br>Only two values differ from the mean, each by 1, so the squared distances add to just 2.<br><code class='inl'>variance = 2 ÷ 9 = 0.222</code> and <code class='inl'>standard deviation = 0.47</code> days"},
+        {h:"Supplier B",
+         b:"The ten values add to 48, so the mean is <code class='inl'>48 ÷ 10 = 4.8</code> days — better than A.<br><br>Here the values are scattered, and the squared distances add to 63.6.<br><code class='inl'>variance = 63.6 ÷ 9 = 7.07</code> and <code class='inl'>standard deviation = 2.66</code> days"},
+        {h:"Put the two spreads on a common footing",
+         b:"A standard deviation of 2.66 days means something different on a 5-day average than it would on a 50-day average. Dividing the standard deviation by the mean expresses the spread as a share of the size of what is being measured, which makes the two directly comparable.<br><br>A: <code class='inl'>0.47 ÷ 5.0 = 0.094</code>, about 9 percent<br>B: <code class='inl'>2.66 ÷ 4.8 = 0.554</code>, about 55 percent"},
+        {h:"Make the recommendation",
+         b:"B wins on the average by 0.2 of a day and loses on reliability by a factor of nearly six. B has delivered in 1 day and in 9 days on the same contract; A has never gone beyond 6.<br><br>Recommend <strong>Supplier A</strong>. A promise to a customer is a statement about the worst likely case, and A's worst observed case is 6 days against B's 9. Any comparison reporting only the mean would have chosen B."}
+      ],
+      answer:"A: mean 5.0, standard deviation 0.47, spread about 9 percent of the mean. B: mean 4.8, standard deviation 2.66, spread about 55 percent. Choose A — B's slightly better average is bought with nearly six times the variability."
+    },
+    {
+      title:"Problem 5 — Combining two groups",
+      prompt:"Section A has 40 students with a mean mark of 62. Section B has 35 students with a mean of 71. Find the mean mark of all 75 students together. Then say why the simple average of 62 and 71 is wrong.",
+      steps:[
+        {h:"Recover the totals",
+         b:"A mean is a total divided by a count, so you can multiply back to recover each total.<br><br>Section A: <code class='inl'>40 × 62 = 2480</code> marks<br>Section B: <code class='inl'>35 × 71 = 2485</code> marks"},
+        {h:"Combine and divide",
+         b:"<code class='inl'>2480 + 2485 = 4965</code> marks in total, across <code class='inl'>40 + 35 = 75</code> students<br><br><code class='inl'>4965 ÷ 75 = 66.2</code>"},
+        {h:"Why the simple average fails",
+         b:"The simple average of 62 and 71 is 66.5. The correct answer is 66.2, and it sits a little closer to Section A — because Section A has more students in it and therefore more say in the combined figure.<br><br>Averaging two means directly is only correct when the two groups are exactly the same size. Otherwise each mean has to be weighted by how many values produced it, which is exactly what multiplying back to totals achieves."},
+        {h:"Where this catches people out",
+         b:"The same error lies behind many misleading aggregate figures: averaging state-level averages without allowing for population, or averaging branch results without allowing for the number of customers at each branch. The unweighted figure hands a small group exactly as much influence as a large one."}
+      ],
+      answer:"66.2 marks. The simple average of 66.5 is wrong because it gives the smaller section equal weight; each mean has to be weighted by its group size."
+    }
+  ],
+
+  interview:[
+    {
+      q:"When would you use the median instead of the mean?",
+      a:"When the column contains values sitting far from the rest. The mean gives every value a say, so a small number of very large or very small values drags it away from where the bulk of the data actually is. The median depends only on position in the sorted list, so it barely moves.<br><br>Incomes, house prices, waiting times and city populations all behave this way, which is why the median is the standard measure for all of them. The converse is worth adding: when the values are evenly balanced, the mean is preferable because it uses more of the information available.",
+      probe:"They are checking whether you can name the condition rather than recite the rule. Saying 'when there are extreme values' earns half the marks; adding 'and I would check by comparing the mean against the median' earns the rest."
+    },
+    {
+      q:"How would you check whether a column has values far from the rest, using only what you have computed?",
+      a:"Three quick checks. First, look at the smallest and largest values — that alone catches impossible entries such as a negative age or a mark above the maximum. Second, compare the mean against the median: if they are close the values are evenly balanced, and if the mean sits well above the median then something large is pulling on it. Third, ask how many standard deviations the largest value sits from the mean, since most values sit far closer than four or five.<br><br>The honest caveat is that the extreme value inflates the very standard deviation you are measuring it against, so this raises a suspicion rather than settling it.",
+      probe:"Naming the caveat is what separates a memorised procedure from real understanding. Interviewers notice candidates who know the limits of their own check."
+    },
+    {
+      q:"Why does the standard deviation divide by n − 1 rather than n?",
+      a:"Because the distances were measured from the mean of your own data rather than from the true mean of everything you are trying to describe. Your own mean sits, by construction, right in the middle of your own numbers, so the distances from it come out slightly too short and the resulting figure is slightly too small. Dividing by n − 1 rather than n makes the answer a little larger and corrects the shortfall.<br><br>It matters most when you have very few values and becomes negligible once you have a few hundred. In practice, pandas does this by default and NumPy does not, so the two can give slightly different answers on the same column.",
+      probe:"A very common question. The full formal justification uses ideas from later in the course, and the plain-language version above is what an interviewer is actually listening for."
+    },
+    {
+      q:"Can the standard deviation be negative? Can it be zero?",
+      a:"It can never be negative. It is built from squared distances, which are never negative, and the square root of a non-negative number is non-negative.<br><br>It can be zero, and that happens in exactly one situation: every value in the column is identical. That is worth spotting in real work — a column with a standard deviation of zero carries no information at all and can usually be dropped, because a value that is the same for every row cannot help tell any two rows apart.",
+      probe:"The second half is the interesting part. Candidates who mention the constant-column case are showing they have handled real data rather than only textbook examples."
+    },
+    {
+      q:"If the mean is much greater than the median, what does that tell you?",
+      a:"That a few large values are pulling the mean upward while the median stays with the bulk of the data. Salary and price columns almost always look like this.<br><br>Practically it tells you two things straight away: report the median rather than the mean, and use the median if you are filling missing values in that column. It also tells you the standard deviation is being inflated by those same few values, so quote it with that caveat attached.",
+      probe:"They want you to move from the observation to the consequence. Anyone can say the two numbers differ; the value is in what you do about it."
+    },
+    {
+      q:"What happens to the mean and the standard deviation if you add 10 to every value? If you multiply every value by 10?",
+      a:"Adding 10 shifts the mean up by 10 and leaves the standard deviation completely unchanged. Every value moves together, so the distances between them are untouched — and the standard deviation is built entirely from those distances.<br><br>Multiplying by 10 multiplies both: the mean by 10 and the standard deviation by 10 as well. The variance, being in squared units, is multiplied by 100.<br><br>This is exactly why subtracting the mean and dividing by the standard deviation puts columns on a common footing — the subtraction moves the centre to zero without touching the spread, and the division sets the spread to one.",
+      probe:"A quick test of whether you understand what these numbers measure rather than only how to compute them. The follow-up about a common footing is what shows the understanding."
+    },
+    {
+      q:"Why report the standard deviation rather than the variance?",
+      a:"Units. The variance is in the square of the data's units — rupees squared, or days squared — which no reader can interpret or compare against anything. Taking the square root brings it back to the original scale, so it can be set beside the mean and beside individual values and read as a sentence: a typical value sits about this far from the average.<br><br>The variance is not useless; it is the quantity you compute on the way to the standard deviation, and it is more convenient in the mathematics. But it is the standard deviation that belongs in the report.",
+      probe:"The units answer is what is expected. Adding that the variance is a step on the way rather than a mistake shows you understand how the two relate."
+    },
+    {
+      q:"A column of salaries has missing values. How do you fill them, and why?",
+      a:"With the median rather than the mean, because salary columns almost always have a few very high values pulling the mean above where most people actually sit. Filling with the mean would overstate every repaired row and push the whole column upward.<br><br>Two refinements are worth mentioning. If the rows fall into meaningful groups — by city, or by job role — filling with each group's own median is more accurate than one figure for everybody. And whichever you choose, it is worth adding a column recording which rows were filled, so nobody later mistakes an invented value for a measured one.",
+      probe:"A practical question and a very common one. The group-wise median and the record of what was filled are the two answers that stand out."
+    },
+    {
+      q:"Two columns have the same mean but very different standard deviations. Does it matter?",
+      a:"It matters a great deal for anything that compares rows by how far apart their values are, because the column with the larger spread dominates that comparison simply by virtue of its size. That is why such columns are usually put on a common footing first — subtract the mean, divide by the standard deviation.<br><br>It also matters for the reader. Two columns with the same mean and different spreads describe genuinely different situations, and any summary reporting only the mean has hidden the difference.",
+      probe:"You are not expected to name specific methods at this stage. Recognising that spread affects any comparison based on distance is the answer being looked for."
+    },
+    {
+      q:"When is the mode the right choice?",
+      a:"Whenever the data is made of words or labels rather than numbers, because it is then the only measure of centre that works at all — there is no arithmetic to do on payment methods or shirt sizes, and no meaningful middle of a list of labels.<br><br>It is also the right answer to a genuinely different question on numeric data: not 'what is a typical value' but 'which value happens most often'. A shop deciding stock levels or a factory setting a default wants the mode, not the mean.<br><br>Its weakness is that it can be unstable — a small change in the data can move it a long way — and a column of measurements may have no repeated value at all, in which case there is no mode to report.",
+      probe:"The instability point is worth including. It is the reason the mode is reported far less often than the other two."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"A column of monthly salaries has a mean of ₹68,000 and a median of ₹41,000. What does this tell you?",
+      opts:[
+        {t:"A few very large salaries are pulling the mean well above where most of the employees actually sit", ok:true,
+         fb:"Right. The mean gives every value a say, so a small number of high earners drags it upward while the median stays with the bulk of the staff. The median is the honest summary here."},
+        {t:"A few very small salaries are pulling the mean down",
+         fb:"That would push the mean <em>below</em> the median. Here the mean is the larger of the two, so whatever is pulling on it sits above the middle, not below."},
+        {t:"Roughly half the employees earn more than ₹68,000",
+         fb:"That would be true of the median, not the mean. Half earn more than ₹41,000 — the mean sits above most of the data precisely because it has been dragged up."},
+        {t:"There must be a mistake in the calculation, because the mean and the median of a column should never differ by anything like that much",
+         fb:"Nothing is wrong. Salary data routinely shows a gap of this size, and the gap is telling you something useful rather than signalling an error."}
+      ]
+    },
+    {
+      stem:"Which two measures are barely affected when one value sits far from the rest?",
+      opts:[
+        {t:"The mean and the range",
+         fb:"Both are pulled hard. The mean uses every value, and the range is built from the largest and smallest values, so a single extreme value defines it completely."},
+        {t:"The median and the mode", ok:true,
+         fb:"Right. The median depends only on position in the sorted list, and the mode only on how often each value appears. Neither cares how extreme an extreme value happens to be."},
+        {t:"The variance and the standard deviation together",
+         fb:"These are the two most affected of all, because the distances from the mean are squared — so a value far away contributes enormously."},
+        {t:"The mean and the standard deviation, since both of them are calculated using every single value in the column",
+         fb:"Using every value is exactly what makes them vulnerable rather than resistant. An extreme value gets a say in both."}
+      ]
+    },
+    {
+      stem:"You add 15 to every value in a column. What happens to the mean and the standard deviation?",
+      opts:[
+        {t:"Both increase by 15",
+         fb:"The mean does, but the standard deviation does not. Shifting every value by the same amount leaves the distances between them exactly as they were."},
+        {t:"The mean is unchanged and the standard deviation increases by 15",
+         fb:"Reversed. The mean says where the data sits, so it moves with the data; the standard deviation says how far apart the values are, so it does not."},
+        {t:"The mean increases by 15 and the standard deviation is unchanged", ok:true,
+         fb:"Right. The standard deviation is built from distances between the values and the mean, and sliding everything along by the same amount changes none of those distances."},
+        {t:"Both stay the same, because adding an identical constant to every value preserves all of the relationships within the column",
+         fb:"It preserves the relationships <em>between</em> values, which is why the spread is unchanged. It does not preserve where the data sits, so the mean moves."}
+      ]
+    },
+    {
+      stem:"Why are the distances from the mean squared before they are averaged?",
+      opts:[
+        {t:"Because squaring makes the arithmetic easier to do by hand",
+         fb:"It makes it harder, not easier. The squaring is there for a mathematical reason rather than a practical one."},
+        {t:"Because the distances always add up to exactly zero, so averaging them directly would tell you nothing", ok:true,
+         fb:"Right. The values above the mean and those below cancel out precisely — that is what being the mean means. Squaring removes the signs so the distances can be added up usefully."},
+        {t:"Because the standard deviation has to be reported in squared units",
+         fb:"The opposite is true. The squaring is later undone by the square root, precisely so the answer comes back in the original units."},
+        {t:"Because squaring removes any values that happen to sit a very long way from the mean and would otherwise distort the answer",
+         fb:"Squaring does the reverse — it gives distant values considerably <em>more</em> influence, since a distance of 10 contributes 100 while a distance of 2 contributes only 4."}
+      ]
+    },
+    {
+      stem:"Pandas' .std() gives 4.18 for a column while NumPy's np.std() gives 4.15 for the very same column. Why?",
+      opts:[
+        {t:"NumPy is less precise than pandas for a calculation of this kind",
+         fb:"Both use the same arithmetic to the same precision. The gap comes from a deliberate difference in the formula, not from rounding."},
+        {t:"Pandas removes the extreme values before computing and NumPy keeps them",
+         fb:"Neither library removes anything. Both use every value you hand them."},
+        {t:"Pandas has ignored the empty cells in the column while NumPy has counted each of them as a zero",
+         fb:"A reasonable guess, and not what is happening here. If the column had empty cells, np.std would return an empty result rather than a slightly different number."},
+        {t:"Pandas divides by n − 1 and NumPy divides by n", ok:true,
+         fb:"Right, and pandas has the better default for most work. Pass ddof=1 to np.std to make the two agree."}
+      ]
+    },
+    {
+      stem:"Section A has 30 students averaging 55 marks; Section B has 20 students averaging 70. What is the combined mean?",
+      opts:[
+        {t:"62.5, the average of the two section means",
+         fb:"That hands the smaller section exactly as much weight as the larger one. Each mean has to be weighted by how many students produced it."},
+        {t:"61.0, weighting each mean by the number of students behind it", ok:true,
+         fb:"Right: (30 × 55 + 20 × 70) ÷ 50 = (1650 + 1400) ÷ 50 = 61.0. It sits closer to Section A because Section A has more students in it."},
+        {t:"It cannot be worked out without seeing the individual marks",
+         fb:"The totals can be recovered by multiplying each mean by its count, and the totals are all a combined mean needs."},
+        {t:"64.0, since the combined figure should lean towards the higher-scoring section once the difference in section sizes is properly taken into account",
+         fb:"The weighting pulls the answer towards the <em>larger</em> section, not the higher-scoring one — and Section A is the larger, so the answer sits below the midpoint of 62.5."}
+      ]
+    },
+    {
+      stem:"A column of transaction amounts has a mean of ₹4,200 and a median of ₹950, and some values are missing. What should you fill the gaps with?",
+      opts:[
+        {t:"The mean, because it uses information from every row in the column",
+         fb:"The gap between ₹4,200 and ₹950 shows a few large transactions are pulling the mean up. Filling with it would overstate every repaired row."},
+        {t:"Zero, since a missing transaction most likely means no money changed hands",
+         fb:"Missing and zero are different facts. A zero is a claim about the transaction that the absence of a record does not support."},
+        {t:"The median, because the mean has been pulled upward by a few large transactions", ok:true,
+         fb:"Right. On a column like this the median sits with the bulk of the data. Filling by group median — per city, or per customer type — is better still where those groups are meaningful."},
+        {t:"The mode, since the value occurring most frequently is by definition the most representative single figure available",
+         fb:"On a column of amounts there is often no repeated value at all, and where one exists its frequency is usually an accident rather than a signal."}
+      ]
+    },
+    {
+      stem:"Two delivery services both average 6 days. Service X has a standard deviation of 0.6 days; Service Y has 3.4 days. What follows?",
+      opts:[
+        {t:"Y is better, because a larger standard deviation means more deliveries arrive early",
+         fb:"A larger spread means more arrive early <em>and</em> more arrive very late. You cannot have one without the other."},
+        {t:"They are equivalent, since the average delivery time is what the customer experiences and both services average the same six days",
+         fb:"A customer experiences one delivery, not the average of many. The spread is what decides how bad an individual experience can get."},
+        {t:"There is not enough information, because two standard deviations cannot be compared without knowing how many deliveries each figure was based on",
+         fb:"Both figures describe the same quantity in the same units, so they compare directly. A spread more than five times larger at the same average is decisive."},
+        {t:"X is far more predictable, and for a delivery promise that matters more than the average", ok:true,
+         fb:"Right. A commitment to a customer is a statement about the worst likely case, and the worst likely case lives in the spread rather than in the average."}
+      ]
+    },
+    {
+      stem:"Which measure of centre can be used on a column of payment methods — cash, card, UPI, wallet?",
+      opts:[
+        {t:"The mode only", ok:true,
+         fb:"Right. There is no arithmetic to perform on labels and no meaningful order to take a middle of, so how often each one appears is the only sense in which one can be typical."},
+        {t:"The median only, since it works by position and never requires the values to be added together",
+         fb:"The median needs the values to have a meaningful order so that a middle exists. Payment methods have no natural order."},
+        {t:"The mean, after giving each method a number",
+         fb:"Numbering the labels invents an order and a spacing the data does not have. The mean of cash = 1 and UPI = 3 is not a payment method."},
+        {t:"All three, provided the labels are first replaced by numeric codes so that the arithmetic can be carried out consistently across the column",
+         fb:"Coding makes the arithmetic possible without making it meaningful. The resulting mean and median would describe the codes you invented rather than the data itself."}
+      ]
+    },
+    {
+      stem:"A column has a standard deviation of exactly zero. What do you know about it?",
+      opts:[
+        {t:"Every value in the column is identical", ok:true,
+         fb:"Right, and it is worth acting on. A column that is the same for every row carries no information and can usually be dropped, since it cannot help tell any two rows apart."},
+        {t:"The column contains an equal number of values above and below its mean",
+         fb:"That is closer to a description of the median, and it would not force the spread to zero. Values could sit far above and far below in equal numbers and still be widely spread."},
+        {t:"The mean of the column is zero",
+         fb:"Those are separate things. A column of two hundred values all equal to 47 has a mean of 47 and a standard deviation of zero."},
+        {t:"There has been an error in the calculation, because the standard deviation of a real column of data can never come out as exactly zero",
+         fb:"It can, and it does happen — a sensor that has failed and reports the same reading every time produces exactly this."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [0,1,2,1,3,1,2,3,0,0];
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+const BASE = [38,41,44,45,47,49];
+function statsOf(arr){
+  const n=arr.length, s=[...arr].sort((a,b)=>a-b);
+  const mean=arr.reduce((a,b)=>a+b,0)/n;
+  const med = n%2 ? s[(n-1)/2] : (s[n/2-1]+s[n/2])/2;
+  const sd = Math.sqrt(arr.reduce((a,b)=>a+(b-mean)**2,0)/(n-1));
+  return {mean, med, sd, rng: s[n-1]-s[0]};
+}
+function updateWidget(){
+  const v = +$("#sl").value;
+  const st = statsOf([...BASE, v]);
+  const base = statsOf([...BASE, 50]);
+  $("#slv").textContent = "₹"+v+"k";
+  $("#s_mean").textContent = st.mean.toFixed(1);
+  $("#s_med").textContent  = st.med.toFixed(1);
+  $("#s_rng").textContent  = st.rng.toFixed(0);
+  $("#s_sd").textContent   = st.sd.toFixed(1);
+  const dm = st.mean-base.mean, dmed = st.med-base.med;
+  $("#m_mean").textContent = dm>0.05 ? `moved +${dm.toFixed(1)}` : "\u00a0";
+  $("#m_med").textContent  = dmed>0.05 ? `moved +${dmed.toFixed(1)}` : (dm>0.05 ? "has not moved" : "\u00a0");
+  $("#dotplot").innerHTML = dotSVG([...BASE, v], st);
+}
+function dotSVG(data, st){
+  const W=640,H=132,L=26,R=26,BASELINE=88, xMax=410;
+  const sx=v=>L+(v/xMax)*(W-L-R);
+  let g="";
+  for(let v=0;v<=400;v+=100) g+=`<line x1="${sx(v)}" y1="30" x2="${sx(v)}" y2="${BASELINE}" stroke="#EDF2F0"/>`+
+    `<text x="${sx(v)}" y="${BASELINE+18}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  const dots = data.map(v=>`<circle cx="${sx(v).toFixed(1)}" cy="${BASELINE-10}" r="6" fill="#0F5B4F" opacity="0.55"/>`).join("");
+  const mk=(v,col,lab,dy)=>
+    `<line x1="${sx(v)}" y1="${dy}" x2="${sx(v)}" y2="${BASELINE}" stroke="${col}" stroke-width="2"/>`+
+    `<text x="${sx(v)}" y="${dy-4}" font-size="11" fill="${col}" text-anchor="middle" font-family="IBM Plex Mono">${lab} ${v.toFixed(1)}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Seven salaries on a number line with the mean and median marked">
+    ${g}<line x1="${L}" y1="${BASELINE}" x2="${W-R}" y2="${BASELINE}" stroke="#12312B"/>
+    ${dots}${mk(st.med,"#3C6E8F","median",44)}${mk(st.mean,"#A63A1E","mean",22)}
+    <text x="${W-R}" y="${H-4}" font-size="10.5" fill="#4A6862" text-anchor="end">salary, thousands of rupees</text>
+  </svg>`;
+}
+$("#sl").addEventListener("input", updateWidget);
+updateWidget();
+
+$("#spreadplot").innerHTML = (function(){
+  const W=640,H=190,L=44,R=20,xMax=90;
+  const sx=v=>L+(v/xMax)*(W-L-R);
+  const rows=[
+    {lab:"Tight", y:64,  col:"#0F5B4F", d:[46,48,49,50,50,51,52,54], sd:2.4},
+    {lab:"Broad", y:134, col:"#A63A1E", d:[22,32,41,48,52,59,68,78], sd:18.3}
+  ];
+  let g="";
+  for(let v=0;v<=90;v+=15) g+=`<line x1="${sx(v)}" y1="30" x2="${sx(v)}" y2="${H-32}" stroke="#EDF2F0"/>`+
+    `<text x="${sx(v)}" y="${H-14}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  let out="";
+  rows.forEach(r=>{
+    out+=`<text x="${L-8}" y="${r.y+4}" font-size="11.5" fill="${r.col}" text-anchor="end" font-weight="600">${r.lab}</text>`;
+    out+=`<line x1="${sx(Math.min(...r.d))}" y1="${r.y}" x2="${sx(Math.max(...r.d))}" y2="${r.y}" stroke="${r.col}" stroke-width="1.4" opacity="0.4"/>`;
+    out+=r.d.map(v=>`<circle cx="${sx(v).toFixed(1)}" cy="${r.y}" r="5.5" fill="${r.col}" opacity="0.6"/>`).join("");
+    out+=`<text x="${W-R}" y="${r.y-12}" font-size="11" fill="${r.col}" text-anchor="end" font-family="IBM Plex Mono">std dev ${r.sd}</text>`;
+  });
+  const mean=`<line x1="${sx(50)}" y1="30" x2="${sx(50)}" y2="${H-32}" stroke="#12312B" stroke-width="1.6" stroke-dasharray="4 3"/>`+
+    `<text x="${sx(50)}" y="24" font-size="11.5" fill="#12312B" text-anchor="middle" font-family="IBM Plex Mono">both mean 50</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Two sets of values sharing a mean of 50, one tightly clustered and one widely spread">${g}${mean}${out}</svg>`;
+})();
+
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card">
+    <h3>${i+1}. ${u.name}</h3>
+    <p>${u.what}</p>
+    <p>${u.how}</p>
+    <pre class="code">${esc(u.code)}</pre>
+    <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p>
+  </div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}">
+    <h3>${e.title}</h3>
+    <p>${e.body}</p>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+    <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p>
+  </div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card">
+    <h3>${p.title}</h3>
+    <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+    ${p.steps.map((s,si)=>`
+      <div class="step" id="st${pi}_${si}">
+        <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+        <div class="body"><p>${s.b}</p></div>
+      </div>`).join("")}
+    <div class="step" id="st${pi}_ans">
+      <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+      <div class="body"><div class="answerline"><b>${p.answer}</b></div></div>
+    </div>
+  </div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div>
+  </div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pct=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pct} percent.</p>
+      <p style="margin-bottom:0">${pct>=80
+        ? "That is a solid grasp of the material, and you are ready for the next concept, which builds directly on these six numbers."
+        : "Worth another pass through the Fundamentals tab, particularly the two groups of measures and the live slider, before moving on."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>

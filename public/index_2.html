@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 2 · Probability Distributions — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card.recall{border-left:4px solid var(--ok);background:var(--ok-dim)}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.card.recall .tagline{color:var(--ok)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:12px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{border-left:3px solid var(--saffron);background:var(--saffron-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#7A4E02;max-width:74ch}
+.later b{font-weight:600}
+.later::before{content:"COMING LATER";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:#A8720B;margin:0 0 3px}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+tr.deep td:first-child{border-left:3px solid var(--teal)}
+tr.brief td{color:var(--ink-soft)}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 9px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap;min-width:150px}
+input[type=range]{flex:1;min-width:170px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:64px;text-align:right}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.2rem;font-weight:600;line-height:1.25;color:var(--teal)}
+.stat.hi .v{color:var(--stop)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:14px;margin:0 0 18px}
+.gcard{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.gcard h4{margin:0 0 2px;font-size:.95rem}
+.gcard .shape{font-size:.78rem;color:var(--ink-soft);margin:0 0 8px}
+.gcard p{font-size:.89rem;margin:8px 0 0}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 2 of 8</p>
+    <h1>Probability Distributions</h1>
+    <p class="lede">Concept 1 described the data you already have. This one describes the data you might get — and it lets you answer a question no summary number can: how likely is that?</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">What a distribution is, the three you must know properly, and a brief look at the others you will meet by name.</p>
+
+  <div class="card recall">
+    <p class="tagline">From Concept 1</p>
+    <p style="margin-bottom:0">You need three things from the previous concept and nothing else: the <strong>mean</strong>, the <strong>standard deviation</strong>, and the idea that a standard deviation can be read as "the typical distance of a value from the mean". Those turn up constantly here. Everything else is new and is introduced as it appears.</p>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Probability</dt>
+      <dd>A number between 0 and 1 saying how likely something is. 0 means it never happens, 1 means it always happens, 0.5 means it happens half the time. A probability of 0.25 can also be written as 25 percent — they are the same thing.</dd>
+      <dt>Random variable</dt>
+      <dd>A quantity whose value is decided by chance: the number rolled on a die, tomorrow's rainfall in millimetres, how many customers walk in this hour. Before it happens you do not know the value; you only know which values are possible.</dd>
+      <dt>Probability distribution</dt>
+      <dd>A description of how likely each possible value of a random variable is. That is the whole idea. The rest of this concept is about the three or four shapes such a description usually takes.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h3>Why this is the natural next step</h3>
+    <p>In Concept 1 you took a column of numbers you already had and squeezed it into six summary figures. Useful — and it can only ever describe what has already happened.</p>
+    <p>A distribution does something different. It describes what <em>might</em> happen, which lets you answer questions the data cannot answer on its own:</p>
+    <ul class="plain">
+      <li>Heights average 165 cm with a standard deviation of 7. <strong>What fraction of people are taller than 175 cm?</strong></li>
+      <li>A call centre averages 4 calls an hour. <strong>What is the chance the next hour brings more than 5?</strong></li>
+      <li>A student guesses at 20 multiple-choice questions. <strong>What is the chance of passing by luck alone?</strong></li>
+    </ul>
+    <p style="margin-bottom:0">None of these is answered by a mean or a standard deviation. Each needs a model of how the values spread themselves out, which is exactly what a distribution provides.</p>
+  </div>
+
+  <h3>Two families: counted things and measured things</h3>
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Discrete</dt>
+      <dd>Values you can count, with nothing in between: 0, 1, 2, 3 customers. There is no such thing as 2.4 customers. Each separate value has its own probability, so a discrete distribution is drawn as a set of <strong>bars</strong>, one per value.</dd>
+      <dt>Continuous</dt>
+      <dd>Values on a sliding scale: height, weight, time, temperature. Between any two values there is always another. A continuous distribution is drawn as a smooth <strong>curve</strong>, and probability is the <strong>area underneath</strong> a section of it.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>Why an exact value has no probability when the scale is continuous</h4>
+    <p>Ask for the probability that somebody is exactly 170 centimetres tall — not 170.0001, not 169.9999, but exactly 170.000000… — and the answer is zero. There are infinitely many possible heights, and picking out one single point from infinitely many leaves you with nothing.</p>
+    <p style="margin-bottom:0">So questions about continuous quantities are always asked about <strong>ranges</strong>: what fraction are taller than 175, what fraction sit between 160 and 170. The area under the curve across that range is the answer. For counted things this problem does not arise — "exactly 3 customers" is a perfectly sensible question with a real answer.</p>
+  </div>
+
+  <h3>The distributions you will meet</h3>
+  <p>There are dozens. In practice a handful cover almost everything, and three of those cover most of it. The table below is the whole map: the first three are covered properly in this concept, the rest are here so that you recognise the name and the shape when you meet it.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Distribution</th><th>Type</th><th>What it models</th><th>Shape</th><th>Here</th></tr></thead>
+      <tbody>
+        <tr class="deep"><td class="mono"><strong>Normal</strong></td><td>Continuous</td><td>Measurements that cluster around a central value</td><td>Symmetric bell</td><td><strong>In depth</strong></td></tr>
+        <tr class="deep"><td class="mono"><strong>Binomial</strong></td><td>Discrete</td><td>How many successes in a fixed number of yes-or-no tries</td><td>Bars, often humped</td><td><strong>In depth</strong></td></tr>
+        <tr class="deep"><td class="mono"><strong>Poisson</strong></td><td>Discrete</td><td>How many events happen in a fixed window of time or space</td><td>Bars, leaning right</td><td><strong>In depth</strong></td></tr>
+        <tr class="brief"><td class="mono">Uniform</td><td>Either</td><td>Every outcome equally likely — a fair die, a random number</td><td>Flat</td><td>Name and shape only</td></tr>
+        <tr class="brief"><td class="mono">Exponential</td><td>Continuous</td><td>Waiting time until the next event happens</td><td>Highest at zero, falling away</td><td>Name and shape only</td></tr>
+        <tr class="brief"><td class="mono">Bernoulli</td><td>Discrete</td><td>A single yes-or-no try — the building block of the binomial</td><td>Two bars</td><td>Name and shape only</td></tr>
+        <tr class="brief"><td class="mono">t</td><td>Continuous</td><td>Used when working from small amounts of data</td><td>Bell, but flatter with fatter ends</td><td>Name and shape only</td></tr>
+        <tr class="brief"><td class="mono">Chi-square</td><td>Continuous</td><td>Used for questions about counts falling into categories</td><td>Lopsided, starts at zero</td><td>Name and shape only</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="later">
+    <b>The last two are tools rather than descriptions.</b> The t and chi-square distributions are not shapes you would expect a column of real data to take. They appear inside particular statistical procedures, and they will make sense only once you have met those procedures. Recognise the names and the shapes for now; the reasons come in a later concept.
+  </div>
+
+  <h3>The others, at a glance</h3>
+  <div class="gallery" id="gallery"></div>
+
+  <h3 style="margin-top:34px">1 · The normal distribution</h3>
+  <p>The famous bell curve, and the one that turns up most often. It describes measurements that cluster around a middle value, with fewer and fewer as you move away in either direction — heights, weights, measurement errors, marks on a well-set examination.</p>
+  <p>What makes it easy to work with is that it is <strong>completely described by two numbers you already know</strong>: the mean, which says where the peak sits, and the standard deviation, which says how wide the bell is. Nothing else. Give somebody those two numbers and they can redraw your curve exactly.</p>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">Move the two numbers and watch the curve</h4>
+    <div class="sliderow"><label for="nm">Mean</label><input type="range" id="nm" min="120" max="200" step="1" value="165"><span class="readout" id="nmv">165</span></div>
+    <div class="sliderow"><label for="ns">Standard deviation</label><input type="range" id="ns" min="2" max="20" step="0.5" value="7"><span class="readout" id="nsv">7</span></div>
+    <div class="sliderow"><label for="nx">Cut-off value</label><input type="range" id="nx" min="120" max="220" step="1" value="175"><span class="readout" id="nxv">175</span></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="normplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Below the cut-off</div><div class="v" id="n_below">—</div></div>
+      <div class="stat hi"><div class="l">Above the cut-off</div><div class="v" id="n_above">—</div></div>
+      <div class="stat"><div class="l">Within 1 std dev</div><div class="v">68%</div></div>
+      <div class="stat"><div class="l">Within 2 std dev</div><div class="v">95%</div></div>
+    </div>
+  </div>
+  <p class="legend">Raise the standard deviation and the bell flattens and widens — the same total area spread over more ground. Move the mean and the whole curve slides sideways without changing shape. Those are the only two things that can happen to a normal curve.</p>
+
+  <div class="card key">
+    <p class="tagline">★ The 68–95–99.7 rule</p>
+    <p>For any normal curve, whatever its mean and standard deviation:</p>
+    <ul class="plain">
+      <li><strong>68%</strong> of values lie within <strong>1 standard deviation</strong> of the mean</li>
+      <li><strong>95%</strong> lie within <strong>2 standard deviations</strong></li>
+      <li><strong>99.7%</strong> lie within <strong>3 standard deviations</strong></li>
+    </ul>
+    <p style="margin-bottom:0">This is what makes the standard deviation a universal ruler. It does not matter whether you are measuring heights in centimetres or marks out of 100 — "two standard deviations out" always means the same thing, and it always covers the same 95 percent. A value sitting more than three standard deviations from the mean happens only about 3 times in 1,000 by chance, which is why such a value is worth investigating.</p>
+  </div>
+
+  <h3>2 · The binomial distribution</h3>
+  <p>Where the normal describes a measurement, the binomial counts <strong>how many times something happened out of a fixed number of tries</strong>. How many heads in 10 coin flips. How many of 5,000 visitors clicked. How many of 200 manufactured parts were faulty.</p>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Trial</dt>
+      <dd>One try with exactly two possible outcomes. One coin flip, one visitor, one part off the production line.</dd>
+      <dt>Success</dt>
+      <dd>Whichever of the two outcomes you have decided to count. It carries no sense of "good" — if you are counting faulty parts, a faulty part is a success.</dd>
+      <dt>Independent</dt>
+      <dd>One trial's outcome tells you nothing about the next. A coin has no memory of the previous flip. This one matters more than it looks, and the check below explains why.</dd>
+      <dt>n and p</dt>
+      <dd>The two numbers that describe a binomial completely: <strong>n</strong> is how many trials, <strong>p</strong> is the probability of success on any one of them.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>The four checks</h4>
+    <p>A situation is binomial only when all four of these hold:</p>
+    <ol class="plain">
+      <li><strong>The number of trials is fixed and known in advance.</strong> You decided to flip 10 times before you started.</li>
+      <li><strong>Each trial is independent of the others.</strong></li>
+      <li><strong>Each trial has exactly two outcomes.</strong> Success or failure, with nothing in between.</li>
+      <li><strong>The probability p is the same for every trial.</strong> It does not drift as you go.</li>
+    </ol>
+    <p style="margin-bottom:0">Worth testing on a real case: drawing 5 cards from a deck <em>without</em> putting them back fails check 2, because every card removed changes the odds for the next draw. Put each card back before drawing again and it passes. That distinction is the whole of the independence check.</p>
+  </div>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">Move n and p and watch the bars</h4>
+    <div class="sliderow"><label for="bn">Number of trials, n</label><input type="range" id="bn" min="1" max="40" step="1" value="10"><span class="readout" id="bnv">10</span></div>
+    <div class="sliderow"><label for="bp">Probability each time, p</label><input type="range" id="bp" min="0.05" max="0.95" step="0.05" value="0.5"><span class="readout" id="bpv">0.50</span></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="binplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Expected successes, n × p</div><div class="v" id="b_mean">—</div></div>
+      <div class="stat hi"><div class="l">Most likely count</div><div class="v" id="b_mode">—</div></div>
+      <div class="stat"><div class="l">Chance of that count</div><div class="v" id="b_pmode">—</div></div>
+    </div>
+  </div>
+  <p class="legend">Set p to 0.5 and the bars are symmetric. Push p towards either end and they lean. Raise n and the whole picture starts to look remarkably like a bell — which is not a coincidence, and is the reason the normal curve turns up in so many places.</p>
+
+  <div class="card tip">
+    <p class="tagline">💡 The mean of a binomial is just n × p</p>
+    <p style="margin-bottom:0">Ten flips of a fair coin: 10 × 0.5 = 5 heads expected. Five thousand visitors with a 4 percent click rate: 5000 × 0.04 = 200 clicks expected. No calculation needed beyond a multiplication, and it is worth doing before anything else because it tells you roughly where the bars will sit.</p>
+  </div>
+
+  <h3>3 · The Poisson distribution</h3>
+  <p>The Poisson also counts things, but the situation is different in one crucial way: <strong>there is no fixed number of trials</strong>. You are counting events that happen over a window of time or space, at some known average rate.</p>
+  <p>Calls arriving at a helpdesk in an hour. Customers entering a shop in ten minutes. Typing errors on a page. Accidents at a junction in a month. In none of these is there a fixed n — you can count the calls that arrived, but there is no meaningful way to count the calls that did not.</p>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>λ (lambda)</dt>
+      <dd>The average number of events per window. It is the only number a Poisson distribution needs. If a helpdesk takes 4 calls an hour on average, then λ = 4 for a one-hour window — and λ = 8 if you widen the window to two hours.</dd>
+    </dl>
+  </div>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">Move the rate and watch the bars</h4>
+    <div class="sliderow"><label for="pl">Average per window, λ</label><input type="range" id="pl" min="0.5" max="16" step="0.5" value="4"><span class="readout" id="plv">4.0</span></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="poisplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Chance of none at all</div><div class="v" id="p_zero">—</div></div>
+      <div class="stat hi"><div class="l">Most likely count</div><div class="v" id="p_mode">—</div></div>
+      <div class="stat"><div class="l">Chance of twice the average or more</div><div class="v" id="p_dbl">—</div></div>
+    </div>
+  </div>
+  <p class="legend">At a small λ the bars pile up against zero and lean heavily to the right — with an average of 1 call an hour, a completely silent hour is common. As λ grows the lean straightens out and the shape becomes more symmetric, drifting towards a bell again.</p>
+
+  <div class="card key">
+    <p class="tagline">★ Choosing between the three</p>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Ask yourself</th><th>Then use</th><th>You need</th></tr></thead>
+        <tbody>
+          <tr><td>Is it a <strong>measurement</strong> on a sliding scale, clustering around a middle?</td><td class="mono">Normal</td><td>mean, standard deviation</td></tr>
+          <tr><td>Is it a <strong>count of successes out of a known number of tries</strong>?</td><td class="mono">Binomial</td><td>n, p</td></tr>
+          <tr><td>Is it a <strong>count of events in a window, with no number of tries</strong>?</td><td class="mono">Poisson</td><td>λ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>The same question asked three ways</h4>
+    <p>It helps to see how one setting produces all three:</p>
+    <ul class="plain">
+      <li>"How long did each customer spend in the shop?" — a measurement on a sliding scale, clustering around a middle. <strong>Normal.</strong></li>
+      <li>"Of the 200 customers who came in today, how many bought something?" — a fixed 200 tries, each a yes or a no. <strong>Binomial.</strong></li>
+      <li>"How many customers walked in between 3 and 4 o'clock?" — events in a window, with no fixed number of tries. <strong>Poisson.</strong></li>
+    </ul>
+    <p style="margin-bottom:0">The data is from one shop on one day. The distribution you reach for depends entirely on which question you are asking.</p>
+  </div>
+
+  <h3>Computing with distributions in Python</h3>
+  <p>Every distribution in the <code class="inl">scipy.stats</code> library offers the same three functions, so learning them once is enough:</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th class="mono">Function</th><th>The question it answers</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">.pmf(k)</td><td>For counted things: the chance of <strong>exactly</strong> k</td></tr>
+        <tr><td class="mono">.cdf(x)</td><td>The chance of <strong>x or below</strong></td>
+        </tr><tr><td class="mono">1 - .cdf(x)</td><td>The chance of <strong>above x</strong></td></tr>
+        <tr><td class="mono">.ppf(0.95)</td><td>Working backwards: <strong>which value</strong> has 95 percent below it</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <pre class="code"><span class="cm"># the three distributions, same interface each time</span>
+from scipy import stats
+
+<span class="cm"># normal: heights averaging 165 cm, standard deviation 7</span>
+print(stats.norm.cdf(180, 165, 7))          <span class="cm"># chance of being under 180</span>
+print(1 - stats.norm.cdf(175, 165, 7))      <span class="cm"># chance of being over 175</span>
+print(stats.norm.ppf(0.95, 165, 7))         <span class="cm"># the height 95% are below</span>
+
+<span class="cm"># binomial: 10 coin flips</span>
+print(stats.binom.pmf(6, 10, 0.5))          <span class="cm"># chance of exactly 6 heads</span>
+print(1 - stats.binom.cdf(7, 10, 0.5))      <span class="cm"># chance of 8 or more</span>
+
+<span class="cm"># poisson: 4 calls an hour on average</span>
+print(stats.poisson.pmf(2, 4))              <span class="cm"># chance of exactly 2 calls</span>
+print(1 - stats.poisson.cdf(5, 4))          <span class="cm"># chance of more than 5</span></pre>
+  <pre class="out">0.9839
+0.0766
+176.5
+0.2051
+0.0547
+0.1465
+0.2149</pre>
+
+  <div class="card tip">
+    <p class="tagline">💡 The commonest mistake with counted things</p>
+    <p style="margin-bottom:0">"8 or more" is <code class="inl">1 - cdf(7)</code>, not <code class="inl">1 - cdf(8)</code>. The <code class="inl">cdf</code> includes the value you give it, so <code class="inl">cdf(8)</code> already counts the 8 itself and subtracting it would leave you with "9 or more". Whenever you write one of these, say the phrase aloud and check which values it should include. For measurements on a sliding scale the problem does not arise, because a single exact value contributes no area.</p>
+  </div>
+
+  <div class="card">
+    <h3>Where the bell curve comes from</h3>
+    <p>You may have noticed something while moving the sliders. Raise n on the binomial and the bars start to look like a bell. Raise λ on the Poisson and the same thing happens. This is not a coincidence, and it is the reason the normal curve appears in places that have nothing obvious to do with bells.</p>
+    <p style="margin-bottom:0">There is a result that explains it, and it is one of the most useful facts in statistics. It concerns what happens when you average many values together, and it turns out to be the foundation on which several later concepts are built.</p>
+  </div>
+
+  <div class="later">
+    <b>The result behind it.</b> If you take many separate groups of values from almost any source at all — however lopsided or strange — and work out the mean of each group, those means arrange themselves into a normal curve. The rougher the original data, the more values each group needs, but it happens regardless of what the original values looked like. This is the reason the normal distribution deserves the attention it gets, and it is what makes the next few concepts possible. It has a name and a full treatment waiting in a later concept.
+  </div>
+
+  <div class="card">
+    <h3>What this concept deliberately leaves out</h3>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Idea</th><th>What it will add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Averaging many groups</strong></td><td>The formal reason the normal curve appears everywhere, and the rule of thumb for how many values a group needs</td></tr>
+          <tr><td><strong>Working from a sample</strong></td><td>How to say something about a whole population when you have only measured part of it</td></tr>
+          <tr><td><strong>Testing a claim</strong></td><td>Deciding whether a result is real or a coincidence — this is where the t and chi-square distributions earn their place</td></tr>
+          <tr><td><strong>Checking the fit</strong></td><td>How to tell whether a column of real data actually follows a normal curve rather than assuming it does</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">Six places where naming the right distribution turns a vague question into a number you can act on.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">Every one of these starts with the same move: <strong>decide what kind of thing you are counting or measuring</strong>, and the distribution follows from that. Measurement on a sliding scale, count out of a fixed number of tries, or count of events in a window. Get that right and the rest is one line of code; get it wrong and no amount of calculation will rescue the answer.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six situations where one of these three distributions decided something concrete.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Six problems covering all three distributions. Work each one out first, then open the steps to check the reasoning rather than only the answer.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions that come up repeatedly, each with an answer worth giving and a note on what is really being checked.</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions using only the ideas from this concept and the previous one. Read the feedback whether you are right or wrong.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  gallery:[
+    {name:"Uniform", shape:"Flat", kind:"uniform",
+     text:"Every outcome is equally likely. A fair six-sided die, or a random number generator asked for anything between 0 and 1. The flat top is the whole idea — no value is favoured over any other."},
+    {name:"Exponential", shape:"Highest at zero, falling away", kind:"expo",
+     text:"The waiting time until the next event. Short waits are commonest and long waits get steadily rarer. It is the natural partner of the Poisson: one counts the events, the other times the gaps between them."},
+    {name:"t", shape:"Bell, flatter with fatter ends", kind:"tdist",
+     text:"Looks like a normal curve that has been pressed down slightly, leaving more room at the two ends. It is used when you are working from a small amount of data, and the fatter ends are an admission that small amounts of data hold more surprises."},
+    {name:"Chi-square", shape:"Lopsided, starts at zero", kind:"chi",
+     text:"Never goes below zero, rises quickly and trails off to the right. It appears in questions about counts falling into categories — whether observed counts match what was expected."}
+  ],
+
+  uses:[
+    {
+      name:"Deciding whether a value is unusual",
+      what:"A machine part measures 20.7 mm where it should measure 20. A student scores 91 where the class averages 60. Is either of those worth investigating, or is it ordinary variation?",
+      how:"If the values follow a bell shape, the 68–95–99.7 rule answers it immediately. Work out how many standard deviations the value sits from the mean. Within 1 is entirely ordinary — two thirds of everything is in there. Beyond 2 puts it in the outer 5 percent. Beyond 3 puts it in the outer 0.3 percent, which happens about three times in a thousand and is worth a look.",
+      code:"mean, sd = 60, 12\nvalue = 91\n\nsteps = (value - mean) / sd\nprint('standard deviations from the mean:', round(steps, 2))\n# 2.58  -> beyond 2, inside 3: unusual but not extraordinary",
+      note:"The rule only holds for values that follow a bell shape. Applied to counted events with a strong lean, it gives the wrong answer — which is why naming the distribution comes first."
+    },
+    {
+      name:"Planning capacity and staffing",
+      what:"A helpdesk knows it averages 4 calls an hour. How many people should be on shift? Averaging 4 does not mean 4 arrive every hour.",
+      how:"This is a count of events in a window with no fixed number of tries, so it is Poisson. Staffing for the average leaves you overwhelmed roughly half the time. What you actually want is the chance of the busy hours: with λ = 4, more than 5 calls happens about 21 percent of the time, so one hour in five is busier than a staffing plan built on the average would handle.",
+      code:"from scipy import stats\n\nlam = 4\nprint('chance of a silent hour  ', round(stats.poisson.pmf(0, lam), 4))\nprint('chance of more than 5    ', round(1 - stats.poisson.cdf(5, lam), 4))\nprint('chance of more than 8    ', round(1 - stats.poisson.cdf(8, lam), 4))",
+      note:"The same calculation drives checkout lanes, hospital beds, server capacity and delivery fleets. It is one of the most directly useful things in this concept."
+    },
+    {
+      name:"Judging a change in a conversion rate",
+      what:"A website changes its checkout page. Before, 200 of 5,000 visitors bought something. After, 240 of 5,000 did. Is that a real improvement or ordinary fluctuation?",
+      how:"Each visitor is one try with two outcomes, and the number of tries is fixed and known — so this is binomial. If the true rate were unchanged at 4 percent, the binomial tells you how much the count would wobble from one batch of 5,000 to the next just by chance. If 240 sits well outside that ordinary wobble, something has changed.",
+      code:"from scipy import stats\n\nn, p = 5000, 0.04\nprint('expected buyers   ', n * p)\nprint('chance of 240+     ', round(1 - stats.binom.cdf(239, n, p), 4))\n# 200.0\n# 0.0026  -> 240 would be rare if nothing had changed",
+      note:"The formal machinery for settling this properly comes in a later concept. What the binomial gives you here is the thing that machinery is built on."
+    },
+    {
+      name:"Setting limits on a production line",
+      what:"A factory needs to know when to stop the line and check a machine, without stopping it every time a part is slightly off.",
+      how:"Measurements from a well-behaved machine follow a bell shape. Take the mean and standard deviation from a period when the machine was known to be working, then draw lines 3 standard deviations either side. Under normal running, a part falls outside those lines about 3 times in 1,000 — so when parts start landing outside them regularly, something has genuinely changed rather than being unlucky.",
+      code:"mean, sd = 20.0, 0.05      # from a known-good period\n\nlower, upper = mean - 3*sd, mean + 3*sd\nprint(f'stop the line outside {lower:.2f} to {upper:.2f} mm')\n# stop the line outside 19.85 to 20.15 mm",
+      note:"The whole method rests on 99.7 percent sitting within 3 standard deviations, which only holds for a bell shape. Checking that assumption before relying on it is part of the job."
+    },
+    {
+      name:"Creating test data",
+      what:"You need realistic data to test a program before the real data arrives, or to demonstrate a method to somebody.",
+      how:"Rather than typing numbers by hand, generate them from the distribution the real thing follows. Heights come from a normal, daily arrivals from a Poisson, conversions from a binomial. The result behaves like the real thing, which means your program meets the same awkward cases it will meet in production.",
+      code:"import numpy as np\nrng = np.random.default_rng(0)\n\nheights   = rng.normal(165, 7, 500)      # 500 heights\narrivals  = rng.poisson(4, 500)          # 500 hours of call counts\nbuyers    = rng.binomial(5000, 0.04, 100)  # 100 days of conversions\n\nprint(round(heights.mean(), 1), round(heights.std(), 1))\n# 165.2  6.9",
+      note:"Notice the check on the last line. Generated data should reproduce the mean and standard deviation you asked for — if it does not, something is wrong with how you called it."
+    },
+    {
+      name:"Choosing how to summarise a column",
+      what:"Before deciding whether the mean or the median is the honest summary of a column, it helps to know what shape the values take.",
+      how:"If the values follow a bell shape, the mean and median land in almost the same place and either will do. If the column is a count of rare events with a strong lean to one side, they come apart and the choice matters. Recognising the shape from the kind of quantity it is — a measurement, a count out of a fixed number, a count of events — tells you what to expect before you compute anything.",
+      code:"# a quick check: do the mean and median agree?\nprint(df['height'].mean(), df['height'].median())\n# 165.2  165.1   -> nearly identical, consistent with a bell shape\n\nprint(df['calls_per_hour'].mean(), df['calls_per_hour'].median())\n# 4.0  4.0  but with a long run of high values on the right",
+      note:"This links directly back to Concept 1. The gap between the mean and the median is a clue about shape, and the shape tells you which distribution is likely to be a good model."
+    }
+  ],
+
+  examples:[
+    {
+      title:"Staffing a helpdesk",
+      color:"var(--teal)", dist:"Poisson",
+      body:"A support desk records an average of 4 calls an hour. The manager plans staffing around that average and finds the team constantly overwhelmed at some hours and idle at others.",
+      numbers:"With λ = 4: a silent hour happens 1.8 percent of the time, and an hour with more than 5 calls happens 21.5 percent of the time. Roughly one hour in five is busier than the average suggests.",
+      lesson:"Planning around an average guarantees being under-resourced about half the time. The distribution tells you how often the busy hours come, which is the number staffing actually needs."
+    },
+    {
+      title:"Setting a passing bar on an examination",
+      color:"var(--blue)", dist:"Normal",
+      body:"An examination board wants to award distinctions to roughly the top 5 percent of candidates. Marks average 60 with a standard deviation of 12 and follow a bell shape closely.",
+      numbers:"The 95th mark sits at about 60 + 1.65 × 12 ≈ 80. Setting the bar at 80 awards a distinction to about 5 percent. Setting it at 84 — two standard deviations out — awards it to about 2.3 percent.",
+      lesson:"The board can choose the proportion it wants and read off the mark, rather than guessing at a round number and discovering afterwards how many qualified."
+    },
+    {
+      title:"Deciding how many seats to sell",
+      color:"var(--saffron)", dist:"Binomial",
+      body:"An airline knows that about 5 percent of passengers with a booking do not turn up. It sells 100 seats on a 96-seat aircraft, and needs to know how often that will go wrong.",
+      numbers:"With n = 100 and a 95 percent show-up rate, the expected number arriving is 95. The chance that more than 96 arrive — leaving somebody without a seat — works out at roughly 12 percent, which the airline must weigh against the revenue from the extra seats.",
+      lesson:"Each passenger is one try with two outcomes and the number of tries is fixed, which is exactly the binomial's situation. The airline is not guessing; it is trading a known probability against a known revenue."
+    },
+    {
+      title:"Knowing when a machine has drifted",
+      color:"var(--stop)", dist:"Normal",
+      body:"A component should measure 20 mm. When the machine is healthy, parts vary around that with a standard deviation of 0.05 mm and follow a bell shape.",
+      numbers:"99.7 percent of parts should fall between 19.85 and 20.15 mm. A single part outside that is unremarkable — it happens about 3 times in 1,000. Three parts outside it in one shift is not.",
+      lesson:"Without the distribution there is no way to tell an unlucky part from a failing machine. The 68–95–99.7 rule converts a vague worry into a threshold that can be printed on a chart."
+    },
+    {
+      title:"How many spare parts to stock",
+      color:"var(--teal)", dist:"Poisson",
+      body:"A workshop replaces a particular component about twice a month on average. Stocking two is obviously not enough, and stocking twenty ties up money in a shelf.",
+      numbers:"With λ = 2 a month, holding 4 spares covers about 95 percent of months and holding 5 covers about 98 percent. Going from 4 to 5 buys 3 percentage points; going from 5 to 8 buys almost nothing.",
+      lesson:"The distribution turns a stocking decision into a curve of diminishing returns, so the workshop can see exactly what each extra spare is buying."
+    },
+    {
+      title:"Sampling for quality",
+      color:"var(--blue)", dist:"Binomial",
+      body:"A buyer receives a consignment of 10,000 items and inspects 50 of them. If the consignment is 2 percent faulty, how likely is the inspection to find nothing wrong and pass a bad batch?",
+      numbers:"With n = 50 and p = 0.02, the expected number of faults found is 1. The chance of finding zero faults is about 36 percent — so more than a third of the time, a 2 percent faulty consignment passes inspection unnoticed.",
+      lesson:"The binomial exposes how weak a small inspection really is. Wanting to catch such a batch reliably means inspecting many more than 50, and the distribution says how many."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — Normal: reading three questions off one curve",
+      prompt:"Adult heights follow a bell shape with a mean of 165 cm and a standard deviation of 7 cm. Find (a) the fraction shorter than 180 cm, (b) the fraction taller than 175 cm, and (c) the height that 95 percent of people are below.",
+      steps:[
+        {h:"Recognise which distribution this is",
+         b:"Height is a measurement on a sliding scale, clustering around a middle value. That is the normal distribution, and the two numbers you need — the mean and the standard deviation — are both given.<br><br>Note that all three questions are about <em>ranges</em>, never about an exact height. That is forced on you: for a measurement on a sliding scale, any single exact value has no probability at all."},
+        {h:"(a) The fraction shorter than 180 cm",
+         b:"'Shorter than' means everything below, which is exactly what <code class='inl'>cdf</code> gives you.<br><br><code class='inl'>stats.norm.cdf(180, 165, 7) = 0.9839</code><br><br>So about <strong>98.4 percent</strong> of people are shorter than 180 cm. Sense-check it: 180 is more than two standard deviations above 165, and you already know 95 percent sit within two standard deviations either side — so a figure above 95 percent is exactly what you should expect."},
+        {h:"(b) The fraction taller than 175 cm",
+         b:"'Taller than' is everything the <code class='inl'>cdf</code> does not cover, so subtract it from 1.<br><br><code class='inl'>1 - stats.norm.cdf(175, 165, 7) = 0.0766</code><br><br>About <strong>7.7 percent</strong> are taller than 175 cm. Sense-check: 175 is a little under 1.5 standard deviations above the mean, so this should sit somewhere below the 16 percent that lies beyond one standard deviation. It does."},
+        {h:"(c) The height 95 percent are below",
+         b:"This one runs backwards — you are given the percentage and asked for the value, which is what <code class='inl'>ppf</code> is for.<br><br><code class='inl'>stats.norm.ppf(0.95, 165, 7) = 176.5</code><br><br>The tallest 5 percent of people start at about <strong>176.5 cm</strong>."},
+        {h:"Notice the pattern",
+         b:"Those three functions answer the only three shapes of question there are, and they work identically on every distribution:<br><br><code class='inl'>cdf</code> — what fraction is below this value<br><code class='inl'>1 - cdf</code> — what fraction is above this value<br><code class='inl'>ppf</code> — which value has this fraction below it<br><br>Learn them once here and you have them for the binomial and the Poisson too."}
+      ],
+      answer:"(a) 0.9839, about 98.4 percent. (b) 0.0766, about 7.7 percent. (c) 176.5 cm."
+    },
+    {
+      title:"Problem 2 — Normal: using the 68–95–99.7 rule without a computer",
+      prompt:"Marks on an examination average 60 with a standard deviation of 12 and follow a bell shape. (a) Between which two marks do about 95 percent of students fall? (b) Of 500 students, roughly how many scored above 84?",
+      steps:[
+        {h:"(a) Set up the two-standard-deviation range",
+         b:"The rule says 95 percent of values lie within 2 standard deviations of the mean, so work out what 2 standard deviations is and go that far either side.<br><br><code class='inl'>2 × 12 = 24</code><br><code class='inl'>60 − 24 = 36</code> and <code class='inl'>60 + 24 = 84</code><br><br>About 95 percent of students scored between <strong>36 and 84</strong>."},
+        {h:"(b) Work out where 84 sits",
+         b:"84 is the upper end of the range you just found, which means it sits exactly <strong>2 standard deviations above the mean</strong>.<br><br>If 95 percent lie <em>within</em> 2 standard deviations, then 5 percent lie outside — and because the bell is symmetric, that 5 percent is split evenly between the two ends. So about 2.5 percent sit above 84."},
+        {h:"Convert the percentage into students",
+         b:"<code class='inl'>2.5% of 500 = 0.025 × 500 = 12.5</code><br><br>So roughly <strong>12 or 13 students</strong> scored above 84."},
+        {h:"Check it against the exact figure",
+         b:"Running <code class='inl'>1 - stats.norm.cdf(84, 60, 12)</code> gives 0.0228, or 11.4 students.<br><br>The rule-of-thumb answer of 12.5 is close, and the small gap is because '95 percent' is a rounding — the exact figure for 2 standard deviations is 95.45 percent. For a quick mental estimate the rule is more than good enough, which is exactly what it is for."}
+      ],
+      answer:"(a) Between 36 and 84. (b) About 2.5 percent, so roughly 12 or 13 students out of 500. The exact figure is 11.4."
+    },
+    {
+      title:"Problem 3 — Binomial: is it binomial at all?",
+      prompt:"A fair coin is flipped 10 times. Find (a) the chance of exactly 6 heads, (b) the chance of 8 or more heads, and (c) the expected number of heads. Before any of that, confirm the four checks.",
+      steps:[
+        {h:"Run the four checks",
+         b:"<strong>Fixed number of tries?</strong> Yes — 10, decided in advance.<br><strong>Independent?</strong> Yes — a coin has no memory of the last flip.<br><strong>Two outcomes each time?</strong> Yes — heads or tails.<br><strong>Same probability every time?</strong> Yes — the coin is fair, so p = 0.5 throughout.<br><br>All four hold, so this is binomial with n = 10 and p = 0.5. Do this before reaching for a formula, every time."},
+        {h:"(c) Take the easy one first",
+         b:"The expected number of successes is just <code class='inl'>n × p</code>.<br><br><code class='inl'>10 × 0.5 = 5</code> heads<br><br>Doing this first is a habit worth forming — it tells you where the bars sit, so you can sense-check everything that follows."},
+        {h:"(a) The chance of exactly 6 heads",
+         b:"'Exactly' means a single value, which for counted things is <code class='inl'>pmf</code>.<br><br><code class='inl'>stats.binom.pmf(6, 10, 0.5) = 0.2051</code><br><br>About <strong>21 percent</strong>. Sense-check: 6 is one away from the expected 5, so it should be common but a little less likely than 5 itself. It is."},
+        {h:"(b) The chance of 8 or more heads",
+         b:"Here is where care is needed. 'Or more' means subtract from 1 — but subtract what?<br><br>You want 8, 9 and 10. So you must subtract everything up to and including <strong>7</strong>:<br><br><code class='inl'>1 - stats.binom.cdf(7, 10, 0.5) = 0.0547</code><br><br>About <strong>5.5 percent</strong>. Using <code class='inl'>cdf(8)</code> by mistake would have given you '9 or more' and an answer roughly half as large."},
+        {h:"Read the answers together",
+         b:"5 heads is the expectation, 6 happens about a fifth of the time, and 8 or more happens only about once in twenty attempts. That last figure is the interesting one — it says a run of 8 heads in 10 flips of a fair coin is uncommon but nothing like impossible, and would happen to somebody in a classroom of thirty fairly often."}
+      ],
+      answer:"(a) 0.2051, about 21 percent. (b) 0.0547, about 5.5 percent. (c) 5 heads."
+    },
+    {
+      title:"Problem 4 — Binomial: can you pass by guessing?",
+      prompt:"A test has 20 multiple-choice questions, each with 4 options, and a student answers entirely by guessing. Passing needs 10 correct. Find the chance of exactly 5 correct and the chance of passing, then say whether guessing is a strategy.",
+      steps:[
+        {h:"Identify n and p",
+         b:"20 questions, each answered independently, each with two outcomes as far as you care — right or wrong. With 4 options and pure guessing, the chance of getting any one right is <code class='inl'>1 ÷ 4 = 0.25</code>.<br><br>So n = 20 and p = 0.25."},
+        {h:"Find the expected score first",
+         b:"<code class='inl'>20 × 0.25 = 5</code> correct answers expected.<br><br>The pass mark is 10, which is double the expectation. Already you can see the answer is going to be small."},
+        {h:"The chance of exactly 5",
+         b:"<code class='inl'>stats.binom.pmf(5, 20, 0.25) = 0.2023</code><br><br>About <strong>20 percent</strong>. That is the single most likely score, and even it happens only a fifth of the time — a useful reminder that the expected value is where things centre, not where they land."},
+        {h:"The chance of passing",
+         b:"Passing means 10 or more, so subtract everything up to and including 9:<br><br><code class='inl'>1 - stats.binom.cdf(9, 20, 0.25) = 0.0139</code><br><br>About <strong>1.4 percent</strong>, or roughly 1 chance in 72."},
+        {h:"Answer the question that was asked",
+         b:"No, guessing is not a strategy. In a class of 70 students all guessing, you would expect about one to pass by luck — which is also a neat illustration of why a single surprising result in a large group is not surprising at all.<br><br>It also shows how quickly probability falls away from the expectation. The pass mark is only 5 marks above the expected score, and yet reaching it is a 1-in-72 event."}
+      ],
+      answer:"Exactly 5 correct: 0.2023, about 20 percent. Passing with 10 or more: 0.0139, about 1.4 percent — roughly 1 chance in 72."
+    },
+    {
+      title:"Problem 5 — Poisson: planning an hour on the helpdesk",
+      prompt:"A helpdesk receives 4 calls an hour on average. Find (a) the chance of a completely silent hour, (b) the chance of exactly 2 calls, and (c) the chance of more than 5. Then say what (c) means for staffing.",
+      steps:[
+        {h:"Why this is Poisson and not binomial",
+         b:"You are counting events in a window of time, and there is no fixed number of tries. You can count the calls that arrived; there is no way to count the calls that did not arrive. That absence of a fixed n is the signature of the Poisson.<br><br>One number describes it: λ = 4 calls per hour."},
+        {h:"(a) A completely silent hour",
+         b:"Exactly 0 calls, so use <code class='inl'>pmf</code> at 0.<br><br><code class='inl'>stats.poisson.pmf(0, 4) = 0.0183</code><br><br>About <strong>1.8 percent</strong> — roughly one hour in 55. Silence is possible but rare when you are averaging 4 an hour."},
+        {h:"(b) Exactly 2 calls",
+         b:"<code class='inl'>stats.poisson.pmf(2, 4) = 0.1465</code><br><br>About <strong>14.7 percent</strong>. Note that this is well below the chance of getting 3 or 4 — the bars peak around the average, and 2 sits below the peak."},
+        {h:"(c) More than 5 calls",
+         b:"'More than 5' means 6 and upwards, so subtract everything up to and including 5:<br><br><code class='inl'>1 - stats.poisson.cdf(5, 4) = 0.2149</code><br><br>About <strong>21.5 percent</strong>."},
+        {h:"What that means for staffing",
+         b:"Better than one hour in five brings more than 5 calls, even though the average is 4. A manager who staffs for 4 calls an hour is therefore under-resourced roughly 21 percent of the time — around one and a half hours in every working day.<br><br>This is the practical value of the distribution. The average alone tells you nothing about how often you will be overwhelmed, and 'how often' is what staffing decisions are actually made on."}
+      ],
+      answer:"(a) 0.0183, about 1.8 percent. (b) 0.1465, about 14.7 percent. (c) 0.2149, about 21.5 percent — so more than one hour in five is busier than the average suggests."
+    },
+    {
+      title:"Problem 6 — Choosing the right distribution",
+      prompt:"For each situation, name the distribution and the numbers you would need. (a) The time customers spend in a shop. (b) How many of 300 invited guests actually attend. (c) How many accidents occur at a junction next month. (d) The number showing when a fair die is rolled.",
+      steps:[
+        {h:"(a) Time spent in a shop",
+         b:"A measurement on a sliding scale — a customer can spend 12 minutes or 12.4 minutes. It clusters around some typical duration.<br><br><strong>Normal</strong>, needing the mean and the standard deviation.<br><br>A caution worth noting: time cannot be negative and shopping durations often lean to one side, so a bell shape is an approximation here rather than an exact truth. Checking that assumption is a later concept."},
+        {h:"(b) How many of 300 guests attend",
+         b:"A fixed number of tries — 300 invitations, decided in advance. Each guest either attends or does not. Assuming each decides independently with roughly the same probability, all four checks pass.<br><br><strong>Binomial</strong>, needing n = 300 and p, the probability any one guest attends."},
+        {h:"(c) Accidents at a junction next month",
+         b:"Events in a window of time, and there is no fixed number of tries — you cannot count the accidents that did not happen.<br><br><strong>Poisson</strong>, needing λ, the average number of accidents per month."},
+        {h:"(d) A fair die",
+         b:"Six outcomes, every one equally likely. No value is favoured over any other, so the picture is flat rather than humped.<br><br><strong>Uniform.</strong> This is one of the distributions covered by name only in this concept, and the flat shape is the whole of it."},
+        {h:"The question that decides it every time",
+         b:"Notice that you never needed a formula to choose. Three questions settle it:<br><br>Is it a <strong>measurement</strong> on a sliding scale? Normal.<br>Is it a <strong>count out of a fixed number of tries</strong>? Binomial.<br>Is it a <strong>count of events in a window</strong> with no fixed number of tries? Poisson.<br><br>And if every outcome is equally likely, it is uniform regardless."}
+      ],
+      answer:"(a) Normal — mean and standard deviation. (b) Binomial — n = 300 and p. (c) Poisson — λ per month. (d) Uniform — every outcome equally likely."
+    }
+  ],
+
+  interview:[
+    {
+      q:"What is a probability distribution, in one sentence?",
+      a:"A description of how likely each possible value of an uncertain quantity is.<br><br>It is worth adding the practical consequence: once you know the distribution and its handful of describing numbers, you can answer questions about values you have never observed. A summary of the data you collected can only describe what you collected; a distribution lets you say how likely something is that has not happened yet.",
+      probe:"An opening question to check you can define a term plainly. Rambling here is a bad sign; a clean sentence followed by why it is useful is the right shape of answer."
+    },
+    {
+      q:"What is the difference between a discrete and a continuous distribution?",
+      a:"Discrete describes things you count — 0, 1, 2, 3 customers — where nothing sits between the values. Each separate value has its own probability, and the picture is a set of bars.<br><br>Continuous describes things you measure on a sliding scale, where between any two values there is always another. The picture is a smooth curve and probability is the area under a section of it.<br><br>The consequence worth mentioning is that a continuous distribution gives probability zero to any single exact value, so continuous questions must always be about ranges.",
+      probe:"The bars-versus-curve answer is fine as far as it goes. Mentioning that exact values have no probability on a continuous scale is what shows you understand the difference rather than just remembering it."
+    },
+    {
+      q:"When would you use a binomial rather than a Poisson?",
+      a:"When there is a fixed, known number of tries. The binomial counts successes out of n attempts — 10 coin flips, 5,000 visitors, 200 manufactured parts. The Poisson counts events over a window of time or space where no such n exists: calls in an hour, accidents in a month, typing errors on a page.<br><br>A neat way to put it is that with a binomial you can count both the successes and the failures, while with a Poisson you can only count what happened. You can count the calls that came in; you cannot count the calls that did not.",
+      probe:"This is the question that most often separates people who have understood the two from people who have memorised two formulas. The 'you cannot count what did not happen' line is the one interviewers remember."
+    },
+    {
+      q:"What are the conditions for a situation to be binomial?",
+      a:"Four of them, and all must hold. A fixed number of trials known in advance; each trial independent of the others; exactly two outcomes per trial; and the same probability of success on every trial.<br><br>The one that fails most often in practice is independence. Drawing cards without replacing them breaks it, because each draw changes the odds for the next. So does anything where one outcome influences the next — customers who arrive together and all make the same decision, for instance.",
+      probe:"They want the four conditions and, ideally, an example of one failing. Naming independence as the fragile one shows you have thought about applying it rather than only reciting it."
+    },
+    {
+      q:"State the 68–95–99.7 rule and say what it is good for.",
+      a:"For a normal distribution, about 68 percent of values lie within 1 standard deviation of the mean, about 95 percent within 2, and about 99.7 percent within 3.<br><br>Its usefulness is that it holds whatever the mean and standard deviation happen to be, which makes the standard deviation a universal ruler. It lets you judge whether a value is unusual without any computation: work out how many standard deviations from the mean it sits, and beyond 2 puts it in the outer 5 percent while beyond 3 puts it in the outer 0.3 percent.<br><br>The caveat is that it only holds for a bell shape. Applied to a strongly lopsided quantity it gives the wrong answer.",
+      probe:"The three numbers are the easy half. Stating the caveat unprompted is what marks out somebody who would not misapply it."
+    },
+    {
+      q:"What two numbers completely describe a normal distribution?",
+      a:"The mean and the standard deviation. The mean says where the peak sits, and the standard deviation says how wide the bell is — and that is genuinely all of it. Two normal curves with the same pair of numbers are the same curve.<br><br>This is unusually convenient. Most descriptions of data lose information; here, if the values really do follow a bell shape, those two numbers lose nothing at all. It is also why the mean and standard deviation are so heavily used in practice.",
+      probe:"A short factual question, usually a warm-up. The observation that nothing is lost when the shape genuinely is normal is a good thing to add."
+    },
+    {
+      q:"You need the chance of 8 or more successes out of 10. How do you compute it, and where do people go wrong?",
+      a:"Subtract from 1 the chance of everything below 8 — that is <code>1 - cdf(7)</code>, not <code>1 - cdf(8)</code>.<br><br>The mistake happens because <code>cdf</code> includes the value you hand it. <code>cdf(8)</code> already counts the 8 itself, so subtracting it leaves you with '9 or more' and an answer roughly half the right size.<br><br>The habit that prevents it is saying the phrase out loud and listing which values should be included. It only bites on counted things — on a sliding scale a single exact value contributes no area, so the boundary does not matter.",
+      probe:"A very practical question. Getting the off-by-one right, and explaining why it does not arise for continuous quantities, is the complete answer."
+    },
+    {
+      q:"Why does the normal distribution appear so often?",
+      a:"Partly because many measurements genuinely do cluster around a middle with fewer values further out — heights, weights, measurement errors.<br><br>The deeper reason is that quantities built by averaging or adding up many separate contributions tend towards a bell shape regardless of what those contributions looked like individually. You can see a hint of it by raising n on a binomial or λ on a Poisson: both start to look like bells even though neither is one.<br><br>There is a formal result behind this that is covered in a later concept, and it is the foundation for a great deal of what follows.",
+      probe:"You are not expected to state the formal result at this stage. Recognising that it exists, and that it explains the pattern, is the answer being looked for."
+    },
+    {
+      q:"A shop averages 3 customers a minute. What is the chance of a minute with none, and why does the answer matter?",
+      a:"This is a count of events in a window with no fixed number of tries, so it is Poisson with λ = 3. The chance of zero works out at about 5 percent, or roughly one minute in 20.<br><br>It matters because averages hide exactly this. A manager told 'three customers a minute' pictures a steady stream, when in reality one minute in 20 is empty and some minutes bring seven or eight. Staffing, queue design and capacity planning all depend on how often the extremes come, not on the average.",
+      probe:"Half of this is recognising the distribution and half is explaining why the number is useful. Candidates who only produce the number have answered half the question."
+    },
+    {
+      q:"You have heard of the t and chi-square distributions. What are they for?",
+      a:"Both are tools that appear inside statistical procedures rather than shapes you would expect real data to take.<br><br>The t distribution looks like a normal curve that has been pressed down a little, leaving more room at the two ends. It is used when working from small amounts of data, and those fatter ends are an acknowledgement that small amounts of data hold more surprises.<br><br>The chi-square distribution never goes below zero, rises quickly and trails away to the right. It appears in questions about counts falling into categories — whether the counts you observed match what you expected.<br><br>Both belong properly to a later topic, and knowing the shape and the rough purpose is the right amount to know at this stage.",
+      probe:"Nobody expects depth here early in a course. Being honest about the boundary of what you know, while showing you can recognise both, is a far better answer than bluffing."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"Which of these situations is best modelled by a Poisson distribution?",
+      opts:[
+        {t:"The heights of 500 adults measured in a survey",
+         fb:"Height is a measurement on a sliding scale that clusters around a middle value, which is the normal distribution's territory rather than the Poisson's."},
+        {t:"The number of emails arriving in an inbox between 9 and 10 in the morning", ok:true,
+         fb:"Right. Events in a window of time, with no fixed number of tries — you can count the emails that arrived but not the emails that did not. That is exactly the Poisson's situation."},
+        {t:"The number of heads in 50 flips of a coin",
+         fb:"There is a fixed number of tries here — 50, known in advance — which makes it binomial rather than Poisson."},
+        {t:"The number showing when a fair six-sided die is rolled once, since each of the six faces is equally likely to come up",
+         fb:"Every outcome being equally likely makes this uniform. The Poisson counts events over a window and does not treat all counts as equally likely."}
+      ]
+    },
+    {
+      stem:"Marks follow a bell shape with a mean of 70 and a standard deviation of 8. Roughly what fraction of students scored between 54 and 86?",
+      opts:[
+        {t:"About 68 percent of them",
+         fb:"That is the fraction within 1 standard deviation, which would be 62 to 78. The range given here is wider than that."},
+        {t:"About 50 percent, since the range is centred on the mean and half the values always sit on either side of it",
+         fb:"The range is centred on the mean, and that tells you the answer is split evenly either side — not that it comes to half. How much it covers depends on how far out the ends are."},
+        {t:"About 99.7 percent",
+         fb:"That is the fraction within 3 standard deviations, which would be 46 to 94. The range here stops short of that."},
+        {t:"About 95 percent", ok:true,
+         fb:"Right. 54 is 2 standard deviations below 70 and 86 is 2 above, so this is exactly the middle 95 percent."}
+      ]
+    },
+    {
+      stem:"What does it mean that a continuous distribution gives probability zero to any single exact value?",
+      opts:[
+        {t:"That the value can never occur in practice",
+         fb:"Somebody does have a height, and that height is some exact number. The probability of picking that precise value out in advance is what is zero."},
+        {t:"That continuous distributions cannot be used for real measurements",
+         fb:"They are used for real measurements constantly. The point is only about how questions must be phrased."},
+        {t:"That questions about continuous quantities have to be asked about ranges rather than single points", ok:true,
+         fb:"Right. There are infinitely many possible values, so a single point carries no area under the curve. Ask instead what fraction lies above 175, or between 160 and 170."},
+        {t:"That the probability is so small it is rounded down to zero by the computer when the calculation is actually carried out",
+         fb:"It is exactly zero rather than a small number rounded down. Picking one point from infinitely many leaves nothing at all."}
+      ]
+    },
+    {
+      stem:"Which of the four binomial conditions is broken by drawing 5 cards from a deck without replacing them?",
+      opts:[
+        {t:"The number of trials is not fixed",
+         fb:"It is fixed — you decided to draw 5. That condition holds perfectly well."},
+        {t:"The trials are not independent, because each card removed changes the odds for the next draw", ok:true,
+         fb:"Right, and this is the condition that fails most often in practice. Replace each card before drawing again and all four conditions hold."},
+        {t:"There are more than two possible outcomes",
+         fb:"That depends on what you are counting. If you are counting aces, each draw is an ace or it is not, which is two outcomes."},
+        {t:"The probability of success cannot be worked out at all for a situation involving a deck of cards",
+         fb:"It can be worked out perfectly well for the first draw. The difficulty is that it changes for the second, which is the independence problem."}
+      ]
+    },
+    {
+      stem:"A helpdesk averages 6 calls an hour. Which is the correct way to find the chance of more than 8 calls in an hour?",
+      opts:[
+        {t:"stats.poisson.pmf(8, 6)",
+         fb:"That gives the chance of exactly 8 calls, not the chance of more than 8."},
+        {t:"1 - stats.poisson.cdf(8, 6)", ok:true,
+         fb:"Right. cdf(8) covers everything up to and including 8, so subtracting it from 1 leaves 9 and upwards — which is what 'more than 8' means."},
+        {t:"stats.poisson.cdf(8, 6) on its own",
+         fb:"That gives the chance of 8 or fewer, which is the opposite of what was asked."},
+        {t:"1 - stats.poisson.cdf(9, 6), because you want everything strictly above the value of 8 that was given in the question",
+         fb:"Careful with the boundary. cdf(9) already includes 9, so subtracting it would leave you with 10 and upwards."}
+      ]
+    },
+    {
+      stem:"A binomial has n = 400 and p = 0.15. What is the expected number of successes?",
+      opts:[
+        {t:"400, the number of trials",
+         fb:"That is how many tries there are, not how many are expected to succeed. Only a fraction of them will."},
+        {t:"60, which is n multiplied by p", ok:true,
+         fb:"Right: 400 × 0.15 = 60. Working this out first is a good habit, because it tells you roughly where the bars will sit before you compute anything else."},
+        {t:"0.15, the probability of success on any single trial",
+         fb:"That is the chance for one try. Across 400 tries the expected count is much larger."},
+        {t:"It cannot be determined without also knowing the standard deviation of the distribution and the shape it takes",
+         fb:"The expected count needs nothing but n and p. Those two numbers describe a binomial completely."}
+      ]
+    },
+    {
+      stem:"Why is the standard deviation described as a universal ruler for a bell-shaped distribution?",
+      opts:[
+        {t:"Because every bell-shaped distribution has the same standard deviation",
+         fb:"They have very different standard deviations — that is one of the two numbers that tells them apart."},
+        {t:"Because the standard deviation is always a whole number, which makes distances easy to count off",
+         fb:"It is very often not a whole number. Nothing about the rule depends on that."},
+        {t:"Because the fraction of values within 1, 2 or 3 standard deviations is always the same, whatever the mean and standard deviation happen to be", ok:true,
+         fb:"Right. Whether you are measuring heights in centimetres or marks out of 100, 'two standard deviations out' always covers the same 95 percent, which is what lets you compare across quite different quantities."},
+        {t:"Because the standard deviation can be computed for any column of numbers",
+         fb:"That is true and it is not the point. The rule is about the fixed fractions that always sit within 1, 2 and 3 standard deviations of the mean."}
+      ]
+    },
+    {
+      stem:"You raise n on a binomial from 10 to 200, keeping p at 0.4. What happens to the shape of the bars?",
+      opts:[
+        {t:"They become flatter, with every count roughly equally likely",
+         fb:"That would be a uniform shape. The binomial keeps a clear peak around n × p however large n gets."},
+        {t:"They lean further to one side as n grows",
+         fb:"The opposite happens. A binomial with p away from 0.5 leans most at small n, and straightens out as n grows."},
+        {t:"They begin to take on the shape of a bell curve", ok:true,
+         fb:"Right, and it is worth noticing rather than treating as a curiosity. It is a hint at the reason the normal distribution turns up so widely, which a later concept explains properly."},
+        {t:"They split into two separate peaks, one at each end of the range of possible counts",
+         fb:"A binomial always has a single peak. Two peaks would indicate something quite different is going on in the data."}
+      ]
+    },
+    {
+      stem:"Which distribution would you use for the waiting time until the next customer arrives?",
+      opts:[
+        {t:"Poisson, because it deals with customer arrivals",
+         fb:"The Poisson counts <em>how many</em> arrive in a window. The waiting time between arrivals is a different quantity, measured on a sliding scale."},
+        {t:"Binomial, since each moment either brings a customer or does not",
+         fb:"There is no fixed number of tries here, and time is not made of separate tries. The quantity you want is a measurement rather than a count."},
+        {t:"Normal, because waiting times cluster around an average value in the same way that most measurements do",
+         fb:"Waiting times do not cluster symmetrically around a middle — short waits are commonest and long waits trail away, which is a different shape entirely."},
+        {t:"Exponential, which is the natural partner of the Poisson distribution", ok:true,
+         fb:"Right. It is the natural partner of the Poisson: one counts the events in a window, the other measures the gaps between them. This concept covers it by name and shape only."}
+      ]
+    },
+    {
+      stem:"A student says the t distribution is used because real data often follows that shape. Is that right?",
+      opts:[
+        {t:"No — it is a tool that appears inside statistical procedures rather than a shape real data takes", ok:true,
+         fb:"Right. You would not expect a column of measurements to follow it. It appears when working from small amounts of data, and its fatter ends acknowledge that small amounts of data hold more surprises."},
+        {t:"Yes, and it is the commonest shape for measurements after the normal",
+         fb:"Real measurements that cluster around a middle are usually described with a normal curve. The t is not a competitor for that job."},
+        {t:"Yes, but only for data that has been collected from very large groups where the ordinary bell curve does not apply properly",
+         fb:"It is associated with <em>small</em> amounts of data rather than large. With plenty of data it becomes almost indistinguishable from a normal curve."},
+        {t:"No, because the t distribution is a discrete distribution",
+         fb:"It is continuous and drawn as a smooth curve. What makes the student wrong is its purpose, not its type."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [1,3,2,1,0,2,3,1,3,0];
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+/* ---------- maths ---------- */
+function erf(x){
+  const s=x<0?-1:1; x=Math.abs(x);
+  const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;
+  const t=1/(1+p*x), y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return s*y;
+}
+const ncdf=(x,m,s)=>0.5*(1+erf((x-m)/(s*Math.SQRT2)));
+const npdf=(x,m,s)=>Math.exp(-((x-m)**2)/(2*s*s))/(s*Math.sqrt(2*Math.PI));
+function binpmf(k,n,p){
+  let lg=0;
+  for(let i=1;i<=k;i++) lg += Math.log(n-k+i) - Math.log(i);
+  return Math.exp(lg + k*Math.log(p) + (n-k)*Math.log(1-p));
+}
+function poispmf(k,l){
+  let lg=-l + k*Math.log(l);
+  for(let i=1;i<=k;i++) lg -= Math.log(i);
+  return Math.exp(lg);
+}
+const pct = v => (v*100).toFixed(1)+"%";
+
+/* ---------- normal widget ---------- */
+function drawNormal(){
+  const m=+$("#nm").value, s=+$("#ns").value, x=+$("#nx").value;
+  $("#nmv").textContent=m; $("#nsv").textContent=s; $("#nxv").textContent=x;
+  const below=ncdf(x,m,s);
+  $("#n_below").textContent=pct(below);
+  $("#n_above").textContent=pct(1-below);
+  const W=640,H=250,L=44,R=20,T=18,BM=40;
+  const lo=110, hi=225;
+  const sx=v=>L+(v-lo)/(hi-lo)*(W-L-R);
+  const peak=npdf(m,m,s), sy=v=>H-BM-(v/(peak*1.12))*(H-BM-T);
+  let pts=[], shade=[];
+  for(let v=lo;v<=hi;v+=0.7){
+    pts.push(`${sx(v).toFixed(1)},${sy(npdf(v,m,s)).toFixed(1)}`);
+    if(v<=x) shade.push(`${sx(v).toFixed(1)},${sy(npdf(v,m,s)).toFixed(1)}`);
+  }
+  let g="";
+  for(let v=120;v<=220;v+=20) g+=`<text x="${sx(v)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  let bands="";
+  [[1,"#DFF0E7"],[2,"#EDF4F7"]].reverse().forEach(([k,col])=>{
+    bands+=`<rect x="${sx(m-k*s)}" y="${T}" width="${sx(m+k*s)-sx(m-k*s)}" height="${H-BM-T}" fill="${col}"/>`;
+  });
+  const area = shade.length>1
+    ? `<polygon points="${sx(lo).toFixed(1)},${H-BM} ${shade.join(" ")} ${sx(x).toFixed(1)},${H-BM}" fill="#0F5B4F" opacity="0.3"/>` : "";
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A normal curve with the area below the cut-off shaded">
+    ${bands}${g}${area}
+    <polyline points="${pts.join(" ")}" fill="none" stroke="#0F5B4F" stroke-width="2.2"/>
+    <line x1="${sx(m)}" y1="${sy(peak)}" x2="${sx(m)}" y2="${H-BM}" stroke="#12312B" stroke-dasharray="4 3"/>
+    <text x="${sx(m)}" y="${sy(peak)-6}" font-size="11" fill="#12312B" text-anchor="middle" font-family="IBM Plex Mono">mean ${m}</text>
+    <line x1="${sx(x)}" y1="${T}" x2="${sx(x)}" y2="${H-BM}" stroke="#A63A1E" stroke-width="2"/>
+    <text x="${sx(x)+6}" y="${T+13}" font-size="11" fill="#A63A1E" font-family="IBM Plex Mono">${x}</text>
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+  </svg>`;
+}
+function updNormal(){ $("#normplot").innerHTML = drawNormal(); }
+["nm","ns","nx"].forEach(id=>$("#"+id).addEventListener("input",updNormal));
+updNormal();
+
+/* ---------- binomial widget ---------- */
+function updBinom(){
+  const n=+$("#bn").value, p=+$("#bp").value;
+  $("#bnv").textContent=n; $("#bpv").textContent=p.toFixed(2);
+  const ys=Array.from({length:n+1},(_,k)=>binpmf(k,n,p));
+  const mx=Math.max(...ys), mode=ys.indexOf(mx);
+  $("#b_mean").textContent=(n*p).toFixed(1);
+  $("#b_mode").textContent=mode;
+  $("#b_pmode").textContent=pct(mx);
+  const W=640,H=230,L=44,R=18,T=18,BM=38;
+  const sx=k=>L+(k/n)*(W-L-R), sy=v=>H-BM-(v/(mx*1.15))*(H-BM-T);
+  const bw=Math.max(2,(W-L-R)/(n+1)*0.68);
+  let bars=ys.map((v,k)=>`<rect x="${(sx(k)-bw/2).toFixed(1)}" y="${sy(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(H-BM-sy(v)).toFixed(1)}" fill="${k===mode?"#A63A1E":"#0F5B4F"}" opacity="${k===mode?0.9:0.62}" rx="1.5"/>`).join("");
+  let g="";
+  const stepk=Math.max(1,Math.round(n/8));
+  for(let k=0;k<=n;k+=stepk) g+=`<text x="${sx(k)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${k}</text>`;
+  const meanline=`<line x1="${sx(n*p)}" y1="${T}" x2="${sx(n*p)}" y2="${H-BM}" stroke="#12312B" stroke-dasharray="4 3"/>`+
+    `<text x="${sx(n*p)}" y="${T+12}" font-size="10.5" fill="#12312B" text-anchor="middle" font-family="IBM Plex Mono">n×p = ${(n*p).toFixed(1)}</text>`;
+  $("#binplot").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Binomial bars for the current n and p">
+    ${g}${bars}${meanline}<line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <text x="${(W)/2}" y="${H-6}" font-size="11" fill="#4A6862" text-anchor="middle">number of successes</text></svg>`;
+}
+["bn","bp"].forEach(id=>$("#"+id).addEventListener("input",updBinom));
+updBinom();
+
+/* ---------- poisson widget ---------- */
+function updPois(){
+  const l=+$("#pl").value;
+  $("#plv").textContent=l.toFixed(1);
+  const kmax=Math.max(10, Math.ceil(l+4*Math.sqrt(l))+2);
+  const ys=Array.from({length:kmax+1},(_,k)=>poispmf(k,l));
+  const mx=Math.max(...ys), mode=ys.indexOf(mx);
+  $("#p_zero").textContent=pct(poispmf(0,l));
+  $("#p_mode").textContent=mode;
+  let dbl=0; for(let k=Math.ceil(2*l);k<=kmax;k++) dbl+=ys[k];
+  $("#p_dbl").textContent=pct(dbl);
+  const W=640,H=230,L=44,R=18,T=18,BM=38;
+  const sx=k=>L+(k/kmax)*(W-L-R), sy=v=>H-BM-(v/(mx*1.15))*(H-BM-T);
+  const bw=Math.max(2,(W-L-R)/(kmax+1)*0.68);
+  let bars=ys.map((v,k)=>`<rect x="${(sx(k)-bw/2).toFixed(1)}" y="${sy(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(H-BM-sy(v)).toFixed(1)}" fill="${k===mode?"#A63A1E":"#0F5B4F"}" opacity="${k===mode?0.9:0.62}" rx="1.5"/>`).join("");
+  let g="";
+  const stepk=Math.max(1,Math.round(kmax/8));
+  for(let k=0;k<=kmax;k+=stepk) g+=`<text x="${sx(k)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${k}</text>`;
+  const meanline=`<line x1="${sx(l)}" y1="${T}" x2="${sx(l)}" y2="${H-BM}" stroke="#12312B" stroke-dasharray="4 3"/>`+
+    `<text x="${sx(l)}" y="${T+12}" font-size="10.5" fill="#12312B" text-anchor="middle" font-family="IBM Plex Mono">λ = ${l.toFixed(1)}</text>`;
+  $("#poisplot").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Poisson bars for the current rate">
+    ${g}${bars}${meanline}<line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <text x="${(W)/2}" y="${H-6}" font-size="11" fill="#4A6862" text-anchor="middle">number of events in one window</text></svg>`;
+}
+$("#pl").addEventListener("input",updPois);
+updPois();
+
+/* ---------- gallery thumbnails ---------- */
+function thumb(kind){
+  const W=210,H=76,L=8,R=8,B=H-12,T=10;
+  const sx=t=>L+t*(W-L-R);
+  const sy=v=>B-v*(B-T);
+  let pts=[];
+  for(let i=0;i<=100;i++){
+    const t=i/100; let v;
+    if(kind==="uniform") v = (t>0.12 && t<0.88) ? 0.72 : 0.02;
+    else if(kind==="expo") v = Math.exp(-3.4*t);
+    else if(kind==="tdist") v = Math.exp(-(Math.pow((t-0.5)*4.2,2))/2)*0.86 + 0.09;
+    else v = (t<=0.02) ? 0.02 : Math.pow(t,1.6)*Math.exp(-4.6*t)*7.2;
+    pts.push(`${sx(t).toFixed(1)},${sy(Math.min(v,1)).toFixed(1)}`);
+  }
+  let extra="";
+  if(kind==="tdist"){
+    let np=[];
+    for(let i=0;i<=100;i++){const t=i/100; np.push(`${sx(t).toFixed(1)},${sy(Math.exp(-(Math.pow((t-0.5)*4.2,2))/2)).toFixed(1)}`);}
+    extra=`<polyline points="${np.join(" ")}" fill="none" stroke="#4A6862" stroke-width="1.2" stroke-dasharray="3 3"/>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of the ${kind} shape">
+    ${extra}<polyline points="${pts.join(" ")}" fill="none" stroke="#0F5B4F" stroke-width="2"/>
+    <line x1="${L}" y1="${B}" x2="${W-R}" y2="${B}" stroke="#12312B" stroke-width="1"/></svg>`;
+}
+$("#gallery").innerHTML = CONCEPT.gallery.map(g=>`
+  <div class="gcard">
+    <h4>${g.name}</h4>
+    <p class="shape">${g.shape}</p>
+    ${thumb(g.kind)}
+    <p>${g.text}</p>
+  </div>`).join("");
+
+/* ---------- content tabs ---------- */
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card">
+    <h3>${i+1}. ${u.name}</h3>
+    <p>${u.what}</p>
+    <p>${u.how}</p>
+    <pre class="code">${esc(u.code)}</pre>
+    <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p>
+  </div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}">
+    <h3>${e.title} <span style="font-size:.74rem;font-weight:600;background:${e.color};color:#fff;padding:2px 9px;border-radius:20px;vertical-align:middle;margin-left:6px">${e.dist}</span></h3>
+    <p>${e.body}</p>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+    <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p>
+  </div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card">
+    <h3>${p.title}</h3>
+    <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+    ${p.steps.map((s,si)=>`
+      <div class="step" id="st${pi}_${si}">
+        <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+        <div class="body"><p>${s.b}</p></div>
+      </div>`).join("")}
+    <div class="step" id="st${pi}_ans">
+      <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+      <div class="body"><div class="answerline"><b>${p.answer}</b></div></div>
+    </div>
+  </div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div>
+  </div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pct=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pct} percent.</p>
+      <p style="margin-bottom:0">${pct>=80
+        ? "A solid grasp of the three distributions. The next concept builds on them directly."
+        : "Worth another pass through the Fundamentals tab — particularly the table for choosing between the three, and the three sliders."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>

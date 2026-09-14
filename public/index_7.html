@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 7 · Correlation — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card.recall{border-left:4px solid var(--ok);background:var(--ok-dim)}
+.card.warn{border-left:4px solid var(--stop);background:#FDF3F0}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.card.recall .tagline{color:var(--ok)}
+.card.warn .tagline{color:var(--stop)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:12px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{border-left:3px solid var(--saffron);background:var(--saffron-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#7A4E02;max-width:74ch}
+.later b{font-weight:600}
+.later::before{content:"COMING NEXT";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:#A8720B;margin:0 0 3px}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.formula{font-family:"IBM Plex Mono",monospace;font-size:.98rem;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;text-align:center;margin:0 0 14px;overflow-x:auto}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap;min-width:158px}
+input[type=range]{flex:1;min-width:170px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:62px;text-align:right}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.14rem;font-weight:600;line-height:1.25;color:var(--teal)}
+.stat.hi .v{color:var(--stop)} .stat.bl .v{color:var(--blue)}
+.verdict{margin:12px 0 0;padding:11px 15px;border-radius:8px;font-size:.94rem}
+.verdict.rej{background:var(--stop-dim);color:#7E2C16;border-left:3px solid var(--stop)}
+.verdict.keep{background:var(--ok-dim);color:#16523E;border-left:3px solid var(--ok)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:14px;margin:0 0 18px}
+.gcard{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.gcard h4{margin:0 0 2px;font-size:.93rem}
+.gcard .rv{font-family:"IBM Plex Mono",monospace;font-size:.8rem;margin:0 0 8px;font-weight:600}
+.gcard p{font-size:.88rem;margin:8px 0 0}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btn.ghost{background:#fff;color:var(--teal);border:1px solid var(--teal)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+.hm{border-collapse:collapse;font-family:"IBM Plex Mono",monospace;font-size:.82rem}
+.hm td,.hm th{padding:8px 12px;text-align:center;border:1px solid #fff}
+.hm th{background:#F5F8F7;font-size:.76rem}
+.hm th.rowh{text-align:right;background:#F5F8F7}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 7 of 8</p>
+    <h1>Correlation</h1>
+    <p class="lede">One number for how strongly two quantities move together — and a careful account of the three things it cannot see, one of which is the most consequential mistake in all of data analysis.</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">What the correlation coefficient measures, what it misses, and why a scatter plot must always be looked at beside it.</p>
+
+  <div class="card recall">
+    <p class="tagline">From earlier concepts</p>
+    <p style="margin-bottom:0">The <strong>mean</strong> and <strong>standard deviation</strong> from Concept 1, since correlation is built from both. The idea of a <strong>far-out value</strong> and the <strong>IQR rule</strong> from Concept 6, because a single such point can change a correlation more than every other point combined. And the <strong>p-value</strong> from Concept 5, since software reports one alongside every correlation it computes.</p>
+  </div>
+
+  <h3>The question</h3>
+  <div class="card">
+    <p>Every concept up to Concept 6 described <strong>one quantity at a time</strong>. This is the first that takes <strong>two together</strong> and asks whether they move in step.</p>
+    <p style="margin-bottom:0">Do students who study more score higher? Do larger shops sell more? Do heavier cars use more fuel? You can see the answer in a scatter plot, and correlation reduces what you see to a single number so that it can be compared, ranked and reported.</p>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Scatter plot</dt>
+      <dd>One dot per observation, positioned by its two quantities — hours studied along the bottom, marks up the side. The picture that every correlation should be read beside.</dd>
+      <dt>Correlation coefficient, r</dt>
+      <dd>A single number between <strong>−1 and +1</strong> summarising how closely the dots follow a straight line. The <strong>sign</strong> gives the direction and the <strong>size</strong> gives the strength.</dd>
+    </dl>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th class="mono">r</th><th>What it means</th><th>What the scatter looks like</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">+1</td><td>Perfect positive</td><td>Every dot exactly on an upward line</td></tr>
+        <tr><td class="mono">+0.7 to +0.9</td><td>Strong positive</td><td>A clear upward band</td></tr>
+        <tr><td class="mono">+0.3 to +0.5</td><td>Weak positive</td><td>A cloud that tilts upward</td></tr>
+        <tr><td class="mono">0</td><td>No straight-line relationship</td><td>A shapeless cloud — <em>or</em> a curve, which is the catch</td></tr>
+        <tr><td class="mono">−0.7</td><td>Strong negative</td><td>A clear downward band</td></tr>
+        <tr><td class="mono">−1</td><td>Perfect negative</td><td>Every dot exactly on a downward line</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card tip">
+    <p class="tagline">💡 The bands are conventions, not laws</p>
+    <p style="margin-bottom:0">What counts as "strong" depends entirely on the field. An r of 0.6 between two physical measurements would suggest something is wrong with the instrument; an r of 0.3 between a personality measure and job performance is a substantial finding. Judge r against what is normal for the kind of data, never against a fixed table.</p>
+  </div>
+
+  <h3>See what each value looks like</h3>
+  <p>The single most useful thing you can do with this concept is build an eye for what a given r looks like. Move the slider and watch the cloud tighten and tilt.</p>
+
+  <div class="livebox">
+    <div class="sliderow">
+      <label for="rs">Correlation r</label>
+      <input type="range" id="rs" min="-100" max="100" step="1" value="70">
+      <span class="readout" id="rsv">+0.70</span>
+    </div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="rplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Correlation r</div><div class="v" id="r_val">—</div></div>
+      <div class="stat bl"><div class="l">r squared</div><div class="v" id="r_sq">—</div></div>
+      <div class="stat hi"><div class="l">Strength</div><div class="v" id="r_word" style="font-size:.95rem">—</div></div>
+    </div>
+  </div>
+  <p class="legend">Notice how much scatter survives even at r = 0.7. People routinely overestimate what a given correlation looks like, and the gap between r = 0.5 and r = 0.9 is far larger than the numbers suggest.</p>
+
+  <h3>How r is computed</h3>
+  <p>You will always use software, and the formula is worth seeing once because it explains the properties.</p>
+  <div class="formula">r = [ n·Σxy − Σx·Σy ] ÷ √( [n·Σx² − (Σx)²] × [n·Σy² − (Σy)²] )</div>
+
+  <div class="card">
+    <h4>What the formula tells you about r</h4>
+    <ul class="plain" style="margin-bottom:0">
+      <li><strong>It has no units.</strong> The units cancel between the top and the bottom, so r is comparable across quantities measured in completely different things — rupees against hours, kilograms against years.</li>
+      <li><strong>It is symmetric.</strong> Swap x and y and r is unchanged. This is a real difference from the line-fitting of Concept 8, where the choice matters.</li>
+      <li><strong>Changing units does not change it.</strong> Convert marks out of 100 to marks out of 50, or rupees to lakhs, and r stays exactly the same.</li>
+      <li><strong>It uses every value.</strong> Which, as in Concept 1, is what makes it vulnerable to a single far-out point.</li>
+    </ul>
+  </div>
+
+  <pre class="code"><span class="cm"># twenty students: hours studied and marks obtained</span>
+import numpy as np
+from scipy import stats
+
+hours = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                  2, 4, 6, 8, 3, 5, 7, 9, 1, 10])
+marks = np.array([38, 52, 57, 53, 60, 65, 77, 80, 90, 81,
+                  53, 55, 72, 79, 48, 65, 79, 85, 37, 96])
+
+r, p = stats.pearsonr(hours, marks)
+print(f"r = {r:.3f}   p = {p:.2e}")</pre>
+  <pre class="out">r = 0.965   p = 7.07e-12</pre>
+  <p>An r of 0.965 is a very strong positive relationship — more study, higher marks. The tiny p-value says a relationship this strong would almost never arise by chance if the two were unrelated, which is the hypothesis test from Concept 5 applied to a correlation.</p>
+
+  <div class="card tip">
+    <p class="tagline">💡 With enough data, almost everything is "significant"</p>
+    <p style="margin-bottom:0">A p-value tells you whether a correlation is distinguishable from zero, not whether it is worth caring about. With 100,000 rows, an r of 0.02 comes out highly significant — and 0.02 is a shapeless cloud. Read the size of r for importance and the p-value only for whether it might be nothing at all.</p>
+  </div>
+
+  <h3>The first thing r cannot see: a curve</h3>
+  <p>This is the trap that catches people who never plot their data.</p>
+
+  <div class="card warn">
+    <p class="tagline">r measures straight lines only</p>
+    <p>Take eleven points that lie on a perfect arch — yield rising with rainfall up to a point, then falling as the crop is waterlogged. Compute r and you get <strong>0.00</strong>.</p>
+    <p style="margin-bottom:0">Not "weak". Not "unclear". <strong>Exactly zero</strong>, from a relationship so strong that every point sits precisely on the curve. r asks one question — how well does a <em>straight line</em> fit — and a symmetric arch answers "not at all", because the rise on the left cancels the fall on the right.</p>
+  </div>
+
+  <h3>Four scatters where r misleads</h3>
+  <p>Each of these has a correlation that would be badly misread by anyone who saw only the number.</p>
+  <div class="gallery" id="gallery"></div>
+
+  <div class="card key">
+    <p class="tagline">★ The rule that follows from all four</p>
+    <p style="margin-bottom:0"><strong>Never report a correlation you have not plotted.</strong> It takes one line of code, and it is the only defence against every failure above. A correlation coefficient is a summary, and like every summary in this course it discards information — here, the entire shape of the relationship.</p>
+  </div>
+
+  <h3>The second thing r cannot see: one far-out point</h3>
+  <p>Concept 6 gave you the rules for spotting an unusual value. Here is why it mattered.</p>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">Eight ordinary points, and one you control</h4>
+    <p style="font-size:.9rem;color:var(--ink-soft);margin:0 0 12px">The eight teal points never move and have a weak correlation of 0.58 among themselves. Drag the red point around and watch r.</p>
+    <div class="sliderow"><label for="ox">Red point across</label><input type="range" id="ox" min="10" max="200" step="2" value="45"><span class="readout" id="oxv">4.5</span></div>
+    <div class="sliderow"><label for="oy">Red point up</label><input type="range" id="oy" min="0" max="280" step="2" value="55"><span class="readout" id="oyv">5.5</span></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="outplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">r without the red point</div><div class="v">+0.58</div></div>
+      <div class="stat hi"><div class="l">r with it</div><div class="v" id="o_r">—</div></div>
+      <div class="stat bl"><div class="l">Change</div><div class="v" id="o_d">—</div></div>
+    </div>
+    <div id="o_verdict"></div>
+  </div>
+  <p class="legend">Push the red point to the top right and r climbs above 0.9 — one observation manufacturing a strong correlation out of eight weakly related ones. Push it to the bottom right and r goes negative. A single point, out of nine, deciding the answer entirely.</p>
+
+  <div class="card">
+    <h4>What to do about it</h4>
+    <p style="margin-bottom:0">Compute r with and without the suspect point and compare. If the two differ substantially, one observation is driving your conclusion and that fact belongs in your report — whether or not you keep the point. This is the same refit-and-compare habit that Concept 6 recommended, applied to a pair of quantities instead of one.</p>
+  </div>
+
+  <h3>When the relationship bends but never turns back</h3>
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Spearman's correlation</dt>
+      <dd>The same calculation applied to the <strong>ranks</strong> rather than the values. Replace the smallest x by 1, the next by 2, and so on; do the same for y; then compute r on those ranks. It measures whether the two move together <em>in the same direction</em>, without requiring the relationship to be a straight line.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>Why it helps</h4>
+    <p>Take y = x³ over ten points. The relationship is perfect — every increase in x produces an increase in y — but it curves sharply upward, so the ordinary correlation comes to <strong>0.928</strong> rather than 1.</p>
+    <p style="margin-bottom:0">Spearman's version gives <strong>1.000</strong>, because in rank terms the relationship really is perfect: the largest x goes with the largest y, the second largest with the second largest, all the way down. Working on ranks also makes it far less disturbed by a single far-out value, since an extreme point becomes merely the highest rank rather than an extreme number.</p>
+  </div>
+
+  <pre class="code">r, p_r   = stats.pearsonr(hours, marks)
+rho, p_s = stats.spearmanr(hours, marks)
+
+print(f"ordinary (Pearson)  = {r:.3f}")
+print(f"on ranks (Spearman) = {rho:.3f}")</pre>
+  <pre class="out">ordinary (Pearson)  = 0.965
+on ranks (Spearman) = 0.973</pre>
+  <p style="margin-bottom:0">The two agree closely, and that agreement is itself informative — it says the relationship really is close to a straight line. When they disagree sharply, the relationship curves or a far-out point is at work, and the scatter plot will show which.</p>
+
+  <h3>The third thing r cannot see: why</h3>
+
+  <div class="card warn">
+    <p class="tagline">Correlation is not causation</p>
+    <p>This deserves its own heading because it is the most consequential mistake in all of data analysis, and it is made constantly by people who know the slogan perfectly well.</p>
+    <p style="margin-bottom:0">Two quantities can move together for four quite different reasons, and <strong>r is identical in all four cases</strong>. The number cannot tell them apart, and no amount of statistical sophistication applied to the same data will separate them.</p>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Reason</th><th>Example</th><th>How you would find out</th></tr></thead>
+      <tbody>
+        <tr><td><strong>x really does cause y</strong></td><td>Fertiliser raises crop yield</td><td>Assign fertiliser at random to some plots and not others</td></tr>
+        <tr><td><strong>y causes x</strong> — the arrow runs backwards</td><td>Students who find a subject easy enjoy it, so they study it more</td><td>Measure which came first, or intervene on one</td></tr>
+        <tr><td><strong>Something else causes both</strong></td><td>Hot weather raises both ice-cream sales and drownings</td><td>Look for the third quantity and measure it too</td></tr>
+        <tr><td><strong>Pure coincidence</strong></td><td>Two unrelated things that both happen to rise over time</td><td>Check whether it holds on fresh data</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Confounder</dt>
+      <dd>A third quantity that influences both of the ones you measured, creating a correlation between them that has nothing to do with either causing the other. Summer heat is the confounder behind ice cream and drownings — it independently drives both.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>Three that are worth remembering</h4>
+    <ul class="plain" style="margin-bottom:12px">
+      <li><strong>Ice cream and drownings</strong> rise and fall together across the year, at around r = 0.9. Banning ice cream would not save a single swimmer — hot weather sends people both to the beach and to the ice-cream shop.</li>
+      <li><strong>Children with bigger feet read better.</strong> Perfectly true, and the confounder is age. Older children have bigger feet and have been reading longer.</li>
+      <li><strong>Countries eating more chocolate win more Nobel prizes.</strong> A genuine correlation, and national wealth drives both. Chocolate consumption is a marker of a rich country, and rich countries fund more research.</li>
+    </ul>
+    <p style="margin-bottom:0">In every case the correlation is real and the causal reading is nonsense. That is the point — <strong>the data is not wrong, the interpretation is</strong>.</p>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ What correlation is actually for</p>
+    <p style="margin-bottom:0">It tells you <strong>where to look</strong>, not what is true. A strong correlation is a reason to investigate, design an experiment, or search for a confounder. Establishing cause requires something the data alone cannot supply — usually random assignment, where you decide who gets the treatment rather than letting people choose.</p>
+  </div>
+
+  <h3>Correlation across many columns at once</h3>
+  <p>With ten columns there are forty-five pairs, and computing them one at a time is impractical. One call produces the lot.</p>
+  <pre class="code">print(df[['hours', 'attendance', 'previous_marks', 'final_marks']]
+        .corr().round(2))</pre>
+  <div class="tablewrap" style="max-width:520px">
+    <table class="hm" id="heat"></table>
+  </div>
+  <p class="legend">Read down the final column: previous marks correlate most strongly with the final result, then hours, then attendance. The diagonal is always 1 — every column correlates perfectly with itself — and the table is symmetric, so only half of it carries information.</p>
+
+  <div class="card tip">
+    <p class="tagline">💡 Two cautions when scanning a table like this</p>
+    <p style="margin-bottom:0">First, every entry is an ordinary correlation and inherits every weakness above, so a curved relationship or a far-out point can appear anywhere in it. Second, scanning forty-five pairs and reporting the strongest is the many-tests problem from Concept 5 — with enough pairs, something will look impressive by chance. Treat a strong entry as a candidate to plot and investigate, not as a finding.</p>
+  </div>
+
+  <div class="later">
+    <b>Where this goes next.</b> Correlation says two quantities are related and stops there. The next concept fits a <strong>line</strong> through the scatter so you can predict one from the other, and it turns out the two are closely connected — the goodness-of-fit measure reported there is exactly <strong>r squared</strong>. The r of 0.965 above squares to 0.931, which is precisely what the fitted line achieves.
+  </div>
+
+  <div class="card">
+    <h3>What this concept deliberately leaves out</h3>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Idea</th><th>What it will add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fitting a line</strong></td><td>Turning a relationship into a prediction, with a slope in real units rather than a unitless number</td></tr>
+          <tr><td><strong>Holding a third quantity steady</strong></td><td>Measuring how x and y relate once a suspected confounder is accounted for</td></tr>
+          <tr><td><strong>Correlation between categories</strong></td><td>Measures for quantities that are labels rather than numbers</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">Six uses, from the routine first look to the problem correlation causes inside models.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">Correlation is a <strong>screening tool</strong>. It is fast, it works on every numeric pair at once, and it points at things worth examining. It is not evidence of anything on its own — every use below ends with plotting the pair, checking for a far-out point, or asking what else might explain it.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six cases. Four are famous mistakes, and they are famous because the mistake is so easy to make.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Six problems. The first computes r by hand; most of the rest are about refusing to overclaim, which is where the marks are.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions. "Correlation is not causation" is asked constantly, and reciting the slogan is not the same as answering it.</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions using this concept and the six before it.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  gallery:[
+    {t:"A perfect arch", r:"r = 0.00", col:"var(--stop)", kind:"arch",
+     p:"Yield against rainfall. The relationship could not be stronger — every point sits exactly on the curve — and r is exactly zero, because the rise on the left cancels the fall on the right."},
+    {t:"Driven by one point", r:"r = 0.94", col:"var(--stop)", kind:"lever",
+     p:"Eight points with almost no relationship, plus one far out to the top right. That single observation produces the entire correlation. Remove it and r falls to 0.58."},
+    {t:"Two separate groups", r:"r = 0.00", col:"var(--saffron)", kind:"groups",
+     p:"Within each group there is a clear upward relationship. Pooled, the two groups sit at different levels and cancel out. The correlation describes neither group."},
+    {t:"Ruined by one point", r:"r = 0.40", col:"var(--saffron)", kind:"break",
+     p:"Eight points on a perfect line, and one that breaks the pattern. A relationship with r = 1.00 is reported as a weak 0.40 because of a single observation."}
+  ],
+
+  uses:[
+    {
+      name:"The first look at a new dataset",
+      what:"Forty columns arrive and you need to know which pairs are worth attention. Examining 780 pairs by hand is not an option.",
+      how:"One call gives every pairwise correlation. Scan the column for the quantity you care about, note the handful of strong entries, and plot those. It is a way of deciding where to spend the next hour, not a set of findings.",
+      code:"corr = df.corr(numeric_only=True)\n\n# what correlates with the outcome, strongest first\nprint(corr['final_marks'].drop('final_marks')\n         .sort_values(key=abs, ascending=False)\n         .round(2).head(8))",
+      note:"Sort by absolute value so strong negative relationships are not buried at the bottom. A correlation of −0.7 is just as interesting as +0.7."
+    },
+    {
+      name:"Finding columns that duplicate each other",
+      what:"Two columns with a correlation near 1 are carrying almost the same information, which causes real trouble in a model.",
+      how:"Height in centimetres and height in inches would correlate at exactly 1. Less obviously, total price and price-before-tax might correlate at 0.99. When two predictors move together this closely, a model cannot tell which of them is doing the work, and the individual coefficients become unstable and uninterpretable — a small change in the data can swing them wildly.",
+      code:"corr = df.corr(numeric_only=True).abs()\n\n# find pairs above 0.95, ignoring the diagonal\nimport numpy as np\nupper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(bool))\npairs = upper.stack().sort_values(ascending=False)\nprint(pairs[pairs > 0.95])",
+      note:"The usual fix is to keep one of the pair and drop the other, or combine them. Which one to keep is a judgement about which is easier to collect and to explain."
+    },
+    {
+      name:"Sanity-checking data you have just received",
+      what:"Some correlations are guaranteed by how the world works. When they are absent, something is wrong with the data rather than with the world.",
+      how:"Height and weight should correlate positively in any human dataset. Order quantity and order value should correlate strongly. If they do not, suspect a join that matched the wrong rows, a column that has been shifted, or units that vary between rows. This catches serious errors in seconds.",
+      code:"checks = [('height', 'weight', 'positive'),\n          ('quantity', 'order_value', 'positive'),\n          ('age', 'years_to_retirement', 'negative')]\n\nfor a, b, expected in checks:\n    r = df[a].corr(df[b])\n    print(f'{a} vs {b}: {r:+.2f}  (expected {expected})')",
+      note:"A correlation that is surprisingly close to exactly 1 is also worth checking. It often means the same information has arrived twice under two names."
+    },
+    {
+      name:"Choosing which quantity to build a model on",
+      what:"Several columns could be used to predict an outcome, and you want to know which is most promising before investing effort.",
+      how:"Rank the candidates by their correlation with the outcome and start with the strongest. It is a reasonable first pass and it has two blind spots worth knowing: a column with a curved relationship will be ranked far too low, and a column that is useless alone can be valuable in combination with others.",
+      code:"target = 'final_marks'\nranked = (df.corr(numeric_only=True)[target]\n            .drop(target).sort_values(key=abs, ascending=False))\nprint(ranked.round(3))\n\n# check the top candidates for curves before trusting the ranking\nfor col in ranked.index[:3]:\n    df.plot.scatter(x=col, y=target)",
+      note:"Note the second loop. Ranking by correlation and never plotting is how a strong curved relationship gets discarded as uninteresting."
+    },
+    {
+      name:"Checking whether two measures agree",
+      what:"Two raters score the same essays, or two instruments measure the same samples. Do they agree?",
+      how:"Correlate them. A high correlation says they rank the items the same way, which is often what matters for a grading scheme. Be careful about what it does not say: two raters could correlate at 0.98 while one marks consistently ten points higher than the other. Correlation is blind to a constant offset, because it is unaffected by shifting either quantity.",
+      code:"r = df['rater_a'].corr(df['rater_b'])\nprint(f'correlation: {r:.3f}')\n\n# correlation cannot see a systematic offset -- check it separately\nprint(f'mean difference: {(df[\"rater_a\"] - df[\"rater_b\"]).mean():+.2f}')",
+      note:"This blindness to offsets is why measurement agreement is usually assessed with a plot of the differences rather than with correlation alone."
+    },
+    {
+      name:"Generating hypotheses to test properly",
+      what:"A strong unexpected correlation appears. What is it good for?",
+      how:"As a question, not an answer. The correct next steps are to plot the pair, check whether one point is driving it, think hard about what third quantity might explain both, and then design something that could actually settle it — ideally an experiment where the suspected cause is assigned rather than chosen.",
+      code:"# a strong correlation is the beginning of the work\nr = df['support_calls'].corr(df['churned'])\nprint(f'r = {r:.3f}')\n\n# 1. plot it   2. check for far-out points   3. list confounders\n#    do customers with problems call more, or does calling cause churn?\n#    are both driven by a third thing, such as product complexity?",
+      note:"The discipline that separates good analysts from careless ones is not finding correlations. It is what they refuse to conclude from them."
+    }
+  ],
+
+  examples:[
+    {
+      title:"Ice cream and drowning",
+      color:"var(--stop)",
+      body:"Across a year, ice-cream sales and drowning deaths rise and fall together closely. The correlation is real, reproducible and about as strong as social data ever gets.",
+      numbers:"Roughly r = 0.9 in most countries where both are recorded monthly. Banning ice cream would not save a single swimmer.",
+      lesson:"Summer heat is the confounder. It independently sends people to the beach and to the ice-cream shop. This is the standard teaching example precisely because the absurdity is obvious — in real analyses the confounder is rarely so easy to spot."
+    },
+    {
+      title:"Chocolate and Nobel prizes",
+      color:"var(--saffron)",
+      body:"A 2012 paper in a medical journal reported that countries consuming more chocolate per person win more Nobel prizes per person, and half-seriously suggested a cognitive benefit.",
+      numbers:"The correlation across roughly twenty countries was near 0.8 — strong enough that the paper was widely reported as though chocolate made people cleverer.",
+      lesson:"National wealth drives both. Rich countries eat more chocolate and fund far more research. The paper is now cited mainly as a warning, and its survival into serious journals shows how easily a striking correlation travels."
+    },
+    {
+      title:"The correlation that was one hospital",
+      color:"var(--stop)",
+      body:"An analyst studying patient outcomes across forty hospitals finds a strong correlation between a staffing measure and recovery rates, and prepares a recommendation.",
+      numbers:"Across the forty hospitals r = 0.71. Removing one specialist centre — very high staffing, very unusual patients — drops it to 0.12. One hospital out of forty produced the entire finding.",
+      lesson:"The refit-and-compare check from Concept 6 takes seconds and would have caught it before the recommendation was written. A correlation driven by one observation is not a finding about forty hospitals."
+    },
+    {
+      title:"Two groups that cancelled out",
+      color:"var(--saffron)",
+      body:"A study of typing speed against error rate finds no relationship at all, and concludes that speed does not affect accuracy.",
+      numbers:"Pooled across everybody, r = 0.02. Split by experience, both groups show a clear positive relationship — faster typing does raise errors within each group — but experienced typists are both faster and more accurate, so the two groups sit at different levels and cancel.",
+      lesson:"A correlation computed across mixed groups can describe neither of them. Plotting with the groups marked in different colours reveals it immediately; the pooled number hides it completely."
+    },
+    {
+      title:"Where the correlation really was causal",
+      color:"var(--teal)",
+      body:"The link between smoking and lung cancer began as a correlation, and the tobacco industry argued for years that a confounder — a genetic tendency towards both — could explain it.",
+      numbers:"That argument is exactly right in form, and it was defeated by evidence correlation alone could not supply: a dose-response relationship, animal experiments, a biological mechanism, and risk falling after quitting.",
+      lesson:"'Correlation is not causation' does not mean correlation is never causal. It means the correlation alone cannot settle it, and something further is required."
+    },
+    {
+      title:"Ranking that missed the best predictor",
+      color:"var(--blue)",
+      body:"A team ranks candidate predictors by correlation with crop yield and discards rainfall, which scores near zero, in favour of several weaker but non-zero columns.",
+      numbers:"Rainfall's correlation with yield was 0.09. Plotted, it showed a clear arch — yield rising with rainfall to an optimum and falling as fields waterlogged. It was the strongest relationship in the dataset and the ranking put it last.",
+      lesson:"Ranking by correlation without plotting systematically discards curved relationships. The one line of code that would have caught it is a scatter plot of the top few candidates."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — Compute r by hand",
+      prompt:"Five paired observations: x = 1, 2, 3, 4, 5 and y = 2, 4, 5, 4, 6. Compute the correlation coefficient and interpret it.",
+      steps:[
+        {h:"Build the five sums",
+         b:"Everything comes from five totals.<br><br><table style='font-size:.88rem;border-collapse:collapse'><tr><th style='padding:3px 14px 3px 0'>x</th><th style='padding:3px 14px 3px 0'>y</th><th style='padding:3px 14px 3px 0'>xy</th><th style='padding:3px 14px 3px 0'>x²</th><th style='padding:3px 0'>y²</th></tr>"+
+           "<tr><td>1</td><td>2</td><td>2</td><td>1</td><td>4</td></tr><tr><td>2</td><td>4</td><td>8</td><td>4</td><td>16</td></tr>"+
+           "<tr><td>3</td><td>5</td><td>15</td><td>9</td><td>25</td></tr><tr><td>4</td><td>4</td><td>16</td><td>16</td><td>16</td></tr>"+
+           "<tr><td>5</td><td>6</td><td>30</td><td>25</td><td>36</td></tr>"+
+           "<tr style='border-top:1px solid #999'><td><b>15</b></td><td><b>21</b></td><td><b>71</b></td><td><b>55</b></td><td><b>97</b></td></tr></table><br>"+
+           "<code class='inl'>n = 5</code>, <code class='inl'>Σx = 15</code>, <code class='inl'>Σy = 21</code>, <code class='inl'>Σxy = 71</code>, <code class='inl'>Σx² = 55</code>, <code class='inl'>Σy² = 97</code>"},
+        {h:"Compute the top of the fraction",
+         b:"<code class='inl'>n·Σxy − Σx·Σy</code><br><br><code class='inl'>5 × 71 − 15 × 21 = 355 − 315 = 40</code><br><br>This is positive, so r will be positive — the two rise together."},
+        {h:"Compute the bottom",
+         b:"<code class='inl'>√( [n·Σx² − (Σx)²] × [n·Σy² − (Σy)²] )</code><br><br>First bracket: <code class='inl'>5 × 55 − 15² = 275 − 225 = 50</code><br>Second bracket: <code class='inl'>5 × 97 − 21² = 485 − 441 = 44</code><br><br><code class='inl'>√(50 × 44) = √2200 = 46.90</code>"},
+        {h:"Divide",
+         b:"<code class='inl'>r = 40 ÷ 46.90 = 0.853</code><br><br>Always sense-check that the answer sits between −1 and +1. If it does not, the arithmetic has gone wrong somewhere — most often in the second bracket."},
+        {h:"Interpret it",
+         b:"An r of 0.853 is a <strong>strong positive relationship</strong>: as x rises, y tends to rise.<br><br>Two cautions. With only five points this is a very rough estimate, and one more observation could move it considerably. And with five points you cannot see the shape of the relationship, which is exactly the situation in which a curve or a far-out point goes unnoticed."},
+        {h:"A connection worth noting",
+         b:"Square it: <code class='inl'>0.853² = 0.727</code>.<br><br>That number appears again in Concept 8, where a fitted line through these same five points accounts for 72.7 percent of the variation. It is not a coincidence — the goodness-of-fit measure there is exactly r squared, so correlation and quality of fit are two views of the same relationship."}
+      ],
+      answer:"r = 40 ÷ √2200 = 0.853, a strong positive relationship. Its square, 0.727, is the goodness-of-fit measure a line through these points achieves."
+    },
+    {
+      title:"Problem 2 — A correlation of exactly zero",
+      prompt:"Rainfall and crop yield are recorded at eleven levels. The yield rises steadily with rainfall up to a middle value and then falls away as the fields waterlog. Every point sits exactly on this arch. What is r, and what should you report?",
+      steps:[
+        {h:"Predict the answer before computing",
+         b:"r measures how well a <strong>straight line</strong> fits. Ask yourself what the best straight line through a symmetric arch looks like.<br><br>It is flat. The upward half and the downward half pull the line in opposite directions and cancel exactly."},
+        {h:"The value",
+         b:"<code class='inl'>r = 0.00</code><br><br>Not approximately zero — exactly zero, for a perfectly symmetric arch. Every point lies precisely on a strong relationship, and the correlation is nil."},
+        {h:"What must not be concluded",
+         b:"<strong>Wrong:</strong> \"Rainfall has no effect on yield.\"<br><br>Rainfall has an enormous effect. Too little and the crop fails; too much and it rots. What is absent is a <em>straight-line</em> relationship, and that is a statement about the shape rather than about the strength."},
+        {h:"What to report",
+         b:"<em>\"Rainfall and yield have a strong relationship that is not a straight line. Yield peaks at moderate rainfall and falls away at both extremes, so the ordinary correlation of 0.00 does not describe it. See the scatter plot.\"</em><br><br>Report the plot, not the number. And note that Spearman's version would not rescue this either — it handles curves that keep going one way, and this one turns back."},
+        {h:"The general lesson",
+         b:"An r near zero has two entirely different possible meanings: <strong>no relationship</strong>, or <strong>a relationship that is not straight</strong>. The number cannot distinguish them and a scatter plot settles it in one second.<br><br>This is why ranking predictors by correlation and never plotting is a genuinely dangerous habit — it discards precisely the relationships that a straight line cannot see."}
+      ],
+      answer:"r = 0.00, and it means there is no straight-line relationship rather than no relationship. The arch is strong; report the scatter plot and describe the shape in words."
+    },
+    {
+      title:"Problem 3 — One point that changed everything",
+      prompt:"Eight observations have r = 0.58. A ninth is added, far out to the top right, and r becomes 0.94. (a) What has happened? (b) Should the point be removed? (c) What do you report?",
+      steps:[
+        {h:"(a) What happened",
+         b:"The correlation is built from every value, so a point far from the rest contributes enormously to the calculation. One observation out of nine has taken a modest relationship and made it look very strong.<br><br>Note the direction. Adding a far-out point at the top right <em>strengthens</em> a positive correlation; adding one at the bottom right would weaken or reverse it. Either way one point is deciding the answer."},
+        {h:"(b) Should it be removed?",
+         b:"Not automatically — that is the wrong question. The right question is <strong>what is that point?</strong>, and Concept 6's table applies unchanged.<br><br>If it is an impossible value or a recording error, correct or remove it. If it belongs to a different population — a wholesale customer among retail ones — exclude it and say so. If it is a real observation from the population you are studying, <strong>keep it</strong>, because deleting inconvenient data is how findings get manufactured."},
+        {h:"(c) What to report",
+         b:"Both numbers, always.<br><br><em>\"The correlation is 0.94 across all nine observations. It is heavily influenced by a single point; excluding it the correlation is 0.58. Interpretation should rest on the smaller figure unless that observation can be shown to be typical.\"</em><br><br>That sentence is honest, takes ten seconds to write, and protects you completely."},
+        {h:"The habit",
+         b:"Compute r with and without any suspect point, every time. If the two agree, say so briefly and move on. If they differ substantially, you have learnt something important about how much your conclusion rests on one row.<br><br>It is the same refit-and-compare check Concept 6 recommended, applied to a pair of quantities."}
+      ],
+      answer:"(a) A single far-out point dominates the calculation. (b) Investigate rather than delete — remove only if it is an error or belongs to a different population. (c) Report both figures and say which the interpretation rests on."
+    },
+    {
+      title:"Problem 4 — Reading a causal claim",
+      prompt:"A study finds r = 0.72 between hours of sleep and examination marks, and the headline reads \"More sleep makes students score higher\". Assess the claim and list what else could explain the correlation.",
+      steps:[
+        {h:"What the correlation establishes",
+         b:"That sleep and marks move together in this data, fairly strongly. That much is solid, assuming the sample was drawn sensibly and the relationship was plotted.<br><br>Everything beyond that is interpretation, and the correlation supports none of it."},
+        {h:"Explanation 1 — the claimed direction",
+         b:"<strong>Sleep improves marks.</strong> Entirely plausible — rested students concentrate better and recall more.<br><br>Plausible is not the same as demonstrated. The other explanations below are equally consistent with r = 0.72."},
+        {h:"Explanation 2 — the arrow runs backwards",
+         b:"<strong>Doing well causes more sleep.</strong> Students who are on top of the material are not up at 2 a.m. panicking, so being well prepared produces both the sleep and the marks.<br><br>The correlation is identical under this explanation, and it reverses the practical advice entirely."},
+        {h:"Explanation 3 — something drives both",
+         b:"<strong>A confounder.</strong> Good time management produces regular sleep and steady study. Living at home rather than working night shifts produces both. Good health produces both.<br><br>Any of these creates the correlation with no direct link between sleep and marks at all."},
+        {h:"What would settle it",
+         b:"Random assignment. Take a group of students, assign some at random to a sleep schedule and others not, and compare. Because the assignment is random, the groups will be similar on time management, health and everything else — so a difference in marks can be attributed to the sleep.<br><br>That is a study design, not a calculation, and it is the only thing that answers the question."},
+        {h:"How the headline should read",
+         b:"<em>\"Students who sleep more tend to score higher. The study cannot show which causes which, or whether a third factor such as time management explains both.\"</em><br><br>Less exciting, and true. The gap between those two sentences is where most misreported science lives."}
+      ],
+      answer:"The claim is not supported. Three explanations fit r = 0.72 equally well — sleep improving marks, good preparation producing both, or a confounder such as time management. Only random assignment could distinguish them."
+    },
+    {
+      title:"Problem 5 — When the two correlations disagree",
+      prompt:"For a set of paired observations, the ordinary correlation is 0.62 and the rank-based correlation is 0.94. What does the disagreement tell you, and what do you do?",
+      steps:[
+        {h:"What each one measures",
+         b:"The ordinary correlation asks how well a <strong>straight line</strong> fits. The rank-based version asks only whether the two move in the <strong>same direction</strong>, ignoring how far apart the values are.<br><br>So a high rank correlation with a lower ordinary one means the relationship is consistent in direction but does not follow a straight line."},
+        {h:"The two likely explanations",
+         b:"<strong>A curve that keeps going one way.</strong> Every increase in x brings an increase in y, but at a changing rate. On ranks the relationship is nearly perfect; as a straight line it is only reasonable.<br><br><strong>A far-out point.</strong> One extreme value can drag the ordinary correlation down substantially, while on ranks it becomes merely the highest rank and does little damage."},
+        {h:"How to tell which",
+         b:"Plot it. A curve and a far-out point look completely different and take one second to distinguish.<br><br>This is the third time in this concept that the answer is 'plot it', which is the point."},
+        {h:"What to do in each case",
+         b:"If it is a <strong>curve</strong>: report the rank correlation, describe the shape in words, and consider transforming one quantity — taking a logarithm often straightens a curve of this kind.<br><br>If it is a <strong>far-out point</strong>: apply Concept 6's decision table, and report the ordinary correlation with and without it."},
+        {h:"The reverse case",
+         b:"Worth knowing too. When the ordinary correlation is much <em>higher</em> than the rank version, suspect a far-out point that is manufacturing a straight-line relationship out of an otherwise weak one — the situation in Problem 3.<br><br>Either way, a disagreement between the two is a signal to look at the picture."}
+      ],
+      answer:"The relationship is consistent in direction but not a straight line — either a curve or a far-out point. Plot it to see which, then either report the rank correlation and describe the shape, or apply the outlier decision table."
+    },
+    {
+      title:"Problem 6 — What can you safely say?",
+      prompt:"A model finds r = 0.81 between a shop's floor area and its monthly sales, across 60 shops, with p < 0.001. Which of these are supported? (a) Larger shops sell more. (b) Doubling a shop's area would double its sales. (c) Floor area explains 81 percent of the variation in sales. (d) The relationship is unlikely to be chance.",
+      steps:[
+        {h:"(d) — start with the safest",
+         b:"<strong>Supported.</strong> That is exactly what the p-value says: a correlation this strong would almost never arise if the two were unrelated.<br><br>Note that it says nothing about size or cause. With 60 shops it does rule out coincidence as an explanation for the pattern."},
+        {h:"(a) — the descriptive claim",
+         b:"<strong>Supported, if worded carefully.</strong> \"Larger shops tend to sell more in this data\" is a description of what was observed and is fine.<br><br>If it is meant as \"floor area causes higher sales\", it is not supported. A confounder is easy to name here: shops in busy locations are both larger and busier, so location could drive both."},
+        {h:"(b) — the prediction",
+         b:"<strong>Not supported, twice over.</strong><br><br>First, correlation gives no rate of change. It is a unitless number, and it cannot say how many rupees of sales accompany a square metre. That requires the fitted line of Concept 8.<br><br>Second, 'would double' is causal and forward-looking. Even a fitted line would only describe what happens across existing shops, not what would happen if you extended one."},
+        {h:"(c) — the R² confusion",
+         b:"<strong>Not supported as stated.</strong> The share of variation accounted for is <strong>r squared</strong>, which is <code class='inl'>0.81² = 0.66</code>, or 66 percent.<br><br>Quoting r itself as a percentage is a very common slip, and it always overstates — for any r between 0 and 1, r² is smaller."},
+        {h:"The safe summary",
+         b:"<em>\"Across 60 shops, floor area and monthly sales are strongly related (r = 0.81), and the relationship is very unlikely to be chance. Floor area accounts for about 66 percent of the variation in sales. Because location may influence both, this does not establish that increasing floor area would raise sales.\"</em><br><br>Every clause defensible, and the last sentence is the one that separates careful work from careless."}
+      ],
+      answer:"(a) with careful wording and (d) are supported. (b) needs a fitted line and a causal design, neither of which correlation supplies. (c) confuses r with r squared — the correct figure is 66 percent, not 81."
+    }
+  ],
+
+  interview:[
+    {
+      q:"What does a correlation coefficient of 0.8 tell you?",
+      a:"That the two quantities have a strong positive straight-line relationship — as one rises, the other tends to rise, and the points cluster fairly closely around an upward line.<br><br>Three things it does not tell you. It gives no rate of change, because r has no units — for that you need a fitted line. It says nothing about cause. And it describes only how well a <em>straight</em> line fits, so a strong curved relationship could sit behind a much lower number.<br><br>I would also want to see the scatter plot before trusting it, since a single far-out point can produce an r of 0.8 from data with almost no relationship.",
+      probe:"An opening question. Volunteering the three limitations without being prompted is what distinguishes a candidate who uses correlation from one who has only read about it."
+    },
+    {
+      q:"Correlation is not causation. Explain why, and what would establish causation.",
+      a:"Because at least four situations produce the same correlation. x may cause y; y may cause x; a third quantity may cause both; or it may be coincidence. The number is identical in all four and no further analysis of the same data separates them.<br><br>The classic case is ice-cream sales and drownings at about r = 0.9, where summer heat drives both. A subtler one: children with bigger feet read better, with age as the confounder.<br><br>What establishes causation is random assignment — deciding who receives the treatment rather than letting people choose. Randomising makes the groups similar on everything else, including confounders you never thought of. Where experiments are impossible, as with smoking, causation is built from converging evidence: a dose-response relationship, a biological mechanism, and risk falling after the exposure stops.",
+      probe:"Everybody knows the slogan. What is being tested is whether you can name the alternative explanations and say what would actually settle it. The smoking example shows you know correlation is sometimes causal."
+    },
+    {
+      q:"A correlation comes out near zero. Does that mean the two quantities are unrelated?",
+      a:"No, and this is the trap. An r near zero has two quite different meanings: no relationship at all, or a relationship that is not a straight line.<br><br>The clearest case is a symmetric arch — crop yield rising with rainfall to an optimum then falling as fields waterlog. Every point can sit exactly on that curve and r comes out at precisely zero, because the rise on the left cancels the fall on the right.<br><br>A scatter plot distinguishes the two immediately. This is also why ranking predictors by correlation without plotting is dangerous — it systematically discards exactly the curved relationships that a straight line cannot see.",
+      probe:"A very common question and a good discriminator. The arch example with an exactly-zero r makes the point far more forcefully than saying 'correlation only measures linear relationships'."
+    },
+    {
+      q:"What is the difference between Pearson and Spearman correlation?",
+      a:"Pearson works on the values and measures how well a straight line fits. Spearman replaces each value by its rank and computes the same thing on the ranks, so it measures whether the two move in the same direction without requiring the relationship to be straight.<br><br>Take y = x³. Pearson gives about 0.93 because the relationship curves; Spearman gives exactly 1, because in rank terms it is perfect.<br><br>Spearman is also far less disturbed by a far-out value, since an extreme point becomes merely the highest rank. In practice I compute both — when they agree the relationship is close to straight, and when they disagree sharply there is a curve or an extreme point, and the plot shows which.",
+      probe:"Computing both as a diagnostic, rather than choosing one, is the answer that shows practical habit rather than textbook knowledge."
+    },
+    {
+      q:"How would a single far-out point affect a correlation?",
+      a:"Potentially completely. Correlation is built from every value, so a point far from the rest contributes disproportionately. One point can take eight weakly related observations from r = 0.58 to r = 0.94, or take a perfect straight line down to 0.40.<br><br>What I would do is compute r with and without the point and compare. If they differ substantially, one observation is driving the conclusion and that belongs in the report.<br><br>What I would not do is delete it automatically. It may be an error, or it may be the most informative observation in the dataset — in fraud detection the unusual points are the entire subject.",
+      probe:"The refit-and-compare test is the practical answer, and refusing to delete automatically shows judgement rather than a procedure."
+    },
+    {
+      q:"What is a confounder? Give an example.",
+      a:"A third quantity that influences both of the ones you measured, creating a correlation between them that has nothing to do with either causing the other.<br><br>The standard example is hot weather behind ice-cream sales and drownings. A more instructive one: countries eating more chocolate win more Nobel prizes, at around r = 0.8, and national wealth drives both — rich countries eat more chocolate and fund far more research. That one reached a medical journal, which shows how easily a striking correlation travels.<br><br>The practical difficulty is that a confounder you have not thought of is invisible. This is why random assignment is so valuable — it balances the groups on confounders you never identified.",
+      probe:"The definition is easy. The point that randomisation handles unknown confounders is what shows you understand why experiments are the gold standard."
+    },
+    {
+      q:"A correlation is significant with p < 0.001. How impressed should you be?",
+      a:"That depends entirely on the size of r and the size of the dataset, and the p-value alone tells you neither.<br><br>A p-value says the correlation is distinguishable from zero. With 100,000 rows an r of 0.02 comes out highly significant, and 0.02 is a shapeless cloud with no practical meaning whatever. The significance is real and the finding is not worth acting on.<br><br>So I read r for importance and the p-value only for whether the pattern might be nothing at all. It is the same distinction between statistical significance and practical importance that applies to every test.",
+      probe:"A test of whether you separate the two. Giving a concrete large-sample example makes the point far better than stating the principle."
+    },
+    {
+      q:"You find two predictors correlate with each other at 0.97. Why does that matter?",
+      a:"They are carrying almost the same information, and putting both into a model causes real trouble. The model cannot tell which of the two is doing the work, so the individual contributions become unstable — a small change in the data can swing them wildly, and neither can be interpreted reliably.<br><br>Sometimes the cause is trivial, like the same quantity in two units. Sometimes it is subtler, like a total and one of its components.<br><br>The usual fix is to keep one and drop the other, or combine them. Which to keep is a judgement about which is easier to collect and easier to explain, rather than a statistical question.",
+      probe:"This connects correlation to model building, and interviewers like candidates who see that link. Noting that the choice is practical rather than statistical is a good closing point."
+    },
+    {
+      q:"Two raters score the same essays and correlate at 0.98. Do they agree?",
+      a:"They rank the essays almost identically, which is often what matters — the same essays come top and bottom for both.<br><br>But correlation is blind to a constant offset. One rater could mark every essay ten points higher than the other and the correlation would still be 0.98, because shifting one quantity by a constant does not change r at all. If the marks are being used as absolute grades rather than a ranking, that is a serious disagreement the correlation cannot see.<br><br>So I would also check the mean difference between them, and ideally plot the differences against the average of the two.",
+      probe:"A neat question because the correct answer is 'it depends what you mean by agree'. Knowing that correlation ignores offsets is the specific knowledge being probed."
+    },
+    {
+      q:"What is the relationship between correlation and the fit of a straight line?",
+      a:"For a single predictor they are two views of the same thing. The goodness-of-fit measure — the share of variation the line accounts for — is exactly r squared.<br><br>So an r of 0.965 gives 0.931, meaning the line accounts for 93 percent of the variation. An r of 0.81 gives 0.66, not 81 percent, and quoting r itself as a percentage is a common slip that always overstates.<br><br>The difference between them is what each is for. Correlation is unitless and symmetric — swap the two quantities and it is unchanged. A fitted line is not symmetric and gives a slope in real units, which is what you need to predict or to say how much one moves per unit of the other.",
+      probe:"Tests whether you connect the two ideas rather than holding them separately. The r-versus-r-squared slip is worth flagging because interviewers hear it constantly."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"A correlation of exactly 0.00 is found between rainfall and crop yield, where yield peaks at moderate rainfall and falls at both extremes. What does this mean?",
+      opts:[
+        {t:"Rainfall has no effect on yield",
+         fb:"Rainfall has an enormous effect — too little and the crop fails, too much and it rots. What is absent is a straight-line relationship."},
+        {t:"There is no straight-line relationship, although the relationship itself is very strong indeed", ok:true,
+         fb:"Right. r asks only how well a straight line fits, and for a symmetric arch the rise on the left cancels the fall on the right exactly. Plot it and the relationship is obvious."},
+        {t:"The data must have been recorded incorrectly",
+         fb:"Nothing is wrong with the data. The number is behaving exactly as defined; it is the reading of it that would be wrong."},
+        {t:"Rainfall and yield are related, but the sample is too small for the correlation to detect the relationship reliably",
+         fb:"Sample size is not the issue — the correlation would remain zero with a million points on the same arch."}
+      ]
+    },
+    {
+      stem:"Which statement about the correlation coefficient is correct?",
+      opts:[
+        {t:"It ranges from 0 to 1",
+         fb:"It ranges from −1 to +1. The negative half describes quantities that move in opposite directions."},
+        {t:"It is measured in the units of the two quantities combined",
+         fb:"It has no units at all — they cancel in the formula, which is what makes correlations comparable across completely different quantities."},
+        {t:"It changes if you convert one quantity from rupees to lakhs",
+         fb:"It does not. Changing units multiplies values by a constant, and r is unaffected by that."},
+        {t:"It is unchanged if you swap which quantity is x and which is y", ok:true,
+         fb:"Right — correlation is symmetric. This is a real difference from fitting a line, where the choice of which quantity to predict matters a great deal."}
+      ]
+    },
+    {
+      stem:"Ice-cream sales and drowning deaths correlate at about 0.9. What follows?",
+      opts:[
+        {t:"A third factor, hot weather, drives both", ok:true,
+         fb:"Right — hot weather is the confounder, sending people to the beach and to the ice-cream shop independently. The correlation is real and the causal reading is nonsense."},
+        {t:"Eating ice cream makes people more likely to drown",
+         fb:"The correlation is consistent with this and so are three other explanations, and this one is obviously false on any reflection about the world."},
+        {t:"The correlation must have been computed incorrectly",
+         fb:"It is computed correctly and reproduces in most countries. The arithmetic is not the problem."},
+        {t:"Drowning incidents cause an increase in ice-cream sales through some indirect route that has not yet been identified",
+         fb:"The reversed arrow is one of the four possibilities in general, and here the third explanation is both simpler and demonstrably true."}
+      ]
+    },
+    {
+      stem:"Eight points correlate at 0.58. Adding one point far out to the top right raises r to 0.94. What should you do?",
+      opts:[
+        {t:"Report both figures and say which the interpretation rests on", ok:true,
+         fb:"Right. One observation out of nine is driving the result, and a reader is entitled to know. The sentence takes ten seconds to write and protects you completely."},
+        {t:"Report 0.94, since it uses all the available data",
+         fb:"It does use all the data, and reporting it alone hides the fact that a single point produced it."},
+        {t:"Delete the point and report 0.58",
+         fb:"Deleting without investigating is how findings get manufactured. The point may be a genuine observation from the population you are studying."},
+        {t:"Report neither figure, because a correlation computed from a dataset containing an extreme value cannot be interpreted at all",
+         fb:"Too strong. Both figures are informative, and the comparison between them is the most informative thing of all."}
+      ]
+    },
+    {
+      stem:"Pearson correlation is 0.62 and Spearman is 0.94 for the same data. What does that suggest?",
+      opts:[
+        {t:"One of the two has been computed incorrectly",
+         fb:"They measure different things and routinely differ. A disagreement is informative rather than an error."},
+        {t:"The relationship is consistent in direction but not a straight line", ok:true,
+         fb:"Right. High on ranks and lower on values means either a curve that keeps going one way, or a far-out point dragging the ordinary figure down. A plot distinguishes them."},
+        {t:"The data contains no relationship at all",
+         fb:"A rank correlation of 0.94 is a very strong relationship. It simply is not a straight one."},
+        {t:"Spearman is always higher than Pearson, so the comparison carries no information about the shape of the relationship",
+         fb:"Spearman is often lower — it is higher here for a reason, and that reason is what the comparison reveals."}
+      ]
+    },
+    {
+      stem:"A correlation of 0.02 between two columns is reported as highly significant, p < 0.001, on 200,000 rows. How should you read it?",
+      opts:[
+        {t:"A strong relationship, since the p-value is very small",
+         fb:"The p-value says the relationship is distinguishable from zero. It says nothing about strength, and 0.02 is very weak indeed."},
+        {t:"An error, since such a small correlation cannot be significant",
+         fb:"It can, and easily. With enough rows almost any non-zero correlation reaches significance."},
+        {t:"A relationship that is real but far too weak to be of practical use", ok:true,
+         fb:"Right. Read r for importance and the p-value only for whether the pattern might be nothing at all. An r of 0.02 is a shapeless cloud."},
+        {t:"A moderate relationship, since a p-value below 0.001 indicates that the correlation is at least moderately strong in size",
+         fb:"The p-value carries no information about size. It depends on the correlation and the sample size together."}
+      ]
+    },
+    {
+      stem:"Two quantities correlate at r = 0.7. What share of the variation does one account for in the other?",
+      opts:[
+        {t:"70 percent",
+         fb:"A common slip. r itself is not a percentage of variation — its square is."},
+        {t:"49 percent, which is r squared", ok:true,
+         fb:"Right: 0.7² = 0.49. The squared value is always smaller than r for any r between 0 and 1, so quoting r as a percentage always overstates."},
+        {t:"84 percent, obtained by taking the square root of the correlation",
+         fb:"That is the square root of 0.7, which goes the wrong way. Squaring is what converts a correlation into a share of variation."},
+        {t:"It cannot be determined from the correlation alone without also knowing the number of observations in the dataset",
+         fb:"The sample size affects how reliable the estimate is, not the conversion. Squaring r gives the share of variation directly."}
+      ]
+    },
+    {
+      stem:"Typing speed and error rate show r = 0.02 overall. Split by experience, both beginners and experts show a clear positive relationship. What has happened?",
+      opts:[
+        {t:"The overall correlation is the correct one and the split is misleading",
+         fb:"The overall figure describes neither group. Splitting has revealed the structure rather than hidden it."},
+        {t:"The two groups sit at different levels and cancel each other out when pooled", ok:true,
+         fb:"Right. Experts are both faster and more accurate, so pooling the groups produces a flat cloud even though the relationship within each is clear. Plotting with the groups coloured differently reveals it at once."},
+        {t:"Experience has no effect on typing speed",
+         fb:"Experience clearly affects both — that is precisely what makes the two groups sit at different levels and cancel."},
+        {t:"The correlation of 0.02 must be wrong, because it is impossible for a pooled correlation to differ in sign or size from the correlations within the groups that make it up",
+         fb:"It is entirely possible, and this pattern is common enough to have caught out many published studies."}
+      ]
+    },
+    {
+      stem:"Which of these does a correlation coefficient give you?",
+      opts:[
+        {t:"How much y changes for each one-unit rise in x",
+         fb:"That is a slope, and it needs a fitted line. Correlation has no units and cannot express a rate of change."},
+        {t:"Whether x causes y",
+         fb:"No statistical measure computed from observational data can establish this. It requires a study design, usually random assignment."},
+        {t:"The strength and direction of a straight-line relationship", ok:true,
+         fb:"Right, and that is all it gives. Not the rate, not the cause, and not the shape when the shape is not a straight line."},
+        {t:"A prediction of y for any value of x you choose to supply, provided the correlation is strong enough to be reliable",
+         fb:"Prediction needs a fitted line with an intercept and a slope. Correlation is a single unitless summary and cannot predict anything."}
+      ]
+    },
+    {
+      stem:"What is the single most important habit when working with correlations?",
+      opts:[
+        {t:"Always compute the p-value alongside r",
+         fb:"Useful, and it will not warn you about a curve, a far-out point, or two groups cancelling out."},
+        {t:"Always use Spearman rather than Pearson",
+         fb:"Spearman helps with curves and extreme points, and it would not have caught the symmetric arch or the two-group case."},
+        {t:"Always plot the scatter before reporting the number", ok:true,
+         fb:"Right. It is one line of code and it is the only defence against every failure in this concept — curves, far-out points, and groups that cancel. All of them are invisible in r and obvious in a plot."},
+        {t:"Always check that the sample contains at least thirty observations before computing a correlation at all",
+         fb:"More data helps the estimate and does nothing about shape. A curve stays invisible in r at any sample size."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [1,3,0,2,1,3,0,1,2,3];
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+function pearson(xs, ys){
+  const n=xs.length;
+  const mx=xs.reduce((a,b)=>a+b,0)/n, my=ys.reduce((a,b)=>a+b,0)/n;
+  let sxy=0,sxx=0,syy=0;
+  for(let i=0;i<n;i++){ const a=xs[i]-mx, b=ys[i]-my; sxy+=a*b; sxx+=a*a; syy+=b*b; }
+  return sxy/Math.sqrt(sxx*syy);
+}
+
+/* ---- r slider ---- */
+function drawR(){
+  const target=(+$("#rs").value)/100;
+  $("#rsv").textContent=(target>=0?"+":"")+target.toFixed(2);
+  let sd=9001;
+  const rn=()=>{ sd=(sd*1103515245+12345)&0x7fffffff; return sd/0x7fffffff; };
+  const gs=()=>{ let s=0; for(let j=0;j<4;j++) s+=rn(); return (s-2)/0.577; };
+  const xs=[], ys=[];
+  for(let i=0;i<70;i++){
+    const a=gs(), b=gs();
+    xs.push(a);
+    ys.push(target*a + Math.sqrt(Math.max(0,1-target*target))*b);
+  }
+  const r=pearson(xs,ys);
+  $("#r_val").textContent=(r>=0?"+":"")+r.toFixed(2);
+  $("#r_sq").textContent=(r*r).toFixed(2);
+  const a=Math.abs(r);
+  $("#r_word").textContent = a>0.85?"very strong" : a>0.6?"strong" : a>0.35?"moderate" : a>0.15?"weak" : "almost none";
+
+  const W=640,H=250,L=34,R=18,T=16,BM=30, lim=3.2;
+  const sx=v=>L+((v+lim)/(2*lim))*(W-L-R), sy=v=>H-BM-((v+lim)/(2*lim))*(H-BM-T);
+  const dots=xs.map((x,i)=>`<circle cx="${sx(x).toFixed(1)}" cy="${sy(ys[i]).toFixed(1)}" r="3.6" fill="#0F5B4F" opacity="0.55"/>`).join("");
+  $("#rplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A scatter whose correlation is set by the slider">
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <line x1="${L}" y1="${T}" x2="${L}" y2="${H-BM}" stroke="#12312B"/>${dots}</svg>`;
+}
+$("#rs").addEventListener("input",drawR);
+drawR();
+
+/* ---- outlier lever ---- */
+const OX=[1,2,3,4,5,6,7,8], OY=[5,3,6,4,7,5,8,6];
+function drawOut(){
+  const px=(+$("#ox").value)/10, py=(+$("#oy").value)/10;
+  $("#oxv").textContent=px.toFixed(1);
+  $("#oyv").textContent=py.toFixed(1);
+  const r=pearson([...OX,px],[...OY,py]);
+  const base=0.582;
+  $("#o_r").textContent=(r>=0?"+":"")+r.toFixed(3);
+  const d=r-base;
+  $("#o_d").textContent=(d>=0?"+":"")+d.toFixed(3);
+  const big=Math.abs(d)>0.2;
+  $("#o_verdict").innerHTML=`<div class="verdict ${big?"rej":"keep"}">${
+    big ? `One point out of nine has moved the correlation by ${Math.abs(d).toFixed(2)}. On this evidence the conclusion rests on that single observation.`
+        : `The red point is sitting among the others, so it changes little. Move it far away and watch what happens.`}</div>`;
+
+  const W=640,H=270,L=40,R=20,T=16,BM=34, xMax=21, yMax=29;
+  const sx=v=>L+(v/xMax)*(W-L-R), sy=v=>H-BM-(v/yMax)*(H-BM-T);
+  let g="";
+  for(let v=0;v<=20;v+=5) g+=`<text x="${sx(v)}" y="${H-BM+16}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  for(let v=0;v<=25;v+=5) g+=`<line x1="${L}" y1="${sy(v)}" x2="${W-R}" y2="${sy(v)}" stroke="#EDF2F0"/>`+
+    `<text x="${L-7}" y="${sy(v)+4}" font-size="10.5" fill="#4A6862" text-anchor="end" font-family="IBM Plex Mono">${v}</text>`;
+  const dots=OX.map((x,i)=>`<circle cx="${sx(x).toFixed(1)}" cy="${sy(OY[i]).toFixed(1)}" r="5" fill="#0F5B4F" opacity="0.7"/>`).join("");
+  const red=`<circle cx="${sx(px).toFixed(1)}" cy="${sy(py).toFixed(1)}" r="6.5" fill="#A63A1E" opacity="0.85"/>`;
+  const all=[...OX,px], ally=[...OY,py];
+  const n=all.length, mx=all.reduce((a,b)=>a+b,0)/n, my=ally.reduce((a,b)=>a+b,0)/n;
+  let sxy=0,sxx=0;
+  for(let i=0;i<n;i++){ sxy+=(all[i]-mx)*(ally[i]-my); sxx+=(all[i]-mx)**2; }
+  const b1=sxy/sxx, b0=my-b1*mx;
+  const line=`<line x1="${sx(0)}" y1="${sy(b0)}" x2="${sx(xMax)}" y2="${sy(b0+b1*xMax)}" stroke="#3C6E8F" stroke-width="2" opacity="0.75"/>`;
+  $("#outplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Eight fixed points and one movable point, with the correlation changing as it moves">
+    ${g}${line}${dots}${red}
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <line x1="${L}" y1="${T}" x2="${L}" y2="${H-BM}" stroke="#12312B"/></svg>`;
+}
+["ox","oy"].forEach(id=>$("#"+id).addEventListener("input",drawOut));
+drawOut();
+
+/* ---- misleading-scatter gallery ---- */
+$("#gallery").innerHTML = CONCEPT.gallery.map((gc,gi)=>{
+  const W=230,H=140,L=20,R=10,T=10,BM=18;
+  let sd=555+gi*173;
+  const rn=()=>{ sd=(sd*1103515245+12345)&0x7fffffff; return sd/0x7fffffff; };
+  const gs=()=>{ let s=0; for(let j=0;j<4;j++) s+=rn(); return (s-2)/0.577; };
+  const sx=t=>L+t*(W-L-R), sy=t=>H-BM-t*(H-BM-T);
+  let dots="";
+  if(gc.kind==="arch"){
+    for(let i=0;i<=10;i++){ const t=i/10, y=1-4*Math.pow(t-0.5,2);
+      dots+=`<circle cx="${sx(t).toFixed(1)}" cy="${sy(y*0.85+0.06).toFixed(1)}" r="3.4" fill="#0F5B4F" opacity="0.65"/>`; }
+  } else if(gc.kind==="lever"){
+    for(let i=0;i<8;i++){ const t=0.06+i*0.055, y=0.18+gs()*0.05;
+      dots+=`<circle cx="${sx(t).toFixed(1)}" cy="${sy(Math.max(0.04,Math.min(.95,y))).toFixed(1)}" r="3.4" fill="#0F5B4F" opacity="0.6"/>`; }
+    dots+=`<circle cx="${sx(0.92)}" cy="${sy(0.9)}" r="4.6" fill="#A63A1E" opacity="0.85"/>`;
+  } else if(gc.kind==="groups"){
+    for(let i=0;i<12;i++){ const t=0.05+rn()*0.35, y=0.55+ (t-0.2)*1.1 + gs()*0.05;
+      dots+=`<circle cx="${sx(t).toFixed(1)}" cy="${sy(Math.max(.05,Math.min(.95,y))).toFixed(1)}" r="3.2" fill="#0F5B4F" opacity="0.6"/>`; }
+    for(let i=0;i<12;i++){ const t=0.6+rn()*0.35, y=0.25+ (t-0.75)*1.1 + gs()*0.05;
+      dots+=`<circle cx="${sx(t).toFixed(1)}" cy="${sy(Math.max(.05,Math.min(.95,y))).toFixed(1)}" r="3.2" fill="#3C6E8F" opacity="0.6"/>`; }
+  } else {
+    for(let i=0;i<8;i++){ const t=0.06+i*0.1;
+      dots+=`<circle cx="${sx(t).toFixed(1)}" cy="${sy(0.1+t*0.85).toFixed(1)}" r="3.4" fill="#0F5B4F" opacity="0.65"/>`; }
+    dots+=`<circle cx="${sx(0.9)}" cy="${sy(0.07)}" r="4.6" fill="#A63A1E" opacity="0.85"/>`;
+  }
+  return `<div class="gcard">
+    <h4>${gc.t}</h4><p class="rv" style="color:${gc.col}">${gc.r}</p>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${gc.t}">
+      <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+      <line x1="${L}" y1="${T}" x2="${L}" y2="${H-BM}" stroke="#12312B"/>${dots}</svg>
+    <p>${gc.p}</p></div>`;
+}).join("");
+
+/* ---- correlation table ---- */
+(function(){
+  const names=["hours","attendance","previous","final"];
+  const M=[[1.00,0.31,0.22,0.72],[0.31,1.00,0.28,0.54],[0.22,0.28,1.00,0.81],[0.72,0.54,0.81,1.00]];
+  const shade=v=>{ const a=Math.abs(v); return v>=0.999 ? "#0F5B4F" : `rgba(15,91,79,${(a*0.72).toFixed(2)})`; };
+  let h="<tr><th></th>"+names.map(n=>`<th>${n}</th>`).join("")+"</tr>";
+  M.forEach((row,i)=>{
+    h+=`<tr><th class="rowh">${names[i]}</th>`+row.map(v=>
+      `<td style="background:${shade(v)};color:${Math.abs(v)>0.55?"#fff":"#12312B"}">${v.toFixed(2)}</td>`).join("")+"</tr>";
+  });
+  $("#heat").innerHTML=h;
+})();
+
+/* ---- content ---- */
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card"><h3>${i+1}. ${u.name}</h3><p>${u.what}</p><p>${u.how}</p>
+  <pre class="code">${esc(u.code)}</pre>
+  <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p></div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}"><h3>${e.title}</h3><p>${e.body}</p>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+  <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p></div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card"><h3>${p.title}</h3>
+  <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+  ${p.steps.map((s,si)=>`
+    <div class="step" id="st${pi}_${si}">
+      <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+      <div class="body"><p>${s.b}</p></div></div>`).join("")}
+  <div class="step" id="st${pi}_ans">
+    <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+    <div class="body"><div class="answerline"><b>${p.answer}</b></div></div></div></div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div></div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pc=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pc} percent.</p>
+      <p style="margin-bottom:0">${pc>=80
+        ? "One concept to go, and it turns this relationship into a prediction. Carry one habit into it: plot before you report."
+        : "Go back to the four misleading scatters and the movable red point. Between them they cover most of what these questions ask."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>

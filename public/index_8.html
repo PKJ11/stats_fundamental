@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 8 · Simple Linear Regression — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card.recall{border-left:4px solid var(--ok);background:var(--ok-dim)}
+.card.warn{border-left:4px solid var(--stop);background:#FDF3F0}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.card.recall .tagline{color:var(--ok)}
+.card.warn .tagline{color:var(--stop)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:12px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{border-left:3px solid var(--saffron);background:var(--saffron-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#7A4E02;max-width:74ch}
+.later b{font-weight:600}
+.later::before{content:"COMING LATER";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:#A8720B;margin:0 0 3px}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.formula{font-family:"IBM Plex Mono",monospace;font-size:1.02rem;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;text-align:center;margin:0 0 14px}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap;min-width:150px}
+input[type=range]{flex:1;min-width:170px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:62px;text-align:right}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.14rem;font-weight:600;line-height:1.25;color:var(--teal)}
+.stat.hi .v{color:var(--stop)} .stat.bl .v{color:var(--blue)}
+.verdict{margin:12px 0 0;padding:11px 15px;border-radius:8px;font-size:.94rem}
+.verdict.rej{background:var(--stop-dim);color:#7E2C16;border-left:3px solid var(--stop)}
+.verdict.keep{background:var(--ok-dim);color:#16523E;border-left:3px solid var(--ok)}
+.resgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:0 0 18px}
+.rcard{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.rcard h4{margin:0 0 2px;font-size:.93rem}
+.rcard .lab{font-size:.77rem;margin:0 0 8px}
+.rcard p{font-size:.88rem;margin:8px 0 0}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btn.ghost{background:#fff;color:var(--teal);border:1px solid var(--teal)}
+.btn.ghost:hover{background:var(--teal-dim)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 8 of 8</p>
+    <h1>Simple Linear Regression</h1>
+    <p class="lede">Fitting a straight line through data so you can predict one quantity from another — the last concept in this course, and the first algorithm you will train in the next one.</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">How the line is chosen, what its two numbers mean, how to judge the fit, and the four assumptions that decide whether any of it can be trusted.</p>
+
+  <div class="card recall">
+    <p class="tagline">What you bring to this</p>
+    <p style="margin-bottom:0">More than any previous concept. The <strong>mean</strong> and <strong>standard deviation</strong> from Concept 1 and the idea of squaring distances to remove signs. The <strong>bell shape</strong> from Concept 2. The <strong>standard error</strong> from Concept 3, because the slope you compute is itself an estimate from a sample. <strong>Hypothesis tests</strong> from Concept 5, since software reports a p-value for the slope. And the <strong>outlier checks</strong> from Concept 6, because a single far-out point can swing a fitted line more than every other point combined.</p>
+  </div>
+
+  <h3>What regression does that nothing before it could</h3>
+  <div class="card">
+    <p>Every concept so far described <strong>one quantity at a time</strong>, or compared groups of one quantity. Regression is the first tool that takes <strong>two quantities together</strong> and produces something you can use on a case it has never seen.</p>
+    <p style="margin-bottom:0">Given hours studied and marks obtained for twenty students, it answers a question none of the earlier tools could touch: <em>a new student studied 7.5 hours — what mark should we expect?</em></p>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Predictor</dt>
+      <dd>The quantity you use to predict with, written <strong>x</strong> and drawn on the horizontal axis. Hours studied. Also called the independent variable or the input.</dd>
+      <dt>Response</dt>
+      <dd>The quantity you are trying to predict, written <strong>y</strong> and drawn on the vertical axis. Marks obtained. Also called the dependent variable or the output.</dd>
+      <dt>Fitted line</dt>
+      <dd>The straight line the method draws through the cloud of points. Written <span class="mono">ŷ = b₀ + b₁x</span>, where the little hat on the y marks it as a <em>predicted</em> value rather than an observed one.</dd>
+    </dl>
+  </div>
+
+  <div class="card tip">
+    <p class="tagline">💡 Which quantity goes where</p>
+    <p style="margin-bottom:0">The choice is not symmetric, and swapping them gives a different line. Put the thing you <strong>will know in advance</strong> on the x axis and the thing you <strong>want to find out</strong> on the y axis. You will know a student's study hours before their examination, so hours predict marks. Predicting hours from marks would be a strange thing to want.</p>
+  </div>
+
+  <h3>The two numbers that define the line</h3>
+  <div class="formula">ŷ = b₀ + b₁x</div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Number</th><th>Name</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">b₁</td><td><strong>Slope</strong></td><td>How much y changes for each one-unit increase in x. Usually the number you care about.</td></tr>
+        <tr><td class="mono">b₀</td><td><strong>Intercept</strong></td><td>The predicted y when x is zero — where the line crosses the vertical axis. Often has no sensible real meaning.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>How the line is chosen</h3>
+  <p>Countless lines could be drawn through a cloud of points. Regression picks one specific line, and the rule for choosing it is the heart of the method.</p>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Residual</dt>
+      <dd>The vertical gap between an actual point and the line — <strong>actual y minus predicted ŷ</strong>. Positive when the point sits above the line, negative when below. Every point has one.</dd>
+      <dt>Least squares</dt>
+      <dd>The rule for picking the line: choose the one that makes the <strong>sum of the squared residuals</strong> as small as possible. Squaring removes the signs and penalises large misses heavily — exactly the reasoning behind the standard deviation in Concept 1.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>Why not just add the residuals?</h4>
+    <p style="margin-bottom:0">The same trap as Concept 1. Positive and negative residuals cancel, so a wildly wrong line can have residuals summing to zero. In fact the least-squares line always has residuals summing to <em>exactly</em> zero — so that sum tells you nothing about the fit. Squaring first is what makes the total meaningful.</p>
+  </div>
+
+  <h3>Find the best line yourself</h3>
+  <p>Twenty students, their study hours and their marks. Move the two sliders and try to make the total squared residual as small as you can. The red segments are the residuals — the misses the line is making.</p>
+
+  <div class="livebox">
+    <div class="sliderow"><label for="b1">Slope b₁</label><input type="range" id="b1" min="0" max="1200" step="1" value="200"><span class="readout" id="b1v">2.00</span></div>
+    <div class="sliderow"><label for="b0">Intercept b₀</label><input type="range" id="b0" min="0" max="8000" step="5" value="5000"><span class="readout" id="b0v">50.0</span></div>
+    <div class="btnrow" style="margin:0 0 12px">
+      <button class="btn ghost" id="snap">Snap to the least-squares line</button>
+      <button class="btn ghost" id="reset">Reset</button>
+    </div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="fitplot"></div></div>
+    <div class="statgrid">
+      <div class="stat hi"><div class="l">Sum of squared residuals</div><div class="v" id="f_ssr">—</div></div>
+      <div class="stat"><div class="l">Best possible</div><div class="v" id="f_best">379.5</div></div>
+      <div class="stat bl"><div class="l">Your line</div><div class="v" id="f_eq">—</div></div>
+    </div>
+    <div id="f_verdict"></div>
+  </div>
+  <p class="legend">However you move the sliders, you cannot get the total below 379.5. That is what "least squares" means — one line beats every other, and there is a formula that finds it directly with no searching required.</p>
+
+  <div class="card key">
+    <p class="tagline">★ The formula</p>
+    <p>The best line always passes through the point <span class="mono">(mean of x, mean of y)</span>, and its slope is:</p>
+    <div class="formula" style="margin-bottom:12px">b₁ = [ n·Σxy − Σx·Σy ] ÷ [ n·Σx² − (Σx)² ]</div>
+    <p style="margin-bottom:0">Then <span class="mono">b₀ = ȳ − b₁·x̄</span>. Four sums — <span class="mono">Σx</span>, <span class="mono">Σy</span>, <span class="mono">Σxy</span> and <span class="mono">Σx²</span> — and the line follows. Solved Problem 1 works this by hand on five points; in practice one line of Python does it.</p>
+  </div>
+
+  <h3>Reading the two numbers</h3>
+  <pre class="code"><span class="cm"># twenty students: hours studied and marks obtained</span>
+import numpy as np
+from scipy import stats
+
+hours = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                  2, 4, 6, 8, 3, 5, 7, 9, 1, 10])
+marks = np.array([38, 52, 57, 53, 60, 65, 77, 80, 90, 81,
+                  53, 55, 72, 79, 48, 65, 79, 85, 37, 96])
+
+res = stats.linregress(hours, marks)
+print(f"slope     = {res.slope:.2f}")
+print(f"intercept = {res.intercept:.2f}")
+print(f"R-squared = {res.rvalue**2:.3f}")
+print(f"predicted marks for 7.5 hours = {res.intercept + res.slope*7.5:.1f}")</pre>
+  <pre class="out">slope     = 5.56
+intercept = 35.53
+R-squared = 0.931
+predicted marks for 7.5 hours = 77.2</pre>
+
+  <div class="card">
+    <h4>Saying it in words</h4>
+    <p>The model reads <span class="mono">marks ≈ 35.5 + 5.56 × hours</span>.</p>
+    <ul class="plain" style="margin-bottom:12px">
+      <li><strong>Slope 5.56:</strong> each additional hour of study is <em>associated with</em> about 5.6 more marks.</li>
+      <li><strong>Intercept 35.5:</strong> a student studying zero hours is predicted to score about 35.5.</li>
+    </ul>
+    <p style="margin-bottom:0">Note the phrase <strong>associated with</strong> rather than "causes". That wording is doing real work, and the warning below explains why.</p>
+  </div>
+
+  <div class="card warn">
+    <p class="tagline">A fitted line is not a cause</p>
+    <p>Regression finds the line that best describes how two quantities move together in your data. It has no way of knowing <em>why</em> they move together, and three quite different situations produce the same line:</p>
+    <ul class="plain" style="margin-bottom:12px">
+      <li><strong>x really does affect y.</strong> More study genuinely produces better marks.</li>
+      <li><strong>Something else drives both.</strong> Motivated students both study more and score higher, so motivation produces the pattern and study hours merely mark it.</li>
+      <li><strong>The arrow runs backwards.</strong> Students who find the subject easy enjoy it and study more.</li>
+    </ul>
+    <p style="margin-bottom:0">The arithmetic cannot distinguish these. Only how the data was collected can — and specifically whether anyone was <strong>assigned</strong> to study more rather than choosing to. This is the same caution that appeared in Concept 5, and it is the most consequential mistake in applied data work.</p>
+  </div>
+
+  <h3>How good is the fit?</h3>
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>R² (R-squared)</dt>
+      <dd>The share of the variation in y that the line accounts for, running from 0 to 1. <strong>R² = 1</strong> means the line passes through every point exactly. <strong>R² = 0</strong> means the line is no better than ignoring x and predicting the mean of y for everybody.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>Where the number comes from</h4>
+    <p>Compare two ways of predicting y. The lazy way ignores x and predicts the mean of y every time; the sum of squared misses from that is the <strong>total variation</strong>. The line's own sum of squared residuals is what is <strong>left over</strong>.</p>
+    <div class="formula" style="margin-bottom:12px">R² = 1 − ( leftover ÷ total )</div>
+    <p style="margin-bottom:0">For the study data the total is 5,475.8 and the leftover is 379.5, giving <span class="mono">1 − 379.5 ÷ 5475.8 = 0.931</span>. The line has removed 93 percent of the variation that predicting the mean would have left.</p>
+  </div>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">Watch R² fall as the scatter grows</h4>
+    <div class="sliderow"><label for="noise">Amount of scatter</label><input type="range" id="noise" min="0" max="100" step="1" value="18"><span class="readout" id="noisev">—</span></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="r2plot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">R²</div><div class="v" id="r2_val">—</div></div>
+      <div class="stat bl"><div class="l">Slope</div><div class="v" id="r2_slope">—</div></div>
+      <div class="stat hi"><div class="l">Typical miss</div><div class="v" id="r2_rmse">—</div></div>
+    </div>
+  </div>
+  <p class="legend">Watch the slope as you drag. It stays roughly where it was while R² collapses — the line still finds the same relationship, it just predicts individual points far less reliably. <strong>A low R² does not mean the slope is wrong.</strong></p>
+
+  <div class="card tip">
+    <p class="tagline">💡 What counts as a good R²?</p>
+    <p style="margin-bottom:0">There is no universal threshold, and the honest answer is that it depends entirely on the field. Predicting a machined part's dimension from a machine setting might demand 0.99. Predicting human behaviour from one quantity is doing well at 0.30, because people are affected by hundreds of things you did not measure. Judge R² against what is normal for the kind of data, never against a fixed number.</p>
+  </div>
+
+  <h3>The four assumptions</h3>
+  <p>Python will fit a line to any two columns you hand it, including columns with no relationship whatsoever. It never warns you. These four conditions decide whether the numbers it returns mean anything.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Assumption</th><th>What it requires</th><th>What goes wrong without it</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Linearity</strong></td><td>The real relationship is a straight line, not a curve</td><td>The line misses systematically — too low at the ends, too high in the middle</td></tr>
+        <tr><td><strong>Independence</strong></td><td>One observation does not influence another</td><td>Common with measurements over time; makes the model look more certain than it is</td></tr>
+        <tr><td><strong>Constant scatter</strong></td><td>Points scatter about equally along the whole line</td><td>Predictions are far less reliable at one end than the other, and nothing says so</td></tr>
+        <tr><td><strong>Bell-shaped residuals</strong></td><td>The leftover misses are roughly bell-shaped</td><td>The p-value and any range around the slope become unreliable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ One plot checks three of them</p>
+    <p>Plot the residuals against the predictor. If the model is sound they should look like a <strong>random patternless cloud centred on zero</strong>. Any shape in that cloud is a warning, and the shape tells you which assumption failed.</p>
+    <p style="margin-bottom:0">None of this is visible in R². A model with an R² of 0.9 can have a badly curved residual plot, and it will make confident wrong predictions at both ends. <strong>Always draw the residual plot.</strong></p>
+  </div>
+
+  <div class="resgrid" id="resgrid"></div>
+
+  <h3>The dangers of predicting</h3>
+  <div class="card warn">
+    <p class="tagline">Going beyond your data</p>
+    <p>The study model says <span class="mono">marks = 35.5 + 5.56 × hours</span>. Feed it 40 hours and it cheerfully returns <strong>257.8 marks</strong> out of 100.</p>
+    <p>Nothing in the arithmetic objects, because the formula does not know marks stop at 100. The data ran from 1 to 10 hours, and the fitted line is evidence about that range and nothing outside it. Beyond the data the straight-line assumption is untested — and in this case obviously false, since study time must eventually stop paying.</p>
+    <p style="margin-bottom:0"><strong>Predict only within the range your data covers</strong>, and say what that range was when you report the model.</p>
+  </div>
+
+  <div class="card">
+    <h4>A prediction is not a promise</h4>
+    <p style="margin-bottom:0">The model predicts 77.2 marks for 7.5 hours. The typical residual in this data is about 4.6 marks, so a real student studying 7.5 hours might well score 70 or 84. The line predicts the <em>average</em> mark for students at that level of study, not the mark any particular one will get — the same distinction between individuals and averages that ran through Concept 3.</p>
+  </div>
+
+  <h3>The same model in scikit-learn</h3>
+  <p>One more interface, because it is the one the rest of your data science work will use. Same data, same answers, a pattern that extends to every other model you will meet.</p>
+  <pre class="code">from sklearn.linear_model import LinearRegression
+
+X = hours.reshape(-1, 1)          <span class="cm"># one column per predictor</span>
+model = LinearRegression().fit(X, marks)
+
+print(f"slope     = {model.coef_[0]:.2f}")
+print(f"intercept = {model.intercept_:.2f}")
+print(f"R-squared = {model.score(X, marks):.3f}")
+print(f"prediction = {model.predict([[7.5]])[0]:.1f}")</pre>
+  <pre class="out">slope     = 5.56
+intercept = 35.53
+R-squared = 0.931
+prediction = 77.2</pre>
+  <p style="margin-bottom:0"><code class="inl">.fit()</code> trains, <code class="inl">.predict()</code> forecasts, <code class="inl">.score()</code> reports the fit. Every model in the next unit follows those same three verbs — so having read this far, you have trained your first machine learning model.</p>
+
+  <div class="later">
+    <b>Where this leads.</b> Three natural extensions follow. <strong>More than one predictor</strong> — predicting marks from hours, attendance and previous results together, which is what most real models do. <strong>Predicting a category</strong> rather than a number, such as pass or fail. And <strong>testing on data the model has never seen</strong>, because a model fitted and judged on the same rows always flatters itself. All three belong to the applied work that follows this course.
+  </div>
+
+  <div class="card">
+    <h3>The whole course in one line</h3>
+    <p>It is worth seeing how much of this model is built from the seven concepts before it:</p>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Piece of the model</th><th>Comes from</th></tr></thead>
+        <tbody>
+          <tr><td>Squaring the residuals so they do not cancel</td><td>Concept 1 — the same reason variance squares its distances</td></tr>
+          <tr><td>The line passing through the mean of x and the mean of y</td><td>Concept 1 — the mean as the balancing point</td></tr>
+          <tr><td>The assumption that residuals are bell-shaped</td><td>Concept 2</td></tr>
+          <tr><td>The slope being an estimate that would differ in another sample</td><td>Concepts 3 and 4</td></tr>
+          <tr><td>The p-value software reports for the slope</td><td>Concept 5</td></tr>
+          <tr><td>Checking for a far-out point before trusting the line</td><td>Concept 6</td></tr>
+          <tr><td>Measuring how strongly the two move together</td><td>Concept 7</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">Six uses, and the first one is the one people forget regression is for.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">Regression gives you a <strong>number with a direction and a size</strong> — this much of that, per unit of this. That is why it survives alongside far more powerful methods: a slope can be argued about in a meeting, checked against experience, and used to make a decision. A model nobody can interpret rarely gets acted on.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six cases, including two where the line was fitted correctly and the conclusion drawn from it was wrong.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Six problems. The first fits a line entirely by hand, and the rest are about reading one correctly — which is where marks and job offers are actually won.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions. Regression is the most-asked topic in data science interviews, because it is the simplest model that can be got wrong in interesting ways.</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions drawing on the whole course.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  residuals:[
+    {t:"A random cloud", lab:"The model is sound", col:"var(--ok)", kind:"good",
+     p:"No pattern, centred on zero, roughly the same spread all the way across. This is what you want to see, and it is the only shape that confirms nothing is wrong."},
+    {t:"A curve", lab:"Linearity has failed", col:"var(--stop)", kind:"curve",
+     p:"The line is too low at both ends and too high in the middle, or the reverse. The real relationship bends and a straight line cannot follow it, so predictions are systematically wrong in a predictable way."},
+    {t:"A funnel", lab:"The scatter is not constant", col:"var(--saffron)", kind:"funnel",
+     p:"The spread grows as the predictor grows. The line may be fine on average, and predictions at the wide end are far less reliable than at the narrow end — with nothing in R² to warn you."}
+  ],
+
+  uses:[
+    {
+      name:"Explaining, not just predicting",
+      what:"A manager asks how much an extra day of delivery time costs in customer satisfaction. Not what satisfaction will be — how much one thing moves the other.",
+      how:"This is what the slope is for, and it is why regression survives alongside far more accurate methods. A slope of −0.4 says each extra day is associated with 0.4 fewer satisfaction points, which is a sentence a manager can act on. Many stronger models predict better and cannot answer the question at all.",
+      code:"from scipy import stats\n\nres = stats.linregress(df['delivery_days'], df['satisfaction'])\nprint(f'each extra day: {res.slope:+.2f} satisfaction points')\nprint(f'p-value for the slope: {res.pvalue:.4f}')\n# each extra day: -0.41 satisfaction points\n# p-value for the slope: 0.0003",
+      note:"Note the p-value. The slope is an estimate from a sample, so it would come out differently on other customers — and the test from Concept 5 says whether it is distinguishable from zero."
+    },
+    {
+      name:"Making a baseline before anything clever",
+      what:"Before building a complicated model, you need to know what a simple one achieves. Otherwise you cannot tell whether the complicated one earned its complexity.",
+      how:"Fit a straight line first. It takes a minute, it is easy to explain, and it sets the number every later model must beat. Surprisingly often it is not beaten by much — and when a far more elaborate model improves R² from 0.71 to 0.73, that is worth knowing before anyone commits to maintaining it.",
+      code:"from sklearn.linear_model import LinearRegression\n\nbaseline = LinearRegression().fit(X_train, y_train)\nprint('straight line :', round(baseline.score(X_test, y_test), 3))\nprint('fancy model   :', round(fancy.score(X_test, y_test), 3))\n# straight line : 0.712\n# fancy model   : 0.734",
+      note:"A complicated model that barely beats a straight line is usually the wrong choice. It costs more to run, more to explain and more to maintain, for very little in return."
+    },
+    {
+      name:"Filling gaps using a related column",
+      what:"A column has missing values, and another column that correlates with it is complete.",
+      how:"Rather than filling every gap with the same median, fit a line from the complete column and predict each missing value individually. Height is missing for some rows and weight is present, so the line gives each row its own estimate rather than one figure for everybody.",
+      code:"known   = df[df['height'].notna()]\nmissing = df[df['height'].isna()]\n\nres = stats.linregress(known['weight'], known['height'])\ndf.loc[df['height'].isna(), 'height'] = (\n    res.intercept + res.slope * missing['weight'])",
+      note:"Filled values sit exactly on the line, so they have no scatter of their own. That makes the column look less variable than it really is — worth recording which rows were filled."
+    },
+    {
+      name:"Removing a known effect before looking further",
+      what:"Sales rise every December. You want to know whether a campaign helped, and the seasonal rise swamps everything.",
+      how:"Fit a line for the effect you already understand, then work with the residuals. What is left over is the part the known effect does not explain, and any campaign effect will show up there far more clearly than in the raw numbers.",
+      code:"res = stats.linregress(df['month_index'], df['sales'])\ndf['expected']  = res.intercept + res.slope * df['month_index']\ndf['unexplained'] = df['sales'] - df['expected']\n\nprint(df.groupby('campaign')['unexplained'].mean().round(1))",
+      note:"This is the idea behind adding more predictors to a model: each one removes part of the variation so the next can be seen. Doing it in one model is better than in stages, and the intuition is the same."
+    },
+    {
+      name:"Checking that a measurement device agrees with a reference",
+      what:"A cheap sensor is compared against an accurate laboratory instrument across fifty samples.",
+      how:"Fit a line of sensor reading against reference reading. Perfect agreement would give a slope of exactly 1 and an intercept of exactly 0. A slope of 0.94 says the sensor under-reads proportionally; an intercept of 2.1 says it reads high by a fixed amount everywhere. Both are correctable once measured, which turns a cheap sensor into a usable one.",
+      code:"res = stats.linregress(reference, sensor)\nprint(f'slope {res.slope:.3f} (want 1.000)')\nprint(f'intercept {res.intercept:.2f} (want 0.00)')\n\n# correct the sensor using what the line found\ncorrected = (sensor - res.intercept) / res.slope",
+      note:"Calibration is one of the oldest uses of regression and one of the cleanest, because here the straight-line assumption is usually justified by physics rather than hoped for."
+    },
+    {
+      name:"Spotting the points that do not fit",
+      what:"After fitting, the residuals tell you which observations the model got badly wrong — and those are often the interesting ones.",
+      how:"Large residuals are cases the relationship does not describe. A shop whose sales are far above what its size and location predict is worth visiting to find out why. Concept 6's outlier rules applied to the residuals turn a model into a tool for finding exceptions rather than only for predicting.",
+      code:"df['predicted'] = res.intercept + res.slope * df['shop_size']\ndf['residual']  = df['sales'] - df['predicted']\n\nq1, q3 = df['residual'].quantile([0.25, 0.75])\niqr = q3 - q1\nunusual = df[(df['residual'] < q1 - 1.5*iqr) |\n             (df['residual'] > q3 + 1.5*iqr)]\nprint(unusual[['shop_id', 'sales', 'predicted', 'residual']])",
+      note:"A far-out point also drags the line towards itself, so it distorts the very model used to find it. Fit again without it and see how much the slope moves — if it moves a lot, that one point was driving your conclusion."
+    }
+  ],
+
+  examples:[
+    {
+      title:"Where the name came from",
+      color:"var(--teal)",
+      body:"Francis Galton studied the heights of parents and their adult children in the 1880s and noticed something that puzzled him. Very tall parents had tall children — but on average slightly shorter than themselves. Very short parents had short children, slightly taller than themselves.",
+      numbers:"The fitted slope was well below 1. Each generation's heights drifted back towards the overall average rather than spreading further apart, which is why the technique is called regression — the children's heights regressed towards the mean.",
+      lesson:"The effect is real and constantly misread as a cause. Any quantity measured twice with some randomness shows it, which is why the worst-performing branch usually improves next quarter whether or not anyone intervenes."
+    },
+    {
+      title:"A slope that decided a legal case",
+      color:"var(--blue)",
+      body:"Salary discrimination cases routinely turn on a regression fitted to employee data — salary predicted from experience, qualifications, role and gender.",
+      numbers:"A coefficient on gender of −₹48,000 means that among employees matched on the other measured factors, women earned ₹48,000 less on average. The interval around that estimate decides whether it is distinguishable from zero.",
+      lesson:"The argument in court is rarely about the arithmetic. It is about which factors were included, since a factor left out can produce an apparent effect and a factor wrongly included can hide a real one."
+    },
+    {
+      title:"A model that predicted 258 marks out of 100",
+      color:"var(--stop)",
+      body:"A student fits marks against study hours on data covering 1 to 10 hours and gets an excellent fit. Asked what 40 hours of study would produce, the model answers without hesitation.",
+      numbers:"marks = 35.5 + 5.56 × 40 = 257.8. The arithmetic is perfect and the answer is impossible, because nothing in the formula knows that marks stop at 100 or that study time eventually stops paying.",
+      lesson:"A fitted line is evidence about the range the data covered and nothing beyond it. Extrapolation is the commonest way a technically correct model produces a nonsensical answer."
+    },
+    {
+      title:"Four datasets, one identical line",
+      color:"var(--saffron)",
+      body:"In 1973 the statistician Frank Anscombe constructed four small datasets that share almost every summary number — the same means, the same fitted line, the same R². Plotted, they look nothing alike.",
+      numbers:"All four give a slope near 0.500 and an R² near 0.667. One is a sensible straight-line relationship. One is a clean curve. One is a perfect line with a single point knocked off it. One is a vertical stack with a single far-out point creating the entire slope.",
+      lesson:"Summary numbers cannot distinguish them and one glance at a plot can. It is the most quoted argument in statistics for looking at your data before trusting any number computed from it."
+    },
+    {
+      title:"Calibrating a cheap sensor",
+      color:"var(--teal)",
+      body:"An air quality project cannot afford reference-grade instruments for every location. It places cheap sensors alongside one accurate instrument for two weeks and fits a line.",
+      numbers:"The fit gives a slope of 0.94 and an intercept of 2.1 — the sensor reads about 6 percent low and 2.1 units high everywhere. Both are corrected in software, and the cheap sensor then tracks the reference closely.",
+      lesson:"Here the straight-line assumption is justified by how the instrument physically works rather than merely hoped for, which is what makes calibration one of the most trustworthy uses of regression."
+    },
+    {
+      title:"The model that worked until the range changed",
+      color:"var(--stop)",
+      body:"An electricity utility predicts demand from temperature using several years of data, and the model performs well. During an unusually severe heatwave it under-predicts badly and the grid is caught short.",
+      numbers:"The training data covered 18 to 41 °C. The heatwave reached 47 °C. Beyond about 42 °C demand rises far more steeply as air conditioning runs continuously — a curve the straight line, fitted below that point, could not have known about.",
+      lesson:"The model was not wrong; it was used outside the range it was evidence for. The failures that matter most are usually at the extremes, which is exactly where extrapolation happens."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — Fit a line entirely by hand",
+      prompt:"Five paired observations: x = 1, 2, 3, 4, 5 and y = 2, 4, 5, 4, 6. Find the least-squares line, the predicted values, the residuals and R².",
+      steps:[
+        {h:"Build the four sums",
+         b:"Everything comes from four totals, so make a table.<br><br><table style='font-size:.88rem;border-collapse:collapse'><tr><th style='padding:3px 14px 3px 0'>x</th><th style='padding:3px 14px 3px 0'>y</th><th style='padding:3px 14px 3px 0'>xy</th><th style='padding:3px 0'>x²</th></tr>"+
+           "<tr><td>1</td><td>2</td><td>2</td><td>1</td></tr><tr><td>2</td><td>4</td><td>8</td><td>4</td></tr>"+
+           "<tr><td>3</td><td>5</td><td>15</td><td>9</td></tr><tr><td>4</td><td>4</td><td>16</td><td>16</td></tr>"+
+           "<tr><td>5</td><td>6</td><td>30</td><td>25</td></tr>"+
+           "<tr style='border-top:1px solid #999'><td><b>15</b></td><td><b>21</b></td><td><b>71</b></td><td><b>55</b></td></tr></table><br>"+
+           "So <code class='inl'>n = 5</code>, <code class='inl'>Σx = 15</code>, <code class='inl'>Σy = 21</code>, <code class='inl'>Σxy = 71</code>, <code class='inl'>Σx² = 55</code>."},
+        {h:"Compute the slope",
+         b:"<code class='inl'>b₁ = (n·Σxy − Σx·Σy) ÷ (n·Σx² − (Σx)²)</code><br><br>Top: <code class='inl'>5 × 71 − 15 × 21 = 355 − 315 = 40</code><br>Bottom: <code class='inl'>5 × 55 − 15² = 275 − 225 = 50</code><br><br><code class='inl'>b₁ = 40 ÷ 50 = 0.80</code>"},
+        {h:"Compute the intercept",
+         b:"The line passes through the mean of x and the mean of y, so use that.<br><br><code class='inl'>x̄ = 15 ÷ 5 = 3</code> and <code class='inl'>ȳ = 21 ÷ 5 = 4.2</code><br><br><code class='inl'>b₀ = ȳ − b₁·x̄ = 4.2 − 0.80 × 3 = 4.2 − 2.4 = 1.80</code><br><br>The line is <strong>ŷ = 1.80 + 0.80x</strong>."},
+        {h:"Predictions and residuals",
+         b:"<table style='font-size:.88rem;border-collapse:collapse'><tr><th style='padding:3px 14px 3px 0'>x</th><th style='padding:3px 14px 3px 0'>actual y</th><th style='padding:3px 14px 3px 0'>predicted ŷ</th><th style='padding:3px 0'>residual</th></tr>"+
+           "<tr><td>1</td><td>2</td><td>2.6</td><td>−0.6</td></tr><tr><td>2</td><td>4</td><td>3.4</td><td>+0.6</td></tr>"+
+           "<tr><td>3</td><td>5</td><td>4.2</td><td>+0.8</td></tr><tr><td>4</td><td>4</td><td>5.0</td><td>−1.0</td></tr>"+
+           "<tr><td>5</td><td>6</td><td>5.8</td><td>+0.2</td></tr></table><br>"+
+           "Check: the residuals add to <code class='inl'>−0.6 + 0.6 + 0.8 − 1.0 + 0.2 = 0</code>. They always do for a least-squares line, which makes this a useful check on your arithmetic."},
+        {h:"Compute R²",
+         b:"Leftover — the squared residuals:<br><code class='inl'>0.36 + 0.36 + 0.64 + 1.00 + 0.04 = 2.4</code><br><br>Total — squared distances of each y from ȳ = 4.2:<br><code class='inl'>4.84 + 0.04 + 0.64 + 0.04 + 3.24 = 8.8</code><br><br><code class='inl'>R² = 1 − 2.4 ÷ 8.8 = 1 − 0.273 = 0.727</code><br><br>The line accounts for about 73 percent of the variation in y."},
+        {h:"State the result",
+         b:"<strong>ŷ = 1.80 + 0.80x</strong>, with R² = 0.727.<br><br>In words: each one-unit increase in x is associated with an increase of 0.8 in y, and the line accounts for roughly three quarters of the variation.<br><br>With only five points, treat this lightly. The slope is an estimate from a very small sample and would move considerably with a few more observations."}
+      ],
+      answer:"ŷ = 1.80 + 0.80x. Residuals −0.6, +0.6, +0.8, −1.0, +0.2, which sum to zero as they must. R² = 1 − 2.4/8.8 = 0.727."
+    },
+    {
+      title:"Problem 2 — Interpreting a fitted model",
+      prompt:"A model of marks against study hours gives ŷ = 35.53 + 5.56x with R² = 0.931, fitted on data covering 1 to 10 hours. (a) Interpret the slope. (b) Interpret the intercept. (c) Interpret R². (d) Predict the mark for 7.5 hours.",
+      steps:[
+        {h:"(a) The slope",
+         b:"Each additional hour of study is <strong>associated with about 5.6 more marks</strong>.<br><br>Two things about that wording. 'Associated with' rather than 'causes', because the data cannot tell the difference. And 'about', because 5.56 is an estimate from twenty students — a different twenty would give a different figure."},
+        {h:"(b) The intercept",
+         b:"A student studying zero hours is predicted to score <strong>about 35.5 marks</strong>.<br><br>Here the intercept happens to be meaningful, since zero hours is a real possibility and sits just outside the observed range of 1 to 10.<br><br>Often it is not meaningful at all. A model of house price against area would have an intercept for a house of zero square feet, which is a number the arithmetic produces and nobody should interpret."},
+        {h:"(c) R²",
+         b:"The line accounts for <strong>93.1 percent of the variation in marks</strong>.<br><br>Put another way, predicting the mean mark for everybody would leave a certain amount of error, and using study hours removes 93 percent of it. The remaining 7 percent is down to everything else — ability, sleep, luck with the questions.<br><br>For data about human behaviour 0.93 is unusually high, which is worth a moment's suspicion in real work."},
+        {h:"(d) The prediction",
+         b:"<code class='inl'>35.53 + 5.56 × 7.5 = 35.53 + 41.70 = 77.2</code> marks<br><br>7.5 sits comfortably inside the observed range of 1 to 10, so this is a legitimate prediction rather than an extrapolation."},
+        {h:"The caveat that belongs with (d)",
+         b:"77.2 is the predicted <strong>average</strong> for students studying 7.5 hours, not a promise about any individual.<br><br>The typical residual in this data is about 4.6 marks, so an actual student might score 70 or 84 without the model being wrong at all. Quoting 77.2 as though it were a forecast for one person overstates what the line can do."}
+      ],
+      answer:"(a) Each extra hour is associated with about 5.6 more marks. (b) Zero hours predicts about 35.5. (c) The line accounts for 93.1 percent of the variation. (d) 77.2 marks — an average for that study level, give or take about 4.6."
+    },
+    {
+      title:"Problem 3 — Spot the extrapolation",
+      prompt:"Using ŷ = 35.53 + 5.56x fitted on 1 to 10 hours, a student computes the predicted mark for 40 hours of study. (a) What does the formula give? (b) What is wrong? (c) What should be reported instead?",
+      steps:[
+        {h:"(a) Do the arithmetic",
+         b:"<code class='inl'>35.53 + 5.56 × 40 = 35.53 + 222.4 = 257.9</code> marks<br><br>The formula returns 257.9 out of 100 without complaint. Python would print it just as readily."},
+        {h:"(b) What has gone wrong",
+         b:"Two things, and the second is the general one.<br><br>The obvious problem is that marks cannot exceed 100, and the formula has no idea. It is arithmetic, not a model of examinations.<br><br>The general problem is <strong>extrapolation</strong>. The data covered 1 to 10 hours, so the line is evidence about that range. At 40 hours nothing was observed, the straight-line assumption was never tested, and it is almost certainly false — study time must eventually stop paying, and no student can study 40 hours a day."},
+        {h:"(c) What to report",
+         b:"That the question cannot be answered from this model.<br><br>The honest statement: <em>\"This model was fitted on 1 to 10 hours of study and should not be used outside that range. Predicting for 40 hours would require data at that level, and the relationship is unlikely to remain a straight line.\"</em>"},
+        {h:"The habit that prevents it",
+         b:"Record the range of the predictor alongside the fitted line, every time, and state it whenever the model is reported.<br><br>In code it is worth enforcing rather than remembering:<br><br><code class='inl'>if not (hours.min() <= new_x <= hours.max()): warn('outside the fitted range')</code><br><br>Real failures of this kind are rarely as obvious as 257 marks. The electricity model that under-predicted during a heatwave failed the same way, at a temperature only six degrees beyond its data."}
+      ],
+      answer:"(a) 257.9 marks. (b) Extrapolation — the data covered 1 to 10 hours, so the line is untested beyond it, and marks cannot exceed 100 in any case. (c) That the model cannot answer the question, with the fitted range stated explicitly."
+    },
+    {
+      title:"Problem 4 — Reading residual plots",
+      prompt:"Three models are fitted and their residual plots drawn. (a) A random cloud around zero. (b) A clear downward curve then upward again. (c) A funnel widening to the right. For each, say which assumption failed and what to do.",
+      steps:[
+        {h:"(a) The random cloud",
+         b:"<strong>Nothing has failed.</strong> A patternless cloud centred on zero with roughly constant spread is exactly what a sound model produces.<br><br>This is the only shape that confirms the assumptions hold. Report the model, and mention that the residuals were checked."},
+        {h:"(b) The curve",
+         b:"<strong>Linearity has failed.</strong> The real relationship bends and a straight line cannot follow it, so the line runs above the points in some regions and below in others — systematically, not randomly.<br><br>The damage: predictions are reliably wrong in a predictable pattern, too high in the middle and too low at both ends or the reverse.<br><br>What to do: add a squared term in the predictor, transform one of the quantities, or use a method that does not assume a straight line."},
+        {h:"(c) The funnel",
+         b:"<strong>Constant scatter has failed.</strong> The spread of the residuals grows as the predictor grows, which is very common when the response is a quantity like income, sales or price.<br><br>The damage is subtler than the curve. The slope may be perfectly reasonable, and predictions at the wide end are far less reliable than at the narrow end — with nothing in R² to say so.<br><br>What to do: take logarithms of the response, which often flattens the funnel, or use a method that allows the spread to vary."},
+        {h:"Why R² would not have told you",
+         b:"All three models could report an identical R². It measures how much variation the line accounts for and says nothing about whether the misses are patterned.<br><br>A model with an R² of 0.9 and a strongly curved residual plot will make confident wrong predictions at both ends of its range. That is exactly the situation Anscombe's four datasets were built to illustrate — same numbers, entirely different pictures."}
+      ],
+      answer:"(a) Nothing failed — this is a sound model. (b) Linearity failed; add a squared term, transform, or use a non-linear method. (c) Constant scatter failed; try logging the response. R² would look identical in all three cases, which is why the plot is essential."
+    },
+    {
+      title:"Problem 5 — Does a low R² mean a useless model?",
+      prompt:"A model predicting employee satisfaction from salary gives a slope of 0.31 with a p-value of 0.0002, and R² = 0.14. A colleague says the model is worthless. Respond.",
+      steps:[
+        {h:"Separate the two questions",
+         b:"The colleague has run together two different things.<br><br><strong>Is there a relationship?</strong> That is the slope and its p-value. <strong>How well can we predict an individual?</strong> That is R². A relationship can be real and still leave most of the variation unexplained."},
+        {h:"What the slope and p-value say",
+         b:"The slope of 0.31 with p = 0.0002 says the relationship is very unlikely to be sampling variation. Salary and satisfaction genuinely move together in this workforce, and each unit of salary is associated with 0.31 more satisfaction points.<br><br>For a question like 'does pay affect how people feel about their job', that is a real finding."},
+        {h:"What R² says",
+         b:"R² = 0.14 means salary accounts for 14 percent of the variation in satisfaction, so 86 percent comes from everything else — manager, colleagues, workload, commute, health, life outside work.<br><br>So the model is <strong>poor at predicting any individual's satisfaction</strong> and that is entirely unsurprising. Human behaviour is affected by hundreds of things, and one measured quantity explaining 14 percent of it is a normal result rather than a failure."},
+        {h:"The answer to the colleague",
+         b:"<em>\"It depends what you want it for. As a predictor of an individual's satisfaction it is weak, and 86 percent of the variation is driven by things we have not measured. As evidence that pay and satisfaction are related it is solid — the relationship is clear and unlikely to be chance. If we want to predict individuals we need more predictors; if we want to know whether pay matters, we already have our answer.\"</em>"},
+        {h:"The general principle",
+         b:"There is no universal threshold for a good R². Judge it against what is normal for the field.<br><br>Predicting a machined dimension from a machine setting might demand 0.99, because the physics is nearly deterministic. Predicting human behaviour from one quantity is doing well at 0.30. The same R² of 0.14 would be a disaster in the first case and unremarkable in the second."}
+      ],
+      answer:"Not worthless — the colleague has conflated two questions. The slope and its p-value say the relationship is real; R² = 0.14 says salary alone predicts individuals poorly. For a behavioural question that combination is normal and informative."
+    },
+    {
+      title:"Problem 6 — What the line cannot tell you",
+      prompt:"A model of marks against study hours gives a slope of 5.56 with p < 0.001 and R² = 0.93. Which of these conclusions are supported? (a) Studying more causes higher marks. (b) Study hours and marks move together strongly. (c) A student who studies 3 more hours will score about 17 more marks. (d) Study hours are the main driver of marks.",
+      steps:[
+        {h:"(b) — take the safe one first",
+         b:"<strong>Supported.</strong> This is exactly what the model establishes. A strong association, unlikely to be chance given the p-value, with the line accounting for 93 percent of the variation.<br><br>It is also the weakest-sounding of the four, which is the point — it is the one the arithmetic actually supports."},
+        {h:"(a) — the causal claim",
+         b:"<strong>Not supported.</strong> The students chose how much to study; nobody assigned them. Motivated students may both study more and score higher, in which case motivation produces the pattern and study hours merely mark it. The arrow could even run backwards, with students who find the subject easy enjoying it and studying more.<br><br>Only random assignment would license the causal claim, and this was observational data."},
+        {h:"(c) — the individual prediction",
+         b:"<strong>Not supported as stated.</strong> Two problems.<br><br>The arithmetic is right — 3 × 5.56 ≈ 16.7 marks. But that is a statement about <em>averages</em>: students who study 3 hours more score about 17 marks higher on average. It is not a forecast for one named student, and the typical residual of 4.6 marks means an individual could easily land well away from it.<br><br>The word 'will' is also doing causal work, which brings back the problem from (a). A student who simply studies more may not gain 17 marks if study hours were standing in for something else."},
+        {h:"(d) — the 'main driver' claim",
+         b:"<strong>Not supported.</strong> R² of 0.93 says study hours account for 93 percent of the variation <em>in this data</em>, which is not the same as being the main cause.<br><br>If the students in the sample happened to be similar in ability, then ability contributes little variation here and study hours look dominant. In a more varied group the same model would explain far less. R² describes how a predictor performed on the sample collected, not its importance in general."},
+        {h:"What you can safely say",
+         b:"<em>\"Across these twenty students, study hours and marks were strongly associated. Each additional hour corresponded to about 5.6 more marks on average, and study hours accounted for 93 percent of the variation in this sample. Because students chose their own study time, this does not establish that studying more causes higher marks.\"</em><br><br>Every clause is defensible, and it is the last sentence that separates a careful analyst from a careless one."}
+      ],
+      answer:"Only (b) is supported. (a) claims causation from observational data. (c) turns an average into an individual forecast and smuggles in causation. (d) mistakes R² on one sample for general importance."
+    }
+  ],
+
+  interview:[
+    {
+      q:"Explain linear regression to somebody with no statistics background.",
+      a:"It draws the straight line that fits best through a cloud of points, so you can use one quantity to predict another. If you know how many hours somebody studied, the line gives you a reasonable guess at their marks.<br><br>Two numbers describe the line. The slope says how much the prediction changes for each extra unit — five and a half marks per hour of study. The intercept says where the line starts.<br><br>'Best fit' has a precise meaning: of all possible lines, it is the one that makes the total squared vertical distance from the points to the line as small as possible.",
+      probe:"An explanation question, and how you handle it signals whether you can talk to non-technical colleagues. Reaching for jargon here is the failure mode."
+    },
+    {
+      q:"What does the slope actually tell you?",
+      a:"The average change in the response for a one-unit increase in the predictor. A slope of 5.56 means each additional hour of study is associated with about 5.6 more marks.<br><br>Three qualifications belong with it. It is an average across the data, not a promise about any individual. It is an estimate from a sample, so it would differ on other data — which is why software reports a p-value and a range alongside it. And 'associated with' is not 'causes', unless the data came from an experiment where the predictor was assigned.",
+      probe:"The definition is the easy part. Whether you volunteer the causal caution without being prompted is what is really being watched."
+    },
+    {
+      q:"What is R² and what does a low value mean?",
+      a:"The share of the variation in the response that the model accounts for, from 0 to 1. R² of 0.93 means the line removes 93 percent of the error you would have had by simply predicting the mean for everybody.<br><br>A low R² means the model predicts individual cases poorly — and it does not mean the relationship is fake. A slope can be clearly real, with a small p-value, while R² sits at 0.14, because the response is affected by many things the model does not include. That is normal for anything involving human behaviour.<br><br>There is no universal threshold. Judge it against what is typical for the field: 0.99 might be required in engineering and 0.30 might be a good result in social science.",
+      probe:"The separation between 'is there a relationship' and 'can we predict individuals' is the point of the question. Candidates who treat low R² as automatic failure have missed it."
+    },
+    {
+      q:"What are the assumptions of linear regression, and how do you check them?",
+      a:"Four. Linearity — the real relationship is a straight line. Independence — observations do not influence one another, which is a real concern with data over time. Constant scatter — the spread around the line is similar all the way along. And roughly bell-shaped residuals.<br><br>The check for three of them is one plot: residuals against the predictor. A random patternless cloud centred on zero means all is well. A curve means linearity has failed. A funnel means the scatter is not constant.<br><br>None of this shows up in R², which is why the plot is not optional.",
+      probe:"Listing the four is expected. Knowing that one plot diagnoses three of them, and that R² is silent on all of it, is what makes the answer strong."
+    },
+    {
+      q:"Why are the residuals squared rather than just added up?",
+      a:"Because they would cancel. Positive and negative residuals offset each other, and in fact the least-squares line always has residuals summing to exactly zero — so that total carries no information about the fit at all.<br><br>Squaring removes the signs, and it also penalises large misses more heavily than small ones, which is usually what you want from a prediction.<br><br>It is the same reasoning that underlies the standard deviation, where distances from the mean also sum to zero and have to be squared before averaging.",
+      probe:"Connecting it back to the standard deviation shows you see the shared idea rather than two separate rules."
+    },
+    {
+      q:"What is extrapolation and why is it dangerous?",
+      a:"Using the model outside the range of predictor values it was fitted on. The fitted line is evidence about the range the data covered, and beyond that the straight-line assumption was never tested.<br><br>The clearest example: a model of marks against study hours fitted on 1 to 10 hours predicts 258 marks out of 100 for 40 hours. The arithmetic is correct and the answer is impossible.<br><br>Real failures are less obvious. An electricity demand model fitted between 18 and 41 degrees under-predicted badly during a heatwave at 47, because demand rises far more steeply once air conditioning runs continuously. The failures that matter tend to be at the extremes, which is exactly where extrapolation happens.",
+      probe:"A concrete example lands far better than the abstract definition. The point about failures clustering at the extremes is worth adding."
+    },
+    {
+      q:"A model has a high R² but a curved residual plot. What do you do?",
+      a:"Do not trust it, despite the R². A curve in the residuals means the true relationship bends and the straight line cannot follow it, so predictions are systematically wrong in a predictable pattern — too high in the middle and too low at both ends, or the reverse.<br><br>High R² and a curved residual plot can happen together easily, because R² measures how much variation is accounted for and says nothing about whether the misses are patterned.<br><br>The fixes: add a squared term in the predictor, transform one of the quantities, or use a method that does not assume a straight line. Then refit and look at the residual plot again.",
+      probe:"They are checking whether R² is treated as the final word. Recognising that a good R² and a broken model coexist comfortably is the answer."
+    },
+    {
+      q:"Your model shows sales rising with advertising spend. Does advertising cause sales?",
+      a:"Not on that evidence. The model shows they move together, and there are at least three explanations it cannot distinguish between.<br><br>Advertising might genuinely drive sales. Or something else drives both — a company spends more on advertising in months when it expects strong demand, so the expectation drives the spend and the sales alike. Or the arrow runs backwards: good months produce revenue that funds more advertising.<br><br>What would settle it is randomised assignment — running the campaign in randomly chosen regions and comparing against held-out ones. That is a question about the study design, not about the analysis.",
+      probe:"A judgement question, and the one most often failed in practice rather than in interviews. Offering the experiment that would resolve it is what completes the answer."
+    },
+    {
+      q:"How would a single far-out point affect your fitted line?",
+      a:"Potentially enormously, especially one far out along the predictor axis. Least squares minimises squared distances, so a point far from the rest contributes an enormous squared residual and the line swings towards it — sometimes far enough that the slope is driven almost entirely by that one observation.<br><br>What I would do: check for such points before fitting, using a scatter plot and the IQR rule on each quantity. Then fit with and without the point and compare the slopes. If the slope moves substantially, one observation is driving the conclusion and that fact belongs in the report.<br><br>What I would not do is delete it automatically. It may be an error, or it may be the most informative observation in the dataset.",
+      probe:"The refit-and-compare test is the practical answer. Refusing to delete automatically shows judgement rather than procedure."
+    },
+    {
+      q:"When would you not use linear regression?",
+      a:"When the relationship is clearly not a straight line and cannot be made into one by a transformation. When the thing being predicted is a category rather than a number — pass or fail needs a different method. When observations are strongly dependent on each other, as with data over time, since that breaks the independence assumption.<br><br>And when interpretability does not matter and accuracy is everything. Regression's great strength is that the slope is a sentence a manager can act on. If nobody needs to understand the model and a more flexible method predicts better, the reason for choosing regression largely disappears.",
+      probe:"An open question testing whether you know the tool's boundaries. The last point — choosing regression for interpretability rather than accuracy — shows you understand why it survives alongside better predictors."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"What does the least-squares method minimise?",
+      opts:[
+        {t:"The sum of the residuals",
+         fb:"That sum is always exactly zero for the fitted line, whatever the data — so it carries no information about the fit and cannot be what is minimised."},
+        {t:"The largest single residual",
+         fb:"A reasonable-sounding alternative and a different method. Least squares works on the total of the squared residuals rather than the worst one."},
+        {t:"The number of points that miss the line",
+         fb:"Almost every point misses the line, and how far each misses is what matters rather than how many."},
+        {t:"The sum of the squared vertical distances from the points to the line", ok:true,
+         fb:"Right. Squaring removes the signs so residuals cannot cancel, and it penalises large misses more heavily than small ones."}
+      ]
+    },
+    {
+      stem:"A model gives ŷ = 20 + 3x. What does the slope of 3 mean?",
+      opts:[
+        {t:"y is three times as large as x, whatever value x happens to take",
+         fb:"That would be a line with no intercept passing through the origin. The slope describes change, not a ratio between the two quantities."},
+        {t:"Each one-unit increase in x is associated with a rise of 3 in y", ok:true,
+         fb:"Right, and the phrase 'associated with' matters. Unless the data came from an experiment, the model cannot establish that x causes the change."},
+        {t:"The model explains 3 percent of the variation in y",
+         fb:"That would be R², which is a separate number entirely and always sits between 0 and 1."},
+        {t:"When x is zero, y is predicted to be 3 rather than the value given by the intercept term in the equation",
+         fb:"When x is zero the prediction is 20, which is the intercept. The slope describes how the prediction changes as x moves."}
+      ]
+    },
+    {
+      stem:"A model has R² = 0.15 and a slope with p = 0.0003. What is the right reading?",
+      opts:[
+        {t:"The model is broken, since a low R² means the results cannot be trusted",
+         fb:"A low R² and a real relationship coexist comfortably. The two numbers answer different questions."},
+        {t:"There is a real relationship, but the predictor explains little of the variation in individual cases", ok:true,
+         fb:"Right. The p-value says the relationship is unlikely to be chance; R² says one predictor cannot pin down individuals. For human behaviour that combination is entirely normal."},
+        {t:"The p-value must be wrong, because R² is too low to support it",
+         fb:"They measure different things and do not constrain each other. A clear relationship can leave most of the variation unexplained."},
+        {t:"The relationship is real and strong, since the p-value is very small and a small p-value indicates a large effect",
+         fb:"A small p-value indicates the effect is unlikely to be chance, not that it is large. Size is what R² and the slope describe."}
+      ]
+    },
+    {
+      stem:"A model fitted on study hours from 1 to 10 is used to predict the marks for 40 hours. What is the problem?",
+      opts:[
+        {t:"Extrapolation — the model has no evidence about that range", ok:true,
+         fb:"Right. The straight-line assumption was never tested beyond 10 hours, and here it gives 258 marks out of 100. Real cases are usually less obvious and just as wrong."},
+        {t:"Nothing, provided the R² of the model was high",
+         fb:"R² describes the fit within the observed range and says nothing about behaviour outside it."},
+        {t:"The slope would need recomputing for the larger value of x",
+         fb:"The slope is a single number for the whole line. The problem is the range the line is evidence for, not the arithmetic."},
+        {t:"The intercept becomes meaningless once the predictor moves that far from zero, so the prediction cannot be computed",
+         fb:"The prediction computes without difficulty — that is precisely the danger. The formula returns an impossible answer without complaint."}
+      ]
+    },
+    {
+      stem:"You plot the residuals against the predictor and see a clear funnel widening to the right. What has failed?",
+      opts:[
+        {t:"Linearity",
+         fb:"A failure of linearity shows as a curve in the residuals. A funnel is about the spread rather than the shape."},
+        {t:"Independence",
+         fb:"Dependence between observations is a different problem and does not usually appear as a funnel."},
+        {t:"Nothing — a funnel is what a healthy residual plot looks like",
+         fb:"A healthy residual plot is a patternless cloud with roughly constant spread. A funnel is a pattern."},
+        {t:"Constant scatter — the spread grows with the predictor", ok:true,
+         fb:"Right, and it is common when the response is income, sales or price. The slope may be fine while predictions at the wide end are far less reliable, with nothing in R² to warn you."}
+      ]
+    },
+    {
+      stem:"Why is the intercept often not worth interpreting?",
+      opts:[
+        {t:"Because it is always zero in a correctly fitted model",
+         fb:"It is rarely zero. It is whatever value makes the line pass through the mean of x and the mean of y."},
+        {t:"Because it is not used when making predictions",
+         fb:"It is used in every prediction — it is the starting value the slope builds on."},
+        {t:"Because x = 0 is often impossible or far outside the observed data", ok:true,
+         fb:"Right. A house of zero square feet or a person of zero height is not a case the data speaks to, so the intercept is arithmetic keeping the line in the right place rather than a meaningful prediction."},
+        {t:"Because the intercept is measured in different units from the slope, which makes the two impossible to compare with one another",
+         fb:"They are in different units and that is not the issue. The intercept is in the units of y and is perfectly interpretable when x = 0 is a real, observed possibility."}
+      ]
+    },
+    {
+      stem:"Which conclusion is supported by a regression showing marks rising with study hours, on data where students chose their own study time?",
+      opts:[
+        {t:"Studying more causes higher marks",
+         fb:"The students chose their own study time. Motivated students may both study more and score higher, so motivation could be producing the whole pattern."},
+        {t:"Marks and study hours are strongly associated in this data", ok:true,
+         fb:"Right, and it is deliberately the weakest-sounding of the options. It is what the arithmetic actually establishes, and going further requires random assignment."},
+        {t:"Study hours are the main cause of differences in marks",
+         fb:"R² describes how a predictor performed on this sample rather than its importance in general. In a group with more varied ability the same model would explain far less."},
+        {t:"A student who increases study time by two hours will definitely gain about eleven marks in their next examination",
+         fb:"Three problems at once: 'definitely' overstates, an average is being applied to an individual, and 'will gain' is a causal claim this data cannot support."}
+      ]
+    },
+    {
+      stem:"What happens to the residuals of a correctly fitted least-squares line?",
+      opts:[
+        {t:"They are all positive",
+         fb:"Points sit on both sides of the line, so residuals come in both signs."},
+        {t:"They are all smaller than one",
+         fb:"Their size depends entirely on the units and the scatter. There is no such limit."},
+        {t:"They are all equal to one another in size and in sign",
+         fb:"That would mean every point missed by exactly the same amount, which does not happen with real data."},
+        {t:"They add up to exactly zero, whatever the data", ok:true,
+         fb:"Right, and it makes a useful check when working by hand. It is also why the residuals must be squared before totalling — the raw sum carries no information."}
+      ]
+    },
+    {
+      stem:"A single point sits far out along the predictor axis. What is the risk?",
+      opts:[
+        {t:"It has no effect, since one point among many cannot change a fitted line",
+         fb:"A point far out along the predictor axis can have more influence on the slope than all the other points combined."},
+        {t:"It can pull the line towards itself and drive the slope almost by itself", ok:true,
+         fb:"Right. Least squares minimises squared distances, so a far-out point contributes an enormous squared residual and the line swings to reduce it. Fit with and without it and compare."},
+        {t:"It will always be flagged automatically before the model is fitted",
+         fb:"Nothing warns you. Python fits a line to whatever it is given, which is why the check has to be yours."},
+        {t:"It makes R² fall to zero, which immediately reveals that something has gone wrong with the fitted model",
+         fb:"Such a point often <em>raises</em> R², because it stretches the range of the data. It hides the problem rather than revealing it."}
+      ]
+    },
+    {
+      stem:"Anscombe's four datasets share the same fitted line and the same R² but look completely different when plotted. What is the lesson?",
+      opts:[
+        {t:"R² is not a useful measure and should not be reported",
+         fb:"R² is useful and incomplete. The lesson is about what it cannot see rather than about abandoning it."},
+        {t:"Summary numbers cannot distinguish very different situations, so always plot the data", ok:true,
+         fb:"Right. One of the four is a clean straight-line relationship, one is a curve, one is a line with a point knocked off, and one is driven entirely by a single far-out point. A glance at a plot separates them instantly."},
+        {t:"Linear regression should not be used on small datasets",
+         fb:"Size is not the issue — the same thing can happen with thousands of points. The issue is relying on summaries without looking."},
+        {t:"Four datasets can never share the same summary statistics unless the underlying data values are themselves identical to one another",
+         fb:"Anscombe constructed exactly such datasets to prove the opposite, and they are famous precisely because they are so different."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [3,1,2,0,3,2,1,3,0,2];
+
+const HOURS=[1,2,3,4,5,6,7,8,9,10,2,4,6,8,3,5,7,9,1,10];
+const MARKS=[38,52,57,53,60,65,77,80,90,81,53,55,72,79,48,65,79,85,37,96];
+const BEST={b1:5.5576, b0:35.5333, ssr:379.50};
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+/* ---- least squares explorer ---- */
+function drawFit(){
+  const b1=(+$("#b1").value)/100, b0=(+$("#b0").value)/100;
+  $("#b1v").textContent=b1.toFixed(2);
+  $("#b0v").textContent=b0.toFixed(1);
+  let ssr=0;
+  HOURS.forEach((h,i)=>{ const e=MARKS[i]-(b0+b1*h); ssr+=e*e; });
+  $("#f_ssr").textContent=ssr.toFixed(1);
+  $("#f_eq").textContent=`${b0.toFixed(1)} + ${b1.toFixed(2)}x`;
+  const gap=ssr-BEST.ssr;
+  $("#f_verdict").innerHTML = gap<0.5
+    ? `<div class="verdict keep">You have found it. No line can do better than 379.5 on this data.</div>`
+    : `<div class="verdict rej">Your line is ${gap.toFixed(0)} worse than the best possible. Keep adjusting, or press the snap button.</div>`;
+
+  const W=640,H=290,L=48,R=20,T=18,BM=40, xMax=11, yMin=25, yMax=105;
+  const sx=v=>L+(v/xMax)*(W-L-R), sy=v=>H-BM-((v-yMin)/(yMax-yMin))*(H-BM-T);
+  let g="";
+  for(let v=0;v<=10;v+=2) g+=`<line x1="${sx(v)}" y1="${T}" x2="${sx(v)}" y2="${H-BM}" stroke="#EDF2F0"/>`+
+    `<text x="${sx(v)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  for(let v=40;v<=100;v+=20) g+=`<line x1="${L}" y1="${sy(v)}" x2="${W-R}" y2="${sy(v)}" stroke="#EDF2F0"/>`+
+    `<text x="${L-8}" y="${sy(v)+4}" font-size="10.5" fill="#4A6862" text-anchor="end" font-family="IBM Plex Mono">${v}</text>`;
+  let segs="", dots="";
+  HOURS.forEach((h,i)=>{
+    const p=b0+b1*h, a=MARKS[i];
+    segs+=`<line x1="${sx(h).toFixed(1)}" y1="${sy(a).toFixed(1)}" x2="${sx(h).toFixed(1)}" y2="${sy(p).toFixed(1)}" stroke="#A63A1E" stroke-width="1.3" opacity="0.55"/>`;
+    dots+=`<circle cx="${sx(h).toFixed(1)}" cy="${sy(a).toFixed(1)}" r="4" fill="#0F5B4F" opacity="0.72"/>`;
+  });
+  const line=`<line x1="${sx(0)}" y1="${sy(b0)}" x2="${sx(xMax)}" y2="${sy(b0+b1*xMax)}" stroke="#3C6E8F" stroke-width="2.4"/>`;
+  $("#fitplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter of hours against marks with a movable line and its residuals">
+    ${g}${segs}${line}${dots}
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <line x1="${L}" y1="${T}" x2="${L}" y2="${H-BM}" stroke="#12312B"/>
+    <text x="${W/2}" y="${H-6}" font-size="11" fill="#4A6862" text-anchor="middle">hours studied</text>
+    <text x="14" y="${(H-BM)/2}" font-size="11" fill="#4A6862" text-anchor="middle" transform="rotate(-90 14 ${(H-BM)/2})">marks</text></svg>`;
+}
+["b1","b0"].forEach(id=>$("#"+id).addEventListener("input",drawFit));
+$("#snap").onclick=()=>{
+  $("#b1").value=Math.round(BEST.b1*100);
+  $("#b0").value=Math.round(BEST.b0*100/5)*5;
+  drawFit();
+};
+$("#reset").onclick=()=>{ $("#b1").value=200; $("#b0").value=5000; drawFit(); };
+drawFit();
+
+/* ---- R2 against scatter ---- */
+let sd0=777;
+const rr=()=>{ sd0=(sd0*1103515245+12345)&0x7fffffff; return sd0/0x7fffffff; };
+function drawR2(){
+  const noise=(+$("#noise").value)/10;
+  $("#noisev").textContent=noise.toFixed(1);
+  sd0=777;
+  const xs=[], ys=[];
+  for(let i=0;i<40;i++){
+    const x=1+rr()*9;
+    let g=0; for(let j=0;j<4;j++) g+=rr(); g=(g-2)/0.577;
+    xs.push(x); ys.push(35+5.5*x + g*noise*1.6);
+  }
+  const n=xs.length;
+  const mx=xs.reduce((a,b)=>a+b,0)/n, my=ys.reduce((a,b)=>a+b,0)/n;
+  let sxy=0, sxx=0;
+  for(let i=0;i<n;i++){ sxy+=(xs[i]-mx)*(ys[i]-my); sxx+=(xs[i]-mx)**2; }
+  const b1=sxy/sxx, b0=my-b1*mx;
+  let ssr=0, sst=0;
+  for(let i=0;i<n;i++){ const p=b0+b1*xs[i]; ssr+=(ys[i]-p)**2; sst+=(ys[i]-my)**2; }
+  const r2=1-ssr/sst;
+  $("#r2_val").textContent=r2.toFixed(3);
+  $("#r2_slope").textContent=b1.toFixed(2);
+  $("#r2_rmse").textContent=Math.sqrt(ssr/n).toFixed(1);
+
+  const W=640,H=250,L=48,R=20,T=18,BM=38, xMax=11, yMin=0, yMax=130;
+  const sx=v=>L+(v/xMax)*(W-L-R), sy=v=>H-BM-((v-yMin)/(yMax-yMin))*(H-BM-T);
+  let g="";
+  for(let v=0;v<=10;v+=2) g+=`<text x="${sx(v)}" y="${H-BM+16}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  for(let v=0;v<=120;v+=40) g+=`<line x1="${L}" y1="${sy(v)}" x2="${W-R}" y2="${sy(v)}" stroke="#EDF2F0"/>`+
+    `<text x="${L-8}" y="${sy(v)+4}" font-size="10.5" fill="#4A6862" text-anchor="end" font-family="IBM Plex Mono">${v}</text>`;
+  const dots=xs.map((x,i)=>`<circle cx="${sx(x).toFixed(1)}" cy="${sy(ys[i]).toFixed(1)}" r="3.6" fill="#0F5B4F" opacity="0.6"/>`).join("");
+  const line=`<line x1="${sx(0)}" y1="${sy(b0)}" x2="${sx(xMax)}" y2="${sy(b0+b1*xMax)}" stroke="#3C6E8F" stroke-width="2.4"/>`;
+  $("#r2plot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter with a fitted line, scatter amount controlled by the slider">
+    ${g}${dots}${line}<line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <line x1="${L}" y1="${T}" x2="${L}" y2="${H-BM}" stroke="#12312B"/></svg>`;
+}
+$("#noise").addEventListener("input",drawR2);
+drawR2();
+
+/* ---- residual pattern gallery ---- */
+$("#resgrid").innerHTML = CONCEPT.residuals.map((r,ri)=>{
+  const W=250,H=110,L=22,R=10,T=10,BM=20;
+  let sd=313+ri*97;
+  const rn=()=>{ sd=(sd*1103515245+12345)&0x7fffffff; return sd/0x7fffffff; };
+  const gs=()=>{ let s=0; for(let j=0;j<4;j++) s+=rn(); return (s-2)/0.577; };
+  const mid=(T+H-BM)/2;
+  const sx=t=>L+t*(W-L-R);
+  let dots="";
+  for(let i=0;i<34;i++){
+    const t=rn();
+    let e;
+    if(r.kind==="good") e=gs()*0.30;
+    else if(r.kind==="curve") e=(1.9*Math.pow(t-0.5,2)-0.16)*2.4 + gs()*0.10;
+    else e=gs()*0.09*(1+t*5.5);
+    const y=mid - e*((H-BM-T)/2.2);
+    dots+=`<circle cx="${sx(t).toFixed(1)}" cy="${Math.max(T+3,Math.min(H-BM-3,y)).toFixed(1)}" r="2.9" fill="${r.col}" opacity="0.6"/>`;
+  }
+  return `<div class="rcard">
+    <h4>${r.t}</h4><p class="lab" style="color:${r.col};font-weight:600">${r.lab}</p>
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Residual plot: ${r.t}">
+      <line x1="${L}" y1="${mid}" x2="${W-R}" y2="${mid}" stroke="#12312B" stroke-dasharray="3 3"/>
+      ${dots}
+      <text x="${L-6}" y="${mid+4}" font-size="9" fill="#4A6862" text-anchor="end" font-family="IBM Plex Mono">0</text></svg>
+    <p>${r.p}</p></div>`;
+}).join("");
+
+/* ---- content ---- */
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card"><h3>${i+1}. ${u.name}</h3><p>${u.what}</p><p>${u.how}</p>
+  <pre class="code">${esc(u.code)}</pre>
+  <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p></div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}"><h3>${e.title}</h3><p>${e.body}</p>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+  <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p></div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card"><h3>${p.title}</h3>
+  <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+  ${p.steps.map((s,si)=>`
+    <div class="step" id="st${pi}_${si}">
+      <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+      <div class="body"><p>${s.b}</p></div></div>`).join("")}
+  <div class="step" id="st${pi}_ans">
+    <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+    <div class="body"><div class="answerline"><b>${p.answer}</b></div></div></div></div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div></div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pc=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pc} percent.</p>
+      <p style="margin-bottom:0">${pc>=80
+        ? "That is the last concept in the course. The habits worth carrying forward are the smallest ones: draw the residual plot, state the range you fitted on, and say 'associated with' rather than 'causes'."
+        : "Go back to the least-squares explorer and the three residual plots. Between them they cover most of what these questions ask."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>

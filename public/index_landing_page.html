@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistics for Data Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --blue:#3C6E8F; --radius:10px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 80px}
+
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:44px;padding-bottom:40px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 10px;letter-spacing:.04em;text-transform:uppercase}
+h1{font-size:clamp(1.7rem,4.4vw,2.7rem);margin:0 0 14px;font-weight:600;line-height:1.12;max-width:20ch}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:1.02rem}
+
+.tabs{margin:30px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.tabs li{
+  font-size:.8rem;color:#BCD8D0;border:1px solid #3A7A6C;border-radius:20px;
+  padding:4px 13px;display:flex;align-items:center;gap:7px;
+}
+.tabs li b{font-family:"IBM Plex Mono",monospace;color:#EAF3F0;font-weight:600}
+
+.intro{margin:34px 0 10px;max-width:72ch;color:var(--ink-soft)}
+.intro strong{color:var(--ink);font-weight:600}
+.seqnote{
+  max-width:72ch;margin:0 0 24px;background:#fff;border:1px solid var(--rule);
+  border-left:4px solid var(--saffron);border-radius:var(--radius);padding:14px 18px;
+  font-size:.92rem;color:var(--ink-soft);
+}
+.seqnote b{color:var(--ink);font-weight:600}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+
+a.ccard{
+  display:flex;flex-direction:column;background:var(--card);border:1px solid var(--rule);
+  border-radius:var(--radius);padding:20px 20px 18px;text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;
+  transition:transform .13s ease, box-shadow .13s ease, border-color .13s ease;
+}
+a.ccard::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--saffron);
+  transform:scaleY(0);transform-origin:top;transition:transform .16s ease;
+}
+a.ccard:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(18,49,43,.10);border-color:var(--teal)}
+a.ccard:hover::before{transform:scaleY(1)}
+a.ccard:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+
+.num{
+  font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;
+  color:var(--teal);background:var(--teal-dim);border-radius:5px;
+  padding:2px 8px;align-self:flex-start;margin:0 0 11px;
+}
+a.ccard h2{font-size:1.06rem;font-weight:600;margin:0 0 7px;line-height:1.3}
+a.ccard p.qn{margin:0 0 16px;font-size:.93rem;color:var(--ink-soft);flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.tags span{
+  font-size:.74rem;color:#8A5602;background:var(--saffron-dim);
+  border-radius:4px;padding:2px 8px;white-space:nowrap;
+}
+.go{
+  font-size:.83rem;font-weight:600;color:var(--teal);
+  display:flex;align-items:center;gap:6px;
+  border-top:1px solid var(--rule);padding-top:12px;
+}
+.go svg{transition:transform .13s ease}
+a.ccard:hover .go svg{transform:translateX(3px)}
+
+footer{margin:44px 0 0;padding-top:22px;border-top:1px solid var(--rule);color:var(--ink-soft);font-size:.88rem;max-width:72ch}
+footer b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Introduction to Data Science</p>
+    <h1>Statistics for Data Science</h1>
+    <p class="lede">Eight concepts that build on one another, from summarising a single column of numbers to fitting a line that predicts. Every concept has the same six tabs, and everything is built from arithmetic you already have.</p>
+    <ul class="tabs">
+      <li><b>1</b> Fundamentals</li>
+      <li><b>2</b> In Data Science</li>
+      <li><b>3</b> Real World</li>
+      <li><b>4</b> Solved Problems</li>
+      <li><b>5</b> Interview Qs</li>
+      <li><b>6</b> Test Yourself</li>
+    </ul>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="intro">Each concept starts from what you already know and adds one idea. No term appears without being explained, and anything held back for a later concept is flagged where you would expect to meet it.</p>
+
+  <p class="seqnote"><b>Work through these in order.</b> Unlike the twelve problems, these concepts are sequential — each one uses the ones before it. Concept 8 draws on all seven that come before, and starting in the middle will leave gaps.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    Every concept ends with <b>ten questions that explain both the right answer and the wrong ones</b>, so read the feedback either way. Interview answers are worth saying aloud before opening them.
+  </footer>
+</main>
+
+<script>
+const CONCEPTS = [
+  { n:1, file:"/concept/1", title:"Measures of Central Tendency and Spread",
+    q:"Six numbers that summarise a column — and why choosing the wrong one quietly misleads.",
+    tags:["Mean, median, mode","Standard deviation","Robust vs sensitive"] },
+  { n:2, file:"/concept/2", title:"Probability Distributions",
+    q:"Describing the data you might get, rather than the data you already have.",
+    tags:["Normal","Binomial","Poisson","68–95–99.7 rule"] },
+  { n:3, file:"/concept/3", title:"The Central Limit Theorem",
+    q:"Why the average of a handful of values behaves so much better than the values themselves.",
+    tags:["Sampling variation","Standard error","The √n rule"] },
+  { n:4, file:"/concept/4", title:"Sampling and Sampling Distributions",
+    q:"How to take a sample worth trusting, and how to turn one answer into an honest range.",
+    tags:["Sampling methods","Bias vs variability","Confidence intervals"] },
+  { n:5, file:"/concept/5", title:"Hypothesis Testing",
+    q:"Deciding whether a result is bigger than chance alone would produce.",
+    tags:["Null hypothesis","p-value","Type I and II errors","t-test"] },
+  { n:6, file:"/concept/6", title:"Shape, Quartiles and Unusual Values",
+    q:"Cutting data into quarters, measuring lopsidedness, and a defensible rule for outliers.",
+    tags:["Quartiles and IQR","Box plots","Skewness","Outlier rules"] },
+  { n:7, file:"/concept/7", title:"Correlation",
+    q:"How strongly two quantities move together — and where that number lies to you.",
+    tags:["Scatter plots","Correlation coefficient","Rank correlation","Causation"] },
+  { n:8, file:"/concept/8", title:"Simple Linear Regression",
+    q:"Fitting a line so you can predict one quantity from another.",
+    tags:["Least squares","Slope and intercept","R squared","Residual plots"] }
+];
+
+const arrow = '<svg width="14" height="10" viewBox="0 0 14 10" fill="none" aria-hidden="true">'+
+  '<path d="M1 5h11M8.5 1.5 12 5l-3.5 3.5" stroke="currentColor" stroke-width="1.6" '+
+  'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+document.getElementById("grid").innerHTML = CONCEPTS.map(c => `
+  <a class="ccard" href="${c.file}" target="_top">
+    <span class="num">Concept ${c.n}</span>
+    <h2>${c.title}</h2>
+    <p class="qn">${c.q}</p>
+    <div class="tags">${c.tags.map(t => `<span>${t}</span>`).join("")}</div>
+    <span class="go">Start with the fundamentals ${arrow}</span>
+  </a>`).join("");
+</script>
+</body>
+</html>

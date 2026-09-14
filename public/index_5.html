@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 5 · Hypothesis Testing — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card.recall{border-left:4px solid var(--ok);background:var(--ok-dim)}
+.card.warn{border-left:4px solid var(--stop);background:#FDF3F0}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.card.recall .tagline{color:var(--ok)}
+.card.warn .tagline{color:var(--stop)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:12px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{border-left:3px solid var(--saffron);background:var(--saffron-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#7A4E02;max-width:74ch}
+.later b{font-weight:600}
+.later::before{content:"COMING LATER";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:#A8720B;margin:0 0 3px}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+td.err1{background:var(--stop-dim)} td.err2{background:var(--saffron-dim)} td.okc{background:var(--ok-dim)}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap;min-width:172px}
+input[type=range]{flex:1;min-width:160px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:58px;text-align:right}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px;align-items:center}
+.chip{appearance:none;border:1px solid var(--rule);background:#fff;border-radius:20px;font:inherit;font-size:.86rem;padding:7px 15px;cursor:pointer;color:var(--ink)}
+.chip:hover{border-color:var(--teal);background:var(--teal-dim)}
+.chip[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
+.chip:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.16rem;font-weight:600;line-height:1.25;color:var(--teal)}
+.stat.hi .v{color:var(--stop)}
+.stat.am .v{color:#8A5602}
+.verdict{margin:12px 0 0;padding:11px 15px;border-radius:8px;font-size:.95rem;font-weight:600}
+.verdict.rej{background:var(--stop-dim);color:#7E2C16;border-left:3px solid var(--stop)}
+.verdict.keep{background:var(--ok-dim);color:#16523E;border-left:3px solid var(--ok)}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+.flow{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+.fstep{flex:1 1 170px;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:13px 15px;position:relative}
+.fstep .n{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;color:#fff;background:var(--teal);width:20px;height:20px;border-radius:5px;display:grid;place-items:center;margin:0 0 7px}
+.fstep h4{margin:0 0 4px;font-size:.9rem}
+.fstep p{margin:0;font-size:.85rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 5 of 8</p>
+    <h1>Hypothesis Testing</h1>
+    <p class="lede">A method for deciding whether a result is bigger than chance alone would produce — and the p-value, which is the most useful and most misquoted number in statistics.</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">The courtroom logic behind every statistical test, what a p-value actually says, and the two ways a test can be wrong.</p>
+
+  <div class="card recall">
+    <p class="tagline">From Concepts 3 and 4</p>
+    <p style="margin-bottom:0">Two things carry forward and do all the work. Sample means vary from sample to sample, and the <strong>standard error</strong> measures how much. A <strong>confidence interval</strong> turns an estimate into a range of plausible values. This concept asks a different question of the same machinery: not "which values are plausible" but <strong>"is what I am seeing bigger than ordinary sampling variation"</strong>.</p>
+  </div>
+
+  <h3>The problem</h3>
+  <div class="card">
+    <p>A class taught by a new method averages 74.6 marks. The old average was 70. Did the method work?</p>
+    <p>You cannot answer by looking. From Concept 3 you know that a sample of students would land somewhere near 70 even if the method changed nothing at all — sampling variation alone produces gaps of a few marks routinely. So the real question is:</p>
+    <p style="margin-bottom:0"><strong>If the method changed nothing, how often would ordinary variation hand me a gap this large?</strong> If the answer is "often", the gap proves nothing. If the answer is "almost never", something other than chance is at work.</p>
+  </div>
+
+  <h3>The courtroom logic</h3>
+  <p>A statistical test borrows its structure directly from a criminal trial, and the analogy is worth taking seriously because it explains several things that otherwise look like pedantry.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>In court</th><th>In a test</th></tr></thead>
+      <tbody>
+        <tr><td>The accused is presumed innocent</td><td>Assume nothing is going on — no effect, no difference</td></tr>
+        <tr><td>The prosecution presents evidence</td><td>You collect data</td></tr>
+        <tr><td>Is the evidence strong enough to overturn the presumption?</td><td>Would data like this be surprising if nothing were going on?</td></tr>
+        <tr><td>Verdict: guilty, or not guilty</td><td>Verdict: reject the assumption, or fail to reject it</td></tr>
+        <tr><td><strong>"Not guilty" is not the same as "innocent"</strong></td><td><strong>"Fail to reject" is not the same as "no effect exists"</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Null hypothesis</dt>
+      <dd>Written H₀. The sceptical starting position: nothing is going on. The new method makes no difference, the two groups are the same, the machine is correctly set. This is what you assume true until the evidence forces you to abandon it.</dd>
+      <dt>Alternative hypothesis</dt>
+      <dd>Written H₁. The claim you suspect might be true: the method helps, the groups differ, the machine has drifted. You never try to prove this directly — you build a case against H₀ instead.</dd>
+      <dt>Test statistic</dt>
+      <dd>A single number summarising how far your data sits from what H₀ predicts, measured in standard errors. A test statistic of 3 means your result is three standard errors from where H₀ said it should be.</dd>
+    </dl>
+  </div>
+
+  <div class="card tip">
+    <p class="tagline">💡 Why the roundabout route?</p>
+    <p style="margin-bottom:0">It seems perverse to assume the opposite of what you believe. The reason is that <strong>H₀ is a specific claim and H₁ is a vague one</strong>. "The method adds nothing" pins down exactly what the data should look like, so you can compute how likely your result was. "The method helps" does not say by how much, so there is nothing to compute. You can only measure surprise against a specific prediction, and H₀ is the only one available.</p>
+  </div>
+
+  <h3>The five steps</h3>
+  <div class="flow">
+    <div class="fstep"><div class="n">1</div><h4>State H₀ and H₁</h4><p>Before looking at the data. H₀ is always the "nothing is happening" version.</p></div>
+    <div class="fstep"><div class="n">2</div><h4>Choose α</h4><p>How much risk of a false alarm you will accept. Conventionally 0.05.</p></div>
+    <div class="fstep"><div class="n">3</div><h4>Collect the data</h4><p>And compute the test statistic — how many standard errors from H₀ you landed.</p></div>
+    <div class="fstep"><div class="n">4</div><h4>Find the p-value</h4><p>How often ordinary variation would produce a result this extreme if H₀ were true.</p></div>
+    <div class="fstep"><div class="n">5</div><h4>Decide and report</h4><p>Compare p against α, state the verdict, and give the size of the effect.</p></div>
+  </div>
+
+  <h3>The p-value</h3>
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>p-value</dt>
+      <dd>The probability of getting a result at least as extreme as the one you got, <strong>assuming H₀ is true</strong>. That last clause is not decoration — it is the whole definition, and dropping it produces every one of the common misreadings.</dd>
+    </dl>
+  </div>
+
+  <p>Read it as a measure of surprise. A small p-value says: if nothing were going on, data like mine would almost never appear — so perhaps something is going on. A large p-value says: if nothing were going on, data like mine would turn up all the time — so this proves nothing either way.</p>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">Move the result and watch the p-value</h4>
+    <p style="font-size:.9rem;color:var(--ink-soft);margin:0 0 12px">The curve is what H₀ predicts: sample results scattered around the null value, with the spread given by the standard error. The shaded tails are results at least as extreme as yours.</p>
+    <div class="sliderow"><label for="obs">Your result, in standard errors</label><input type="range" id="obs" min="0" max="40" step="1" value="20"><span class="readout" id="obsv">2.00</span></div>
+    <div class="chips" id="alpha"><span style="font-size:.9rem;font-weight:600;margin-right:4px">Significance level α</span></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="pplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Test statistic</div><div class="v" id="p_t">—</div></div>
+      <div class="stat hi"><div class="l">p-value</div><div class="v" id="p_p">—</div></div>
+      <div class="stat"><div class="l">Threshold α</div><div class="v" id="p_a">—</div></div>
+    </div>
+    <div id="p_verdict"></div>
+  </div>
+  <p class="legend">Notice that the p-value slides smoothly as you move the result — there is no natural cliff anywhere on it. A statistic of 1.95 and one of 2.00 describe almost identical evidence, yet at α = 0.05 they fall on opposite sides of the verdict. That arbitrariness is real, and it is the single best reason to report the p-value itself rather than only the word "significant".</p>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Significance level, α</dt>
+      <dd>The threshold you choose <strong>before collecting data</strong>, below which you will treat the result as evidence against H₀. Conventionally 0.05, which means accepting a 1-in-20 chance of raising a false alarm. It is a convention, not a law of nature.</dd>
+    </dl>
+  </div>
+
+  <div class="card warn">
+    <p class="tagline">What a p-value is not</p>
+    <p>Every one of these is wrong, and all five are said routinely, including by people who should know better. Take p = 0.03:</p>
+    <ul class="plain" style="margin-bottom:12px">
+      <li><strong>"There is a 3 percent chance H₀ is true."</strong> No. The p-value is computed <em>assuming</em> H₀ is true — it cannot then tell you the chance that it is. The direction of the reasoning runs the other way.</li>
+      <li><strong>"There is a 97 percent chance the effect is real."</strong> No, for the same reason.</li>
+      <li><strong>"The effect is large."</strong> No. A p-value says nothing whatsoever about size. A tiny effect measured on a huge sample gives a very small p.</li>
+      <li><strong>"p = 0.06 means there is no effect."</strong> No. It means this data was not surprising enough to overturn the assumption. Absence of evidence is not evidence of absence.</li>
+      <li><strong>"p = 0.03 is three times more convincing than p = 0.09."</strong> No. p-values are not on a linear scale of evidence and do not divide like that.</li>
+    </ul>
+    <p style="margin-bottom:0">The safe habit: whenever you say a p-value out loud, say the phrase <em>"assuming there is no effect"</em> in the same breath. Nearly every misreading dies on contact with that clause.</p>
+  </div>
+
+  <h3>Two ways to be wrong</h3>
+  <p>You are deciding from a sample, so you can be wrong — and there are exactly two ways, which are not interchangeable.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>H₀ is actually true<br><span style="font-weight:400;text-transform:none">(nothing is going on)</span></th><th>H₀ is actually false<br><span style="font-weight:400;text-transform:none">(something is going on)</span></th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>You reject H₀</strong><br><span style="color:var(--ink-soft);font-size:.86rem">you announce an effect</span></td>
+          <td class="err1"><strong>Type I error</strong><br>A false alarm. You announce something that is not there. The chance of this is α.</td>
+          <td class="okc"><strong>Correct</strong><br>You found a real effect.</td>
+        </tr>
+        <tr>
+          <td><strong>You fail to reject H₀</strong><br><span style="color:var(--ink-soft);font-size:.86rem">you announce nothing</span></td>
+          <td class="okc"><strong>Correct</strong><br>Nothing was there and you said so.</td>
+          <td class="err2"><strong>Type II error</strong><br>A miss. Something real was there and you did not detect it. The chance of this is β.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Power</dt>
+      <dd>The chance of detecting an effect that is genuinely there, equal to 1 − β. A test with 80 percent power finds a real effect four times in five and misses it the fifth time. Power rises with the sample size and with the size of the effect.</dd>
+    </dl>
+  </div>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">The two errors, and the trade between them</h4>
+    <p style="font-size:.9rem;color:var(--ink-soft);margin:0 0 12px">The left curve is what H₀ predicts. The right curve is what would happen if the effect were real. The vertical line is your decision threshold, set by α.</p>
+    <div class="sliderow"><label for="eff">Size of the real effect</label><input type="range" id="eff" min="5" max="45" step="1" value="25"><span class="readout" id="effv">2.5</span></div>
+    <div class="sliderow"><label for="alp">Significance level α</label><input type="range" id="alp" min="1" max="20" step="1" value="5"><span class="readout" id="alpv">0.05</span></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="errplot"></div></div>
+    <div class="statgrid">
+      <div class="stat hi"><div class="l">Type I error rate, α</div><div class="v" id="e_a">—</div></div>
+      <div class="stat am"><div class="l">Type II error rate, β</div><div class="v" id="e_b">—</div></div>
+      <div class="stat"><div class="l">Power, 1 − β</div><div class="v" id="e_pow">—</div></div>
+    </div>
+  </div>
+  <p class="legend">Drag α down to 0.01 to reduce false alarms and watch β rise — you catch fewer real effects. Drag it up and the reverse happens. The two cannot both be reduced by moving the threshold; the only way to improve both at once is a larger sample, which pushes the curves apart.</p>
+
+  <div class="card key">
+    <p class="tagline">★ Which error is worse is not a statistical question</p>
+    <p>It depends entirely on what happens next, and the person who knows that is the doctor, the engineer or the manager — not the statistician.</p>
+    <ul class="plain" style="margin-bottom:0">
+      <li><strong>Screening for a serious illness.</strong> A miss means an untreated patient; a false alarm means one more test. Type II is far worse, so use a larger α and accept more false alarms.</li>
+      <li><strong>A spam filter.</strong> A false alarm sends a real email to the junk folder; a miss lets one advert through. Type I is worse, so use a small α.</li>
+      <li><strong>A drug approval.</strong> A false alarm puts an ineffective drug on the market. Regulators use a small α deliberately.</li>
+    </ul>
+  </div>
+
+  <h3>Running a test: the t-test</h3>
+  <p>The t-test is the workhorse for comparing means, and it comes in two forms that cover most of what you will need.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Form</th><th>The question</th><th>H₀</th><th class="mono">In Python</th></tr></thead>
+      <tbody>
+        <tr><td><strong>One-sample</strong></td><td>Does this group's mean differ from a target value?</td><td>The true mean equals the target</td><td class="mono">ttest_1samp(data, target)</td></tr>
+        <tr><td><strong>Two-sample</strong></td><td>Do these two groups have different means?</td><td>The two true means are equal</td><td class="mono">ttest_ind(a, b)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <pre class="code"><span class="cm"># One-sample: did the new teaching method beat the old average of 70?</span>
+import numpy as np
+from scipy import stats
+
+scores = np.array([72, 75, 68, 80, 78, 74, 71, 77, 69, 82, 73, 76])
+
+t, p = stats.ttest_1samp(scores, 70)
+print(f"sample mean = {scores.mean():.2f}")
+print(f"t = {t:.3f},  p = {p:.4f}")</pre>
+  <pre class="out">sample mean = 74.58
+t = 3.715,  p = 0.0034</pre>
+  <p>p = 0.0034 is well below 0.05. If the true mean really were 70, a class this far above it would appear about 3 times in 1,000. That is surprising enough to abandon H₀ — and the mean of 74.6 tells you the direction and the size.</p>
+
+  <pre class="code"><span class="cm"># Two-sample: did the workshop group outperform the others?</span>
+group_a = np.array([72, 75, 68, 80, 78, 74, 71, 77])
+group_b = np.array([65, 70, 62, 68, 72, 66, 69, 64])
+
+t, p = stats.ttest_ind(group_a, group_b)
+print(f"A mean = {group_a.mean():.1f},  B mean = {group_b.mean():.1f}")
+print(f"t = {t:.3f},  p = {p:.5f}")</pre>
+  <pre class="out">A mean = 74.4,  B mean = 67.0
+t = 4.026,  p = 0.00125</pre>
+  <p style="margin-bottom:0">A 7.4-mark gap with p = 0.00125. Gaps this large would arise from sampling variation about once in 800 times if the two groups were really the same, so the difference is worth taking seriously.</p>
+
+  <div class="card tip">
+    <p class="tagline">💡 Other tests you will hear named</p>
+    <p style="margin-bottom:0">The t-test is one of a family, all following the same five steps and differing only in what they compare. The <strong>z-test</strong> is used when the population's spread is known or the sample is very large. The <strong>chi-square test</strong> handles counts falling into categories rather than means. <strong>ANOVA</strong> compares more than two groups at once. You do not need any of them yet — recognising that they share the same logic is enough, and the t-test is what this concept covers properly.</p>
+  </div>
+
+  <h3>How this connects to confidence intervals</h3>
+  <p>The test and the interval from Concept 4 are two views of the same calculation, and each answers a question the other cannot.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>Hypothesis test</th><th>Confidence interval</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Answers</strong></td><td>Is there an effect?</td><td>How big is the effect, plausibly?</td></tr>
+        <tr><td><strong>Gives you</strong></td><td>A yes-or-no verdict and a p-value</td><td>A range of values</td></tr>
+        <tr><td><strong>Weakness</strong></td><td>Says nothing about size</td><td>Gives no single verdict</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ The rule that links them</p>
+    <p>For a difference between two groups, tested at α = 0.05:</p>
+    <ul class="plain" style="margin-bottom:0">
+      <li>If the <strong>95 percent interval for the difference excludes zero</strong>, then <strong>p &lt; 0.05</strong> — the test rejects H₀.</li>
+      <li>If the <strong>interval includes zero</strong>, then <strong>p ≥ 0.05</strong> — the test does not reject H₀.</li>
+    </ul>
+  </div>
+
+  <p>They cannot disagree, because both are built from the same estimate and the same standard error. Zero is the value H₀ claims, so asking "does the plausible range include what H₀ claims?" and "is our result surprising under H₀?" are the same question in different words.</p>
+
+  <div class="card">
+    <h4>Why the interval is usually the better thing to report</h4>
+    <p>Consider a test on two million users that finds a conversion improvement of 0.02 percentage points, with p &lt; 0.001. The result is real — with a sample that large, even a tiny effect is detectable.</p>
+    <p style="margin-bottom:0">And it is worthless. Nobody should rebuild a product for 0.02 points. The p-value cannot tell you that, because it measures surprise rather than size. The confidence interval — say 0.015 to 0.025 points — makes the uselessness immediately visible. <strong>Statistical significance and practical importance are different things</strong>, and only one of the two numbers shows you both.</p>
+  </div>
+
+  <div class="card warn">
+    <p class="tagline">Two more traps worth knowing about</p>
+    <ul class="plain" style="margin-bottom:0">
+      <li><strong>Testing many things at once.</strong> Run 20 tests at α = 0.05 on data where nothing at all is going on, and you should expect about one "significant" result purely by chance. Choosing the interesting comparison after seeing the data is the same problem wearing a disguise.</li>
+      <li><strong>Stopping when the answer looks good.</strong> Checking a running experiment repeatedly and halting the moment p drops below 0.05 badly inflates the false-alarm rate. Fix the sample size in advance, or use a method designed for repeated checking.</li>
+    </ul>
+  </div>
+
+  <div class="later">
+    <b>What comes after this.</b> Everything so far has compared means or percentages. The remaining concepts turn to relationships between two quantities — measuring how strongly they move together, and fitting a line that predicts one from the other. Both use hypothesis tests internally, so the vocabulary from this concept reappears there, applied to a different question.
+  </div>
+
+  <div class="card">
+    <h3>What this concept deliberately leaves out</h3>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Idea</th><th>What it will add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Choosing a sample size for a given power</strong></td><td>Working out in advance how many observations are needed to detect an effect of a stated size</td></tr>
+          <tr><td><strong>Tests for categories and for many groups</strong></td><td>Chi-square and ANOVA, which follow the same five steps applied to different comparisons</td></tr>
+          <tr><td><strong>Correcting for many tests</strong></td><td>Formal adjustments when you run dozens of comparisons at once</td></tr>
+          <tr><td><strong>One-tailed tests</strong></td><td>When the question is directional — "is it higher" rather than "is it different" — and why this must be decided before seeing the data</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">Six places where a test decides whether a result is acted on — and one where the test is the wrong tool.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">A test answers one narrow question: <strong>is this bigger than chance?</strong> It never answers "is it big enough to matter", "is it worth the cost", or "did I measure the right thing". Those remain yours to answer, and the commonest failure in practice is treating a small p-value as though it had settled all four.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six cases, including two where the test was done correctly and the conclusion was still wrong.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Six problems. Two run a test end to end, two are about stating the conclusion without overclaiming, and two cover the errors and the link to intervals.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions. The p-value definition is asked in almost every interview and answered wrongly in most of them, so practise saying it aloud.</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions using this concept and the four before it.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  uses:[
+    {
+      name:"Deciding whether a product change worked",
+      what:"Two versions of a checkout page run for a week. One converts 4.0 percent of 5,000 visitors, the other 4.8 percent. Roll it out?",
+      how:"H₀ is that the two versions convert at the same rate and the observed gap is sampling variation. Compute the difference, its standard error, and how many standard errors from zero it sits. Here 0.8 percentage points against a standard error of 0.41 gives a test statistic of 1.95 and a p-value of 0.051 — just above the conventional threshold, which is an uncomfortable but honest place to be.",
+      code:"import numpy as np\nfrom scipy import stats\n\nn = 5000\np1, p2 = 200/n, 240/n\nse = np.sqrt(p1*(1-p1)/n + p2*(1-p2)/n)\nz  = (p2 - p1) / se\n\nprint(f'difference {100*(p2-p1):.1f} points, se {100*se:.2f}')\nprint(f'z = {z:.2f},  p = {2*(1-stats.norm.cdf(abs(z))):.4f}')\n# difference 0.8 points, se 0.41\n# z = 1.95,  p = 0.0511",
+      note:"A p of 0.051 and a p of 0.049 describe the same evidence. The right response is to run longer for a clearer answer, not to report one as a success and the other as a failure."
+    },
+    {
+      name:"Checking whether a process has drifted",
+      what:"A machine should fill bottles to 500 ml. Ten bottles average 498.5 ml. Has it drifted, or is this ordinary variation?",
+      how:"A one-sample t-test against the target of 500. H₀ is that the true fill is still 500. With a standard error of 0.96 the test statistic comes to −1.57 and p to 0.152 — nowhere near surprising enough to conclude the machine has drifted. Ten bottles simply cannot detect a 1.5 ml shift, which is itself the useful finding.",
+      code:"import numpy as np\nfrom scipy import stats\n\nbottles = np.array([498, 502, 495, 501, 499, 497, 503, 496, 500, 494])\nt, p = stats.ttest_1samp(bottles, 500)\n\nprint(f'mean {bottles.mean():.1f}   t = {t:.3f}   p = {p:.4f}')\n# mean 498.5   t = -1.567   p = 0.1516",
+      note:"Failing to detect drift is not evidence the machine is fine. If a 1.5 ml shift matters, the answer is more bottles per check rather than a different conclusion from these ten."
+    },
+    {
+      name:"Comparing two models properly",
+      what:"Model A scores 84 percent and model B 86 percent on the same test set. Is B genuinely better?",
+      how:"Test the difference rather than eyeballing it. The strongest version evaluates both models on the <em>same</em> rows and tests the rows where they disagree, which removes the variation caused by some rows simply being harder. H₀ is that the two models are equally likely to be right on a row where they differ.",
+      code:"import numpy as np\nfrom scipy import stats\n\n# on rows where the two models disagree, who was right?\na_right = (pred_a == y) & (pred_b != y)\nb_right = (pred_b == y) & (pred_a != y)\n\nprint('A right, B wrong:', a_right.sum())\nprint('B right, A wrong:', b_right.sum())\nres = stats.binomtest(b_right.sum(), a_right.sum() + b_right.sum(), 0.5)\nprint('p =', round(res.pvalue, 4))",
+      note:"Comparing two scores computed on the same rows is far more sensitive than comparing them as though they came from separate samples, because the shared difficulty of the rows cancels out."
+    },
+    {
+      name:"Testing whether a feature carries information",
+      what:"Before building anything, does this column actually differ between the groups you are trying to tell apart?",
+      how:"Split the column by the outcome and test whether the two means differ. A large p-value suggests the column may add little on its own — though it may still be useful in combination with others, so this is a screening tool rather than a decision procedure.",
+      code:"from scipy import stats\n\nchurned = df[df['churned'] == 1]['calls_to_support']\nstayed  = df[df['churned'] == 0]['calls_to_support']\n\nt, p = stats.ttest_ind(churned, stayed)\nprint(f'churned mean {churned.mean():.2f}, stayed {stayed.mean():.2f}')\nprint(f'p = {p:.5f}')",
+      note:"Careful here. Testing every column and keeping the ones with small p-values is exactly the many-tests trap — with 40 columns and nothing going on, about two will look significant by chance."
+    },
+    {
+      name:"Sizing an experiment before running it",
+      what:"How long must an experiment run to have a fair chance of detecting the improvement you care about?",
+      how:"This is a question about power. Decide the smallest improvement worth acting on, choose the power you want — 80 percent is conventional — and work out the sample needed. Running an experiment that is too small to detect the effect you care about wastes the whole exercise, because a null result then tells you nothing at all.",
+      code:"from statsmodels.stats.power import NormalIndPower\nfrom statsmodels.stats.proportion import proportion_effectsize\n\neffect = proportion_effectsize(0.048, 0.040)   # 4.0% -> 4.8%\nn = NormalIndPower().solve_power(effect, power=0.8, alpha=0.05)\nprint(f'visitors needed per version: {n:,.0f}')\n# visitors needed per version: 11,165",
+      note:"Note how much larger this is than the 5,000 per version in the first example. That experiment was underpowered from the start, which is why it produced an ambiguous answer."
+    },
+    {
+      name:"Knowing when not to test at all",
+      what:"You have the entire population — every transaction, every user, every part produced last year. Should you run a test?",
+      how:"No. A hypothesis test asks whether a difference could be an accident of which rows happened to land in your sample. If you have every row, there was no sampling, and the difference you observe is simply the difference. Reporting a p-value here is a category error.",
+      code:"# every order placed in the financial year -- not a sample\nprint(orders.groupby('region')['value'].mean())\n\n# the right question is not 'is this difference real?'\n# it is 'is this difference large enough to act on?'\nprint((orders.groupby('region')['value'].mean() / orders['value'].mean() - 1).round(3))",
+      note:"The same applies in reverse to very large samples. With ten million rows almost any difference becomes statistically significant, so the p-value stops carrying information and the effect size becomes the only thing worth reading."
+    }
+  ],
+
+  examples:[
+    {
+      title:"The tea-tasting experiment that started it all",
+      color:"var(--teal)",
+      body:"In 1920s Cambridge a colleague of the statistician Ronald Fisher claimed she could tell whether milk had been poured into a cup before or after the tea. Rather than argue, Fisher designed a test.",
+      numbers:"Eight cups, four of each kind, presented in random order. If she were guessing, the chance of identifying all four of one type correctly is 1 in 70, or about 0.014. She got all eight right.",
+      lesson:"The whole framework is visible in miniature. H₀ was that she was guessing; the p-value was how unlikely a perfect score would be under guessing; and the design was fixed in advance so the result could not be argued with afterwards."
+    },
+    {
+      title:"An experiment that stopped at the wrong moment",
+      color:"var(--stop)",
+      body:"A product team runs an experiment and checks the dashboard every morning. On the ninth day the p-value dips below 0.05 for the first time. The team stops the test and declares victory.",
+      numbers:"Checking daily for two weeks and stopping at the first significant result raises the false-alarm rate from the intended 5 percent to roughly 25 percent. The team has quietly given itself five times the risk it thought it was taking.",
+      lesson:"The p-value assumes one test on a sample whose size was fixed in advance. Peeking repeatedly and stopping when you like the answer breaks that assumption, and it is one of the commonest sources of results that fail to replicate."
+    },
+    {
+      title:"A drug that works, statistically",
+      color:"var(--saffron)",
+      body:"A trial with 40,000 participants finds that a treatment reduces the duration of an illness. The result is reported as highly significant, with a very small p-value.",
+      numbers:"The effect: illness shortened by an average of 3 hours, with a 95 percent interval of 2.1 to 3.9 hours. With 40,000 participants even this small effect is detected easily.",
+      lesson:"Real and unimportant are compatible. The p-value established that the effect exists; only the interval tells a doctor it amounts to three hours, which is what decides whether to prescribe it."
+    },
+    {
+      title:"Twenty questions and one false alarm",
+      color:"var(--stop)",
+      body:"A researcher collects data on twenty possible causes of an outcome and tests each one at α = 0.05. One comes back significant, and it becomes the headline finding.",
+      numbers:"If none of the twenty had any effect at all, the chance of at least one appearing significant is about 64 percent. Finding exactly one significant result among twenty tests is what you should expect when nothing is going on.",
+      lesson:"A single significant result plucked from many tests carries almost no weight on its own. It is a hypothesis to test properly on fresh data, not a finding."
+    },
+    {
+      title:"Where a false alarm costs more than a miss",
+      color:"var(--blue)",
+      body:"An email provider tunes its spam filter. Marking a genuine email as spam loses the user something they needed; letting an advert through is a minor annoyance.",
+      numbers:"The filter is set with a deliberately small α — treating each email as innocent until strong evidence accumulates. The consequence is that more spam reaches the inbox, which is accepted as the price.",
+      lesson:"The choice of α encodes a judgement about consequences, not a statistical fact. A cancer screening programme facing the opposite cost structure sets it the other way."
+    },
+    {
+      title:"A null result that was the finding",
+      color:"var(--teal)",
+      body:"An institute compares an expensive new set of teaching materials against the existing ones across 400 students. The test returns p = 0.42.",
+      numbers:"The observed difference was 0.6 marks, with a 95 percent interval of −0.9 to 2.1. The study was large enough that a difference of 3 marks or more would almost certainly have been detected.",
+      lesson:"Reported as \"no effect found\", this is weak. Reported with the interval, it is strong — the data rules out any improvement above about 2 marks, which is enough to decide against the purchase. A null result from an adequately powered study is genuinely informative."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — A one-sample t-test, end to end",
+      prompt:"Twelve students taught by a new method score 72, 75, 68, 80, 78, 74, 71, 77, 69, 82, 73, 76. The long-run average under the old method was 70. Test at α = 0.05 whether the new method differs, and state the conclusion properly.",
+      steps:[
+        {h:"Step 1 — state the hypotheses",
+         b:"<strong>H₀:</strong> the true mean under the new method is 70. The method changed nothing.<br><strong>H₁:</strong> the true mean is not 70.<br><br>Note that H₁ says 'not 70' rather than 'above 70'. Testing for a difference in either direction is the safer default, and choosing the directional version after seeing that the mean came out high would be cheating."},
+        {h:"Step 2 — choose α before looking",
+         b:"α = 0.05, the convention. You are accepting a 1-in-20 chance of announcing an effect that is not there.<br><br>The word <em>before</em> matters. Choosing α after seeing the p-value makes the whole exercise meaningless."},
+        {h:"Step 3 — compute the test statistic",
+         b:"Sample mean = <code class='inl'>895 ÷ 12 = 74.58</code><br>Standard deviation = 4.27, so the standard error is <code class='inl'>4.27 ÷ √12 = 1.234</code><br><br>The test statistic is how many standard errors the result sits from what H₀ predicted:<br><code class='inl'>t = (74.58 − 70) ÷ 1.234 = 3.715</code><br><br>Nearly four standard errors away from 70."},
+        {h:"Step 4 — find the p-value",
+         b:"<code class='inl'>stats.ttest_1samp(scores, 70)</code> gives <code class='inl'>t = 3.715, p = 0.0034</code><br><br>Read it precisely: <em>if the true mean really were 70</em>, a sample of 12 landing this far away — in either direction — would happen about 3.4 times in 1,000."},
+        {h:"Step 5 — decide and report",
+         b:"0.0034 is well below 0.05, so reject H₀.<br><br>The full report: <em>\"The class averaged 74.6 against the old average of 70. A one-sample t-test rejects the hypothesis of no difference (t = 3.72, p = 0.0034). The 95 percent interval for the true mean is 71.9 to 77.3.\"</em><br><br>Note that the interval is included. The p-value establishes that something happened; the interval says how much, and it excludes 70 — which is the same conclusion arriving by the other route."}
+      ],
+      answer:"t = 3.715, p = 0.0034. Reject H₀ at α = 0.05: the new method's mean differs from 70, and the 95 percent interval of 71.9 to 77.3 puts the improvement between about 2 and 7 marks."
+    },
+    {
+      title:"Problem 2 — A test that does not reject, and what to say",
+      prompt:"A machine should fill bottles to 500 ml. Ten bottles measure 498, 502, 495, 501, 499, 497, 503, 496, 500, 494. The mean is 498.5 and the standard error is 0.957. Test at α = 0.05 whether the machine has drifted, and write the conclusion.",
+      steps:[
+        {h:"State the hypotheses and compute",
+         b:"<strong>H₀:</strong> the true fill volume is 500 ml.<br><strong>H₁:</strong> it is not 500 ml.<br><br><code class='inl'>t = (498.5 − 500) ÷ 0.957 = −1.567</code><br><br>The negative sign says the sample landed below the target. For a two-sided test only the size matters, not the sign."},
+        {h:"Find the p-value",
+         b:"<code class='inl'>stats.ttest_1samp(bottles, 500)</code> gives <code class='inl'>t = −1.567, p = 0.1516</code><br><br>If the machine really were set correctly, a sample of 10 bottles landing this far from 500 would happen about 15 percent of the time. That is not surprising at all."},
+        {h:"Decide",
+         b:"0.152 is above 0.05, so <strong>fail to reject H₀</strong>.<br><br>Note the wording. You do not 'accept H₀' and you have not shown the machine is correctly set."},
+        {h:"Write the conclusion without overclaiming",
+         b:"<strong>Wrong:</strong> \"The machine is filling correctly.\"<br><strong>Wrong:</strong> \"There is no drift.\"<br><strong>Right:</strong> \"These ten bottles do not provide evidence of drift (t = −1.57, p = 0.15). The 95 percent interval for the true fill is 496.3 to 500.7 ml.\"<br><br>Look at that interval. It comfortably includes 497 ml — so a drift of 3 ml is entirely consistent with this data. The test did not show the machine is fine; it showed that ten bottles cannot tell."},
+        {h:"What to do about it",
+         b:"If a 1.5 ml drift matters commercially, the answer is a larger sample rather than a different reading of these ten. With 40 bottles the standard error would halve to about 0.48, the same 1.5 ml gap would give t ≈ −3.1, and the test would detect it.<br><br>This is the practical face of a Type II error: the effect may well be real and the study was too small to catch it."}
+      ],
+      answer:"t = −1.567, p = 0.152. Fail to reject H₀ — these ten bottles show no evidence of drift, which is not the same as showing there is none. The interval of 496.3 to 500.7 ml leaves a drift of up to 3 ml entirely plausible."
+    },
+    {
+      title:"Problem 3 — Comparing two groups",
+      prompt:"Eight students who attended a workshop scored 72, 75, 68, 80, 78, 74, 71, 77. Eight who did not scored 65, 70, 62, 68, 72, 66, 69, 64. Test whether the workshop made a difference.",
+      steps:[
+        {h:"State the hypotheses",
+         b:"<strong>H₀:</strong> the two groups have the same true mean — the workshop made no difference.<br><strong>H₁:</strong> the two true means differ.<br><br>This is a two-sample test, because you are comparing two groups against each other rather than one group against a fixed number."},
+        {h:"Compute the means and run the test",
+         b:"Group A mean = <code class='inl'>595 ÷ 8 = 74.4</code><br>Group B mean = <code class='inl'>536 ÷ 8 = 67.0</code><br>Observed gap = <strong>7.4 marks</strong><br><br><code class='inl'>stats.ttest_ind(group_a, group_b)</code> gives <code class='inl'>t = 4.026, p = 0.00125</code>"},
+        {h:"Interpret the p-value carefully",
+         b:"If the workshop made no difference at all, two groups of eight would differ by 7.4 marks or more about 1.25 times in 1,000.<br><br>That is surprising enough to reject H₀ at α = 0.05, and comfortably so."},
+        {h:"Report it fully",
+         b:"<em>\"Workshop attendees averaged 74.4 against 67.0 for non-attendees, a gap of 7.4 marks. A two-sample t-test rejects the hypothesis of no difference (t = 4.03, p = 0.0013).\"</em><br><br>The gap of 7.4 marks belongs in the sentence. A reader needs the size as well as the verdict."},
+        {h:"The caution that matters most here",
+         b:"The test says the two groups differ. It does <strong>not</strong> say the workshop caused the difference.<br><br>Students who choose to attend a workshop are likely to differ from those who do not in ways that affect marks — motivation, time available, prior preparation. The statistics cannot separate the workshop's effect from the effect of being the kind of student who attends one.<br><br>Only random assignment — deciding by coin flip who attends — would support a causal claim. This is the single most important limitation of every test in this concept."}
+      ],
+      answer:"t = 4.026, p = 0.00125. Reject H₀: the two groups differ by 7.4 marks, a gap very unlikely under chance alone. Whether the workshop caused it cannot be settled without random assignment."
+    },
+    {
+      title:"Problem 4 — Which interpretations of p = 0.03 are correct?",
+      prompt:"A study reports p = 0.03. Decide whether each statement is right or wrong.<br><br>(a) There is a 3 percent chance that H₀ is true.<br>(b) If H₀ were true, data at least this extreme would occur 3 percent of the time.<br>(c) The effect is large.<br>(d) The result is significant at α = 0.05.",
+      steps:[
+        {h:"(a) The 3 percent chance that H₀ is true",
+         b:"<strong>Wrong</strong>, and this is the misreading you will hear most often.<br><br>The p-value is computed <em>assuming H₀ is true</em>. Something calculated on that assumption cannot then tell you how likely the assumption is — the reasoning runs in one direction only.<br><br>It is like computing how likely a fair coin is to give 8 heads in 10 flips, and then claiming that number is the probability the coin is fair."},
+        {h:"(b) The frequency statement",
+         b:"<strong>Correct.</strong> This is the definition, stated properly, with the conditional clause intact.<br><br>Notice the two features that make it right: 'if H₀ were true' and 'at least this extreme'. Drop either and it becomes one of the wrong versions."},
+        {h:"(c) The effect is large",
+         b:"<strong>Wrong.</strong> A p-value measures surprise, not size. It depends on the effect and the sample size together, so a tiny effect measured on a huge sample produces a very small p.<br><br>To speak about size you need the estimate and its confidence interval, which the p-value does not contain."},
+        {h:"(d) Significant at α = 0.05",
+         b:"<strong>Correct.</strong> 0.03 is below 0.05, so at that threshold H₀ is rejected.<br><br>Worth remembering what the word means, though: 'statistically significant' means only 'unlikely under H₀'. In everyday English 'significant' means important, and the two senses have nothing to do with each other."},
+        {h:"The pattern in the wrong answers",
+         b:"(a) reverses the direction of the conditional. (c) confuses surprise with size. Between them they account for most misuse of p-values in practice.<br><br>Both are avoided by the same habit: say <em>'assuming there is no effect'</em> whenever you say a p-value aloud."}
+      ],
+      answer:"(b) and (d) are correct. (a) reverses the conditional — the p-value assumes H₀ rather than assessing it. (c) confuses statistical surprise with the size of the effect."
+    },
+    {
+      title:"Problem 5 — The two errors, and choosing α",
+      prompt:"For each situation, say which error is more costly and whether α should be raised or lowered. (a) A screening test for an aggressive cancer. (b) A spam filter. (c) An expensive change to a factory production line. (d) Deciding which of two headlines to use on an article.",
+      steps:[
+        {h:"(a) Cancer screening",
+         b:"A <strong>Type II error</strong> means telling a patient with a tumour that they are clear — a missed diagnosis with potentially fatal consequences. A Type I error means a false alarm leading to further tests, which is distressing and expensive but recoverable.<br><br>Type II is far worse, so <strong>raise α</strong>. Accept more false alarms in exchange for missing fewer real cases. This is exactly why screening programmes are deliberately over-sensitive and follow-up testing exists."},
+        {h:"(b) Spam filter",
+         b:"A <strong>Type I error</strong> means a genuine email is marked as spam, and the user may never see it — a job offer, a medical appointment. A Type II error means one advert reaches the inbox and is deleted in two seconds.<br><br>Type I is worse, so <strong>lower α</strong>. The filter should require strong evidence before condemning an email, which is why some spam always gets through."},
+        {h:"(c) An expensive line change",
+         b:"A <strong>Type I error</strong> means spending a large sum reconfiguring a line on an improvement that is not real. A Type II error means missing a genuine improvement, which costs the opportunity but no capital.<br><br>Type I is the more expensive mistake, so <strong>lower α</strong> — demand strong evidence before committing money. Though if the improvement is very large, the missed opportunity might outweigh it, which is why the judgement is the manager's rather than the statistician's."},
+        {h:"(d) Choosing a headline",
+         b:"Both errors are cheap. Picking the marginally worse headline costs very little, and so does missing a small improvement.<br><br>Here a conventional α = 0.05 is fine, and honestly the whole apparatus may be more than the decision deserves. Not every choice needs a formal test."},
+        {h:"The general rule",
+         b:"<strong>Lower α when a false alarm is expensive. Raise α when a miss is expensive.</strong><br><br>And note what moving α cannot do: it trades one error against the other and never reduces both. The only way to improve both at once is a larger sample, which separates the two curves and makes the decision easier whatever threshold you pick."}
+      ],
+      answer:"(a) Type II worse — raise α. (b) Type I worse — lower α. (c) Type I worse — lower α. (d) Both cheap — the convention is fine. Moving α always trades one error for the other; only more data improves both."
+    },
+    {
+      title:"Problem 6 — Reading a confidence interval as a test",
+      prompt:"A test compares two website designs. The 95 percent confidence interval for the difference in conversion rates is −0.4 to +2.1 percentage points. (a) Is the difference significant at α = 0.05? (b) How do you know from the interval alone? (c) What should the team do?",
+      steps:[
+        {h:"(a) and (b) — read the interval against zero",
+         b:"The interval runs from −0.4 to +2.1, and it <strong>includes zero</strong>.<br><br>Zero is exactly what H₀ claims — no difference between the designs. Since zero sits inside the range of plausible values, the data is consistent with H₀, so the test would <strong>not</strong> reject at α = 0.05. Equivalently, p ≥ 0.05.<br><br>That is the whole rule: <strong>interval excludes zero → significant; interval includes zero → not significant.</strong>"},
+        {h:"Why the two can never disagree",
+         b:"Both are built from the same estimate and the same standard error. The interval is the estimate plus and minus 1.96 standard errors; the test asks whether zero is more than 1.96 standard errors from the estimate.<br><br>Those are the same question. If zero is inside the interval it is within 1.96 standard errors, and if it is outside it is not."},
+        {h:"(c) What the interval says that the verdict does not",
+         b:"This is where the interval earns its place. 'Not significant' sounds like 'no difference' and would probably be reported that way.<br><br>But look at the range. The data is consistent with the new design being 0.4 points <em>worse</em> and equally consistent with it being 2.1 points <em>better</em>. A 2.1-point lift would be a substantial commercial win. The study has not shown there is no difference — it has failed to pin down a difference that might well be worth having."},
+        {h:"The recommendation",
+         b:"Run longer. The interval is wide because the sample is small relative to the effect being chased, and more data would narrow it enough to separate 'slightly worse' from 'clearly better'.<br><br>What the team must <em>not</em> do is report 'no difference found' and abandon a design that may be 2 points better. The p-value alone would have led them there; the interval stops them."}
+      ],
+      answer:"(a) No, not significant at α = 0.05. (b) The interval includes zero, which is exactly H₀'s claim. (c) Run longer — the interval spans from slightly worse to substantially better, so the question is unresolved rather than answered."
+    }
+  ],
+
+  interview:[
+    {
+      q:"What is a p-value?",
+      a:"The probability of observing data at least as extreme as what you observed, assuming the null hypothesis is true.<br><br>The conditional clause is the whole definition — it is the part candidates drop, and dropping it produces every common misreading. It is worth adding what it is not: it is not the probability that the null hypothesis is true, and it says nothing at all about the size of the effect.",
+      probe:"Asked in almost every interview that touches statistics. Getting it exactly right, including 'at least as extreme' and 'assuming H₀ is true', is a strong signal on its own."
+    },
+    {
+      q:"Why do we assume the null hypothesis rather than testing what we actually believe?",
+      a:"Because the null hypothesis is specific and the alternative is vague. 'The treatment has no effect' pins down exactly what the data should look like, so you can compute how likely your result was. 'The treatment helps' does not say by how much, so there is nothing definite to compute against.<br><br>It mirrors the presumption of innocence in a court. You cannot prove innocence; you can only ask whether the evidence is strong enough to overturn the presumption.",
+      probe:"A conceptual question testing whether you understand the logic or only the procedure. The specific-versus-vague point is the answer being looked for."
+    },
+    {
+      q:"You get p = 0.06 at α = 0.05. What do you conclude?",
+      a:"That the data does not provide enough evidence to reject H₀ at the chosen threshold — and nothing more than that. In particular it does not mean there is no effect.<br><br>I would say two further things. The first is that 0.06 and 0.049 describe almost identical evidence, and treating them as opposite conclusions is an artefact of a conventional threshold rather than a fact about the world. The second is that I would report the confidence interval, because a study underpowered to detect a real effect produces exactly this result, and the interval shows whether that is what happened.",
+      probe:"They are checking whether you treat 0.05 as a cliff. Mentioning that a near-miss often signals an underpowered study is what marks out practical experience."
+    },
+    {
+      q:"Explain Type I and Type II errors, and which is worse.",
+      a:"A Type I error is a false alarm — rejecting a true null hypothesis, announcing an effect that is not there. Its rate is α, which you choose. A Type II error is a miss — failing to detect an effect that is genuinely there. Its rate is β, and 1 − β is the power of the test.<br><br>Which is worse is not a statistical question but a question about consequences. In cancer screening a miss is far worse than a false alarm, so you use a larger α. In a spam filter a false alarm loses a real email, so you use a smaller one.<br><br>The important structural point is that moving α trades one against the other. Only a larger sample reduces both.",
+      probe:"The definitions are the easy half. The domain-judgement point, and the fact that α only trades rather than improves, are what distinguish a good answer."
+    },
+    {
+      q:"What is statistical power and why should you care before running an experiment?",
+      a:"Power is the chance of detecting an effect that is really there, equal to 1 − β. Eighty percent is the usual target.<br><br>You care beforehand because an underpowered experiment is close to worthless. If the study is too small to detect the effect you care about, a null result tells you nothing — you cannot distinguish 'no effect' from 'not enough data'. Working out the required sample from the smallest effect worth acting on, before collecting anything, is what prevents that.<br><br>Power rises with the sample size and with the size of the effect, and falls as α is tightened.",
+      probe:"A practical question. Being able to say why a null result from an underpowered study is uninformative is the point."
+    },
+    {
+      q:"How does a confidence interval relate to a hypothesis test?",
+      a:"They are two views of the same calculation, built from the same estimate and the same standard error. For a difference at α = 0.05: if the 95 percent interval excludes zero the test rejects H₀, and if it includes zero the test does not. They cannot disagree.<br><br>The interval is usually the better thing to report, because it answers a question the test cannot. A test says whether there is an effect; the interval says how large it plausibly is. With a very large sample a trivial effect can be highly significant, and only the interval makes the triviality visible.",
+      probe:"The equivalence rule is the factual half. Explaining why the interval is more informative shows judgement about reporting rather than just knowledge of the mechanics."
+    },
+    {
+      q:"A team runs 20 tests and reports the one that came out significant. What is wrong?",
+      a:"At α = 0.05, each test has a 5 percent chance of a false alarm even when nothing is going on. Across 20 independent tests the chance of at least one false alarm is about 64 percent — so finding exactly one significant result among twenty is what you should expect from pure noise.<br><br>The reported finding therefore carries almost no evidential weight. The right response is either a formal correction for multiple testing, or treating the result as a hypothesis to be tested on fresh data rather than as a finding.<br><br>The same problem appears in disguise when somebody explores the data first and then tests the comparison that looked interesting.",
+      probe:"The 64 percent figure is worth knowing. Recognising the disguised version — testing after exploring — is what shows you would catch it in real work."
+    },
+    {
+      q:"When should you not run a hypothesis test?",
+      a:"Three cases come to mind. When you have the entire population rather than a sample — there was no sampling, so asking whether a difference is an accident of sampling makes no sense. When the sample is so large that any difference at all becomes significant, at which point the p-value stops carrying information and only the effect size matters.<br><br>And when the question is really about size rather than existence. 'Is this difference big enough to justify the cost' is a business question that no test answers.",
+      probe:"An open question checking whether you see the tool's limits. The whole-population case is the one most often missed."
+    },
+    {
+      q:"A test finds two groups differ with p = 0.001. Can you say the treatment caused the difference?",
+      a:"Only if people were assigned to the groups at random. The test establishes that the difference is unlikely to be sampling variation; it says nothing whatsoever about why the groups differ.<br><br>If people chose which group to join, they may differ systematically in ways that affect the outcome. Students who choose to attend an optional workshop are probably more motivated to begin with, and no p-value can separate the workshop's effect from the effect of being that kind of student.<br><br>Random assignment is what makes the causal claim available, and it is a feature of the study design rather than of the analysis.",
+      probe:"A test of whether you separate the statistical conclusion from the causal one. This is the single most common overclaim in applied work."
+    },
+    {
+      q:"What is the difference between statistical significance and practical importance?",
+      a:"Statistical significance means the result is unlikely under the null hypothesis. Practical importance means it is large enough to act on. They are unrelated, and the confusion is made easier by 'significant' meaning 'important' in ordinary English.<br><br>The clearest case is a very large sample. A test on two million users might find a conversion improvement of 0.02 percentage points with p below 0.001 — real, and not worth rebuilding a product for. The p-value cannot show this, because it measures surprise rather than size.<br><br>Which is why the effect estimate and its interval should accompany every p-value that gets reported.",
+      probe:"Frequently asked because it is the mistake that causes the most wasted work in industry. A concrete example with numbers lands far better than the abstract statement."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"Which is the correct definition of a p-value?",
+      opts:[
+        {t:"The probability that the null hypothesis is true",
+         fb:"The commonest misreading. The p-value is computed <em>assuming</em> H₀ is true, so it cannot then measure how likely H₀ is — the reasoning runs one way only."},
+        {t:"The probability of data at least as extreme as ours, assuming the null hypothesis is true", ok:true,
+         fb:"Right, and both clauses matter. 'At least as extreme' and 'assuming H₀ is true' are what make the definition correct; dropping either produces one of the standard errors."},
+        {t:"The probability that the result was caused by chance",
+         fb:"Close-sounding and wrong. It is a probability computed under an assumption, not a probability that chance was responsible."},
+        {t:"The probability of making a mistake when you decide to reject the null hypothesis on the basis of this particular sample",
+         fb:"That describes α, the rate of false alarms you accepted in advance, rather than the p-value computed from your data."}
+      ]
+    },
+    {
+      stem:"A study reports p = 0.20 at α = 0.05. What is the correct conclusion?",
+      opts:[
+        {t:"The null hypothesis is true",
+         fb:"A test never establishes H₀. Failing to find evidence against something is not the same as showing it is so."},
+        {t:"There is definitely no effect",
+         fb:"Same error in stronger words. The study may simply have been too small to detect an effect that is really there."},
+        {t:"There is a 20 percent chance the null hypothesis is true",
+         fb:"This reverses the conditional. The 0.20 is computed assuming H₀ is true, and cannot be turned into a probability about H₀."},
+        {t:"There is not enough evidence to reject the null hypothesis at this threshold", ok:true,
+         fb:"Right, and the careful wording is the point. 'Fail to reject' is a statement about the evidence, not about the world."}
+      ]
+    },
+    {
+      stem:"Which error has a researcher made if they announce an effect that does not actually exist?",
+      opts:[
+        {t:"A Type I error — a false alarm", ok:true,
+         fb:"Right — a false alarm, rejecting a true null hypothesis. Its rate is α, which is why choosing α = 0.05 means accepting a 1-in-20 risk of exactly this."},
+        {t:"A Type II error, which is the other of the two ways a test can reach a wrong verdict",
+         fb:"That is the opposite: failing to detect an effect that is genuinely there. A miss rather than a false alarm."},
+        {t:"A sampling error, caused by the particular rows that happened to be drawn",
+         fb:"Sampling variation is what makes the mistake possible, and the mistake itself has a specific name in the two-by-two table."},
+        {t:"No error at all, since any conclusion drawn correctly from the data available cannot be described as a mistake",
+         fb:"The procedure was followed correctly and the conclusion is still wrong. That is precisely what the two error types describe."}
+      ]
+    },
+    {
+      stem:"A 95 percent confidence interval for a difference runs from −0.4 to +2.1. What does a test at α = 0.05 conclude?",
+      opts:[
+        {t:"It rejects the null hypothesis, since most of the interval lies above zero",
+         fb:"Where most of the interval sits does not matter. What matters is whether zero is inside it, and here it is."},
+        {t:"It fails to reject the null hypothesis, because the interval includes zero", ok:true,
+         fb:"Right. Zero is what H₀ claims, and since it sits within the plausible range the data is consistent with H₀. The two methods can never disagree."},
+        {t:"The test cannot be carried out from an interval alone",
+         fb:"It can, and the rule is exact: interval excludes zero means significant, interval includes zero means not."},
+        {t:"It rejects the null hypothesis, because the interval is narrow enough to be treated as a precise estimate of the true difference",
+         fb:"Narrowness has nothing to do with the verdict. An interval could be very narrow and still straddle zero."}
+      ]
+    },
+    {
+      stem:"A test on 2 million users finds a conversion lift of 0.02 percentage points with p < 0.001. What follows?",
+      opts:[
+        {t:"The effect is large and should be rolled out at once",
+         fb:"A small p-value says the effect is unlikely to be chance, not that it is large. 0.02 points is tiny."},
+        {t:"The test must have been run incorrectly",
+         fb:"Nothing is wrong. With a sample this size, even a trivial effect is detected easily — that is what a large sample does."},
+        {t:"The effect is real but almost certainly too small to be worth acting on", ok:true,
+         fb:"Right, and this is the clearest illustration of statistical significance differing from practical importance. Only the effect size and its interval reveal the second."},
+        {t:"The p-value should be recomputed using a smaller sample so that the result becomes a fair reflection of the true size of the effect",
+         fb:"Discarding data to get a preferred p-value would be misconduct. The large sample gave a precise answer; the answer is simply that the effect is small."}
+      ]
+    },
+    {
+      stem:"Why must α be chosen before the data is collected?",
+      opts:[
+        {t:"Because the software requires it as an input before it will run the test",
+         fb:"Most functions return a p-value without asking for α at all. The reason is about honesty rather than mechanics."},
+        {t:"Because choosing it afterwards lets you pick a threshold that gives the answer you wanted", ok:true,
+         fb:"Right. A threshold selected after seeing p = 0.07 is not a threshold at all, and the stated false-alarm rate becomes meaningless."},
+        {t:"Because α depends on the sample size, which must be fixed before collection begins",
+         fb:"α does not depend on the sample size. The two are chosen separately, and the sample size affects power rather than α."},
+        {t:"Because α cannot be changed once the data has been collected without also recomputing every one of the summary statistics",
+         fb:"Nothing would need recomputing — you would just compare the same p-value against a different number, which is exactly why it must be fixed in advance."}
+      ]
+    },
+    {
+      stem:"A team checks their running experiment daily and stops as soon as p drops below 0.05. What is wrong with this?",
+      opts:[
+        {t:"Nothing, provided the test itself was correctly specified at the start",
+         fb:"The test was correctly specified and the stopping rule breaks it. The p-value assumes a single test on a sample whose size was fixed in advance."},
+        {t:"It inflates the false-alarm rate well above the intended 5 percent", ok:true,
+         fb:"Right. Repeated peeking with the option to stop can push the real false-alarm rate towards 25 percent or higher, and it is a major source of results that fail to replicate."},
+        {t:"It makes the confidence interval too narrow to be reported",
+         fb:"Interval width is affected too, and the primary damage is to the false-alarm rate rather than to the width."},
+        {t:"It reduces the power of the test, so that real effects become considerably harder to detect than they would otherwise be",
+         fb:"The problem runs the other way — stopping early makes it too <em>easy</em> to declare an effect, real or not."}
+      ]
+    },
+    {
+      stem:"Students who chose to attend an optional workshop scored 7.4 marks higher, p = 0.001. What can you conclude?",
+      opts:[
+        {t:"The workshop caused the improvement",
+         fb:"The test shows the groups differ, not why. Students who choose to attend may differ in motivation and preparation before the workshop starts."},
+        {t:"The two groups differ by more than chance would explain, though the cause cannot be established", ok:true,
+         fb:"Right. Random assignment is what would license a causal claim, and it is a feature of the study design rather than of the analysis."},
+        {t:"Nothing at all, because the students were not randomly assigned to the two groups",
+         fb:"Too strong in the other direction. The difference itself is well established; it is only the explanation that remains open."},
+        {t:"The workshop caused the improvement, because a p-value as small as 0.001 rules out other explanations for a gap of that size",
+         fb:"A small p-value rules out chance as an explanation. It has nothing to say about the many non-chance explanations that remain."}
+      ]
+    },
+    {
+      stem:"You lower α from 0.05 to 0.01. What happens?",
+      opts:[
+        {t:"Both error rates fall",
+         fb:"They cannot both fall by moving the threshold. Moving α trades one error against the other; only a larger sample improves both."},
+        {t:"Fewer false alarms, but more real effects are missed", ok:true,
+         fb:"Right. Demanding stronger evidence means fewer Type I errors and more Type II errors — the trade nobody escapes without collecting more data."},
+        {t:"More false alarms, but fewer real effects are missed",
+         fb:"That is what <em>raising</em> α does. Lowering it makes rejection harder in both the true and the false cases."},
+        {t:"Nothing changes, because α is only a reporting convention and does not affect which conclusions are actually reached from the data",
+         fb:"It is the threshold the p-value is compared against, so it directly determines the verdict for any result between 0.01 and 0.05."}
+      ]
+    },
+    {
+      stem:"When is a hypothesis test the wrong tool?",
+      opts:[
+        {t:"When the sample is small, since small samples cannot support any conclusion",
+         fb:"Small samples are exactly what tests were designed for. They simply give lower power, which is a limitation rather than a disqualification."},
+        {t:"When you have data on the entire population rather than a sample", ok:true,
+         fb:"Right. A test asks whether a difference could be an accident of which rows were sampled. With every row in hand there was no sampling, so the difference you see is simply the difference."},
+        {t:"When the data does not follow a normal distribution",
+         fb:"The Central Limit Theorem covers means from reasonably sized samples whatever the data's shape, and there are tests designed for other situations."},
+        {t:"When the two groups being compared contain different numbers of observations, since the test requires the groups to be of equal size",
+         fb:"Two-sample tests handle unequal group sizes without difficulty. Equal sizes give slightly more power and are not a requirement."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [1,3,0,2,1,0,3,1,2,3];
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+/* ---- normal maths ---- */
+function erf(x){
+  const s=x<0?-1:1; x=Math.abs(x);
+  const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;
+  const t=1/(1+p*x), y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return s*y;
+}
+const ncdf=x=>0.5*(1+erf(x/Math.SQRT2));
+const npdf=x=>Math.exp(-x*x/2)/Math.sqrt(2*Math.PI);
+function nppf(p){ let lo=-8,hi=8; for(let i=0;i<200;i++){const m=(lo+hi)/2; if(ncdf(m)<p) lo=m; else hi=m;} return (lo+hi)/2; }
+
+/* ---- p-value widget ---- */
+const ALPHAS=[0.10,0.05,0.01];
+let alpha=0.05;
+$("#alpha").innerHTML += ALPHAS.map(a=>
+  `<button class="chip" data-a="${a}" aria-pressed="${a===0.05}">${a.toFixed(2)}</button>`).join("");
+document.querySelectorAll("#alpha .chip").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll("#alpha .chip").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    alpha=+b.dataset.a; drawP();
+  };
+});
+function drawP(){
+  const tstat=(+$("#obs").value)/10;
+  $("#obsv").textContent=tstat.toFixed(2);
+  const p=2*(1-ncdf(tstat));
+  $("#p_t").textContent=tstat.toFixed(2);
+  $("#p_p").textContent=p<0.0001?"<0.0001":p.toFixed(4);
+  $("#p_a").textContent=alpha.toFixed(2);
+  const rej=p<alpha;
+  $("#p_verdict").innerHTML=`<div class="verdict ${rej?"rej":"keep"}">${
+    rej ? `p = ${p<0.0001?"<0.0001":p.toFixed(4)} is below α = ${alpha.toFixed(2)} — reject H₀. A result this extreme would be unusual if nothing were going on.`
+        : `p = ${p.toFixed(4)} is not below α = ${alpha.toFixed(2)} — fail to reject H₀. Ordinary variation produces results like this often enough.`}</div>`;
+  const W=640,H=230,L=40,R=20,T=18,BM=34, xr=4.2;
+  const sx=v=>L+((v+xr)/(2*xr))*(W-L-R), sy=v=>H-BM-(v/0.42)*(H-BM-T);
+  let curve=[], shadeR=[], shadeL=[];
+  for(let v=-xr;v<=xr;v+=0.035){
+    curve.push(`${sx(v).toFixed(1)},${sy(npdf(v)).toFixed(1)}`);
+    if(v>=tstat) shadeR.push(`${sx(v).toFixed(1)},${sy(npdf(v)).toFixed(1)}`);
+    if(v<=-tstat) shadeL.push(`${sx(v).toFixed(1)},${sy(npdf(v)).toFixed(1)}`);
+  }
+  const poly=(pts,from,to)=> pts.length>1
+    ? `<polygon points="${sx(from).toFixed(1)},${H-BM} ${pts.join(" ")} ${sx(to).toFixed(1)},${H-BM}" fill="#A63A1E" opacity="0.42"/>` : "";
+  let g="";
+  for(let v=-4;v<=4;v+=1) g+=`<text x="${sx(v)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  const crit=nppf(1-alpha/2);
+  const critline=`<line x1="${sx(crit)}" y1="${T}" x2="${sx(crit)}" y2="${H-BM}" stroke="#D98A05" stroke-width="1.6" stroke-dasharray="4 3"/>`+
+    `<line x1="${sx(-crit)}" y1="${T}" x2="${sx(-crit)}" y2="${H-BM}" stroke="#D98A05" stroke-width="1.6" stroke-dasharray="4 3"/>`+
+    `<text x="${sx(crit)+5}" y="${T+11}" font-size="10" fill="#8A5602" font-family="IBM Plex Mono">α cut-off</text>`;
+  $("#pplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="The null distribution with the tails beyond the observed result shaded">
+    ${g}${poly(shadeR,tstat,xr)}${poly(shadeL,-xr,-tstat)}
+    <polyline points="${curve.join(" ")}" fill="none" stroke="#0F5B4F" stroke-width="2.2"/>
+    ${critline}
+    <line x1="${sx(tstat)}" y1="${T-4}" x2="${sx(tstat)}" y2="${H-BM}" stroke="#A63A1E" stroke-width="2.4"/>
+    <text x="${sx(tstat)}" y="${T-7}" font-size="11" fill="#A63A1E" text-anchor="middle" font-family="IBM Plex Mono">your result</text>
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <text x="${W/2}" y="${H-4}" font-size="11" fill="#4A6862" text-anchor="middle">standard errors from what H₀ predicts</text></svg>`;
+}
+$("#obs").addEventListener("input",drawP);
+drawP();
+
+/* ---- type I / type II widget ---- */
+function drawErr(){
+  const eff=(+$("#eff").value)/10, a=(+$("#alp").value)/100;
+  $("#effv").textContent=eff.toFixed(1);
+  $("#alpv").textContent=a.toFixed(2);
+  const crit=nppf(1-a);
+  const beta=ncdf(crit-eff);
+  $("#e_a").textContent=(a*100).toFixed(0)+"%";
+  $("#e_b").textContent=(beta*100).toFixed(0)+"%";
+  $("#e_pow").textContent=((1-beta)*100).toFixed(0)+"%";
+  const W=640,H=250,L=40,R=20,T=26,BM=40, lo=-4, hi=8;
+  const sx=v=>L+((v-lo)/(hi-lo))*(W-L-R), sy=v=>H-BM-(v/0.42)*(H-BM-T);
+  const mk=(mu)=>{const a2=[];for(let v=lo;v<=hi;v+=0.05)a2.push([v,npdf(v-mu)]);return a2;};
+  const c0=mk(0), c1=mk(eff);
+  const line=c=>c.map(([v,d])=>`${sx(v).toFixed(1)},${sy(d).toFixed(1)}`).join(" ");
+  const area=(c,from,to,col,op)=>{
+    const pts=c.filter(([v])=>v>=from&&v<=to);
+    if(pts.length<2) return "";
+    return `<polygon points="${sx(from).toFixed(1)},${H-BM} ${line(pts)} ${sx(to).toFixed(1)},${H-BM}" fill="${col}" opacity="${op}"/>`;
+  };
+  let g="";
+  for(let v=-4;v<=8;v+=2) g+=`<text x="${sx(v)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  $("#errplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Two overlapping curves showing the Type I and Type II error areas">
+    ${g}
+    ${area(c0,crit,hi,"#A63A1E",0.5)}
+    ${area(c1,lo,crit,"#D98A05",0.42)}
+    <polyline points="${line(c0)}" fill="none" stroke="#0F5B4F" stroke-width="2"/>
+    <polyline points="${line(c1)}" fill="none" stroke="#3C6E8F" stroke-width="2" stroke-dasharray="5 3"/>
+    <line x1="${sx(crit)}" y1="${T-6}" x2="${sx(crit)}" y2="${H-BM}" stroke="#12312B" stroke-width="2"/>
+    <text x="${sx(crit)}" y="${T-9}" font-size="10.5" fill="#12312B" text-anchor="middle" font-family="IBM Plex Mono">decision threshold</text>
+    <text x="${sx(0)}" y="${T+6}" font-size="10.5" fill="#0F5B4F" text-anchor="middle">if H₀ is true</text>
+    <text x="${sx(eff)}" y="${T+20}" font-size="10.5" fill="#3C6E8F" text-anchor="middle">if the effect is real</text>
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/>
+    <text x="${W/2}" y="${H-4}" font-size="11" fill="#4A6862" text-anchor="middle">red = false alarms (α) · amber = misses (β)</text></svg>`;
+}
+["eff","alp"].forEach(id=>$("#"+id).addEventListener("input",drawErr));
+drawErr();
+
+/* ---- content ---- */
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card"><h3>${i+1}. ${u.name}</h3><p>${u.what}</p><p>${u.how}</p>
+  <pre class="code">${esc(u.code)}</pre>
+  <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p></div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}"><h3>${e.title}</h3><p>${e.body}</p>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+  <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p></div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card"><h3>${p.title}</h3>
+  <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+  ${p.steps.map((s,si)=>`
+    <div class="step" id="st${pi}_${si}">
+      <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+      <div class="body"><p>${s.b}</p></div></div>`).join("")}
+  <div class="step" id="st${pi}_ans">
+    <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+    <div class="body"><div class="answerline"><b>${p.answer}</b></div></div></div></div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div></div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pc=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pc} percent.</p>
+      <p style="margin-bottom:0">${pc>=80
+        ? "You have the hardest vocabulary in the course. Practise saying the p-value definition aloud until the conditional clause comes automatically."
+        : "Go back to the warning card listing what a p-value is not, and to the two-error widget. Most of these questions come straight from those two places."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>

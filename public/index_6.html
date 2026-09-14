@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 6 · Shape, Quartiles and Unusual Values — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card.recall{border-left:4px solid var(--ok);background:var(--ok-dim)}
+.card.warn{border-left:4px solid var(--stop);background:#FDF3F0}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.card.recall .tagline{color:var(--ok)}
+.card.warn .tagline{color:var(--stop)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:12px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{border-left:3px solid var(--saffron);background:var(--saffron-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#7A4E02;max-width:74ch}
+.later b{font-weight:600}
+.later::before{content:"COMING LATER";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:#A8720B;margin:0 0 3px}
+.paid{border-left:3px solid var(--ok);background:var(--ok-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#16523E;max-width:74ch}
+.paid::before{content:"PROMISED IN CONCEPT 1 — DELIVERED HERE";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:var(--ok);margin:0 0 3px}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+.yes{color:var(--ok);font-weight:600} .no{color:var(--stop);font-weight:600}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap;min-width:150px}
+input[type=range]{flex:1;min-width:170px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:60px;text-align:right}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.14rem;font-weight:600;line-height:1.25;color:var(--teal)}
+.stat.hi .v{color:var(--stop)} .stat.bl .v{color:var(--blue)}
+.verdict{margin:12px 0 0;padding:11px 15px;border-radius:8px;font-size:.94rem}
+.verdict.rej{background:var(--stop-dim);color:#7E2C16;border-left:3px solid var(--stop)}
+.verdict.keep{background:var(--ok-dim);color:#16523E;border-left:3px solid var(--ok)}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 6 of 8</p>
+    <h1>Shape, Quartiles and Unusual Values</h1>
+    <p class="lede">This concept goes back and finishes Concept 1. Cutting data into quarters, measuring lopsidedness with a number, and a defensible rule for deciding a value is unusual — all of which were promised and deferred.</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">Four ideas held back from Concept 1, now with enough foundation under them to be worth having.</p>
+
+  <div class="card recall">
+    <p class="tagline">Where this fits</p>
+    <p>Concept 1 gave you six numbers and left three gaps, each marked with a note saying the answer would come later. This is later.</p>
+    <p style="margin-bottom:0">There was a reason for the delay and a reason for finishing now. The delay was that these ideas are easier once you have seen why they matter. The reason for finishing is that <strong>Concepts 7 and 8 need them</strong> — the methods there are wrecked by a single extreme value, and a student with no rule for spotting one can compute a result but cannot criticise it.</p>
+  </div>
+
+  <div class="paid">
+    <b>The three promises.</b> A measure of spread that is not dragged by one extreme value. A single number for how lopsided a set of values is. And a defensible test for deciding whether a value sits far enough from the rest to investigate. All three are delivered in this concept, in that order.
+  </div>
+
+  <h3>Part 1 · Cutting the data into quarters</h3>
+  <p>The median works by splitting sorted data into two halves. There is no reason to stop at two.</p>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Quartiles</dt>
+      <dd>The three values that cut sorted data into four equal parts. <strong>Q1</strong> has a quarter of the data below it, <strong>Q2</strong> is the median with half below it, and <strong>Q3</strong> has three quarters below it.</dd>
+      <dt>Percentile</dt>
+      <dd>The same idea at any fraction you like. The 90th percentile is the value with 90 percent of the data below it. Q1 is the 25th percentile and Q3 is the 75th, so quartiles are just three particularly useful percentiles.</dd>
+      <dt>Five-number summary</dt>
+      <dd>Minimum, Q1, median, Q3, maximum. Five numbers that between them describe where the data sits, how spread out it is, and whether it leans to one side.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>Finding them by hand</h4>
+    <p>Sort the values, then find the median. Q1 is the median of the lower half and Q3 is the median of the upper half. That is the whole procedure.</p>
+    <p style="margin-bottom:0">One warning: different software cuts the quarters in slightly different ways when the count does not divide evenly, so pandas, Excel and a textbook can give slightly different values of Q1 for the same small dataset. The differences are tiny and vanish on any real dataset. Use <code class="inl">.quantile()</code> and do not worry about it.</p>
+  </div>
+
+  <h3>Part 2 · The measure of spread that holds still</h3>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Interquartile range, IQR</dt>
+      <dd>Q3 minus Q1 — the span covered by the middle half of the data. It ignores the top quarter and the bottom quarter entirely, which is exactly what makes it immune to extreme values.</dd>
+    </dl>
+  </div>
+
+  <p>This is the first promise paid. Concept 1's table had a gap in it: every measure of spread there — range, variance, standard deviation — was dragged by a single extreme value, while two of the three centre measures were not. The IQR fills that gap.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Measure</th><th>What it measures</th><th>Dragged by one extreme value?</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Mean</td><td>Centre</td><td class="no">Yes</td></tr>
+        <tr><td class="mono">Median</td><td>Centre</td><td class="yes">No</td></tr>
+        <tr><td class="mono">Range</td><td>Spread</td><td class="no">Yes, entirely</td></tr>
+        <tr><td class="mono">Standard deviation</td><td>Spread</td><td class="no">Yes</td></tr>
+        <tr><td class="mono">IQR</td><td>Spread</td><td class="yes">No</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Part 3 · The box plot</h3>
+  <p>The five-number summary has a standard picture, and it is the most information-dense chart in elementary statistics.</p>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Box plot</dt>
+      <dd>A drawing of the five-number summary. The <strong>box</strong> runs from Q1 to Q3, so it covers the middle half. The <strong>line inside the box</strong> is the median. The <strong>whiskers</strong> reach out to the furthest values that are not unusual. Anything beyond them is drawn as a separate dot.</dd>
+      <dt>Fences</dt>
+      <dd>The limits the whiskers stop at, set at <strong>1.5 × IQR</strong> beyond each end of the box. Values outside them get plotted individually.</dd>
+    </dl>
+  </div>
+
+  <h3>Part 4 · Deciding a value is unusual</h3>
+  <p>Concept 1 used the phrase "unusual value" and admitted it was doing so informally. Here are the two rules that make it precise, and the reason one of them is far better than the other.</p>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Outlier</dt>
+      <dd>A value far enough from the rest of the data to be worth investigating. Note the wording — <strong>worth investigating</strong>, not "wrong" and not "delete this". Deciding what to do with one is a separate judgement covered further down.</dd>
+    </dl>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Rule</th><th>Flags a value when</th><th>Built from</th></tr></thead>
+      <tbody>
+        <tr><td><strong>The IQR rule</strong></td><td>It falls below <span class="mono">Q1 − 1.5 × IQR</span> or above <span class="mono">Q3 + 1.5 × IQR</span></td><td>Quartiles — which extreme values cannot move</td></tr>
+        <tr><td><strong>The standard deviation rule</strong></td><td>It sits more than <span class="mono">3 standard deviations</span> from the mean</td><td>Mean and standard deviation — which extreme values <em>can</em> move</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Both sound reasonable. The second has a flaw so serious that it can fail on exactly the data it was meant to check, and the widget below shows it happening.</p>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">The same seven salaries from Concept 1</h4>
+    <p style="font-size:.9rem;color:var(--ink-soft);margin:0 0 12px">Six ordinary salaries and a founder's. Drag the founder's pay and watch which rule notices.</p>
+    <div class="sliderow">
+      <label for="sl">Founder's salary</label>
+      <input type="range" id="sl" min="50" max="400" step="5" value="50">
+      <span class="readout" id="slv">₹50k</span>
+    </div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="boxplot"></div></div>
+    <div class="statgrid">
+      <div class="stat bl"><div class="l">Q1</div><div class="v" id="s_q1">—</div></div>
+      <div class="stat bl"><div class="l">Median</div><div class="v" id="s_med">—</div></div>
+      <div class="stat bl"><div class="l">Q3</div><div class="v" id="s_q3">—</div></div>
+      <div class="stat bl"><div class="l">IQR</div><div class="v" id="s_iqr">—</div></div>
+      <div class="stat hi"><div class="l">Std deviation</div><div class="v" id="s_sd">—</div></div>
+    </div>
+    <div id="v_iqr"></div>
+    <div id="v_sd"></div>
+  </div>
+  <p class="legend">At ₹250k the IQR rule flags the founder cleanly. The standard deviation rule flags nothing at all — because that one salary pushed the standard deviation from 4 up to 78, and three standard deviations now reaches to ₹307k, comfortably past the very value it was supposed to catch.</p>
+
+  <div class="card warn">
+    <p class="tagline">Masking</p>
+    <p>An outlier inflates the mean and the standard deviation, and the standard deviation rule then uses those inflated figures to decide what counts as unusual. The outlier widens its own net until it fits inside. This is called <strong>masking</strong>, and it gets worse with more than one outlier — two extreme values inflate the spread even further and hide each other.</p>
+    <p style="margin-bottom:0">The IQR rule is immune because quartiles do not move when values at the ends get more extreme. <strong>Prefer the IQR rule by default.</strong> The standard deviation rule is reasonable only when you already know the data is bell-shaped and free of severe outliers — which is exactly the situation where you least need to check.</p>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ Finding an outlier is the beginning, not the end</p>
+    <p>The rules flag values. They never tell you what to do, and that decision needs a human who understands where the data came from:</p>
+    <div class="tablewrap" style="margin:0 0 12px">
+      <table>
+        <thead><tr><th>What the value turns out to be</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>Impossible — a negative age, a mark of 150 out of 100</td><td>An error. Correct it if you can, otherwise remove it and say so</td></tr>
+          <tr><td>A recording mistake you can trace — kilograms typed where grams belonged</td><td>Fix it. This is the best outcome, and worth looking for</td></tr>
+          <tr><td>Real but from a different population — a wholesale order in a retail dataset</td><td>Remove it and state the exclusion, since it answers a different question</td></tr>
+          <tr><td>Real, and genuinely part of what you are studying</td><td><strong>Keep it.</strong> Use the median and IQR to summarise, and mention it in the write-up</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0">The last row is the one most often got wrong. Deleting inconvenient values because a rule flagged them is how a genuine finding gets thrown away — the fraud that broke the pattern, the machine failure, the customer worth more than the rest combined.</p>
+  </div>
+
+  <h3>Part 5 · Putting a number on lopsidedness</h3>
+  <p>The second promise. Concept 1 told you to judge lopsidedness by comparing the mean against the median. That works, and it gives you a direction but not a size.</p>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Skewness</dt>
+      <dd>A single number measuring how lopsided a set of values is. <strong>Zero</strong> means evenly balanced. <strong>Positive</strong> means a long trail of large values on the right, which pulls the mean above the median. <strong>Negative</strong> means the trail is on the left, and the mean sits below the median.</dd>
+    </dl>
+  </div>
+
+  <div class="livebox">
+    <h4 style="margin-top:0">Watch the shape and the number together</h4>
+    <div class="sliderow">
+      <label for="sk">Lopsidedness</label>
+      <input type="range" id="sk" min="-30" max="30" step="1" value="18">
+      <span class="readout" id="skv">—</span>
+    </div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="skewplot"></div></div>
+    <div class="statgrid">
+      <div class="stat hi"><div class="l">Mean</div><div class="v" id="k_mean">—</div></div>
+      <div class="stat bl"><div class="l">Median</div><div class="v" id="k_med">—</div></div>
+      <div class="stat"><div class="l">Mean − median</div><div class="v" id="k_gap">—</div></div>
+      <div class="stat"><div class="l">Skewness</div><div class="v" id="k_skew">—</div></div>
+    </div>
+  </div>
+  <p class="legend">The mean-median gap and the skewness number always agree in sign, because they are measuring the same thing. The gap is easier to compute in your head; the number is comparable across datasets with different units, which the gap is not.</p>
+
+  <div class="card tip">
+    <p class="tagline">💡 Reading a skewness value</p>
+    <div class="tablewrap" style="margin:0 0 12px">
+      <table>
+        <thead><tr><th class="mono">Skewness</th><th>Reading</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">−0.5 to 0.5</td><td>Roughly balanced</td><td>Mean and median both fine</td></tr>
+          <tr><td class="mono">0.5 to 1, or −1 to −0.5</td><td>Noticeably lopsided</td><td>Report both, note the gap</td></tr>
+          <tr><td class="mono">Beyond 1 or −1</td><td>Strongly lopsided</td><td>Report the median; the mean describes few of the values</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0">These bands are rough conventions rather than rules. Income, price, waiting time and city population data routinely score above 2.</p>
+  </div>
+
+  <h3>Part 6 · Is this column bell-shaped?</h3>
+  <p>The third promise, and it matters because several things you have already met assume a bell shape and quietly break without it — the 68–95–99.7 rule from Concept 2, and the standard deviation rule for outliers above.</p>
+
+  <div class="card">
+    <h4>Four checks, in order of effort</h4>
+    <ol class="plain">
+      <li><strong>Compare the mean against the median.</strong> Close together is consistent with a bell shape; far apart rules it out. Costs one line.</li>
+      <li><strong>Compute the skewness.</strong> Near zero is consistent with a bell; beyond about 1 either way is not.</li>
+      <li><strong>Count how much falls within one and two standard deviations.</strong> A bell shape gives about 68 and 95 percent. If you find 80 and 97, the data is more tightly packed in the middle with heavier ends than a bell curve has.</li>
+      <li><strong>Draw a histogram and look at it.</strong> The step people skip, and the one that catches things no summary number will — two separate humps, a hard floor at zero, a pile-up at a rounded value.</li>
+    </ol>
+    <p style="margin-bottom:0">None of these is conclusive on its own. Together they are enough to decide whether the bell-shaped methods are safe to use on this column.</p>
+  </div>
+
+  <pre class="code"><span class="cm"># the four checks, on one column</span>
+import pandas as pd
+
+x = df['income']
+
+print("mean   ", round(x.mean(), 2))
+print("median ", round(x.median(), 2))
+print("skew   ", round(x.skew(), 2))
+
+<span class="cm"># what fraction sits within 1 and 2 standard deviations?</span>
+m, s = x.mean(), x.std()
+for k in (1, 2):
+    inside = ((x &gt; m - k*s) &amp; (x &lt; m + k*s)).mean()
+    print(f"within {k} sd: {inside:.1%}   (a bell shape gives {'68%' if k==1 else '95%'})")
+
+x.plot(kind='hist', bins=40)     <span class="cm"># and then actually look at it</span></pre>
+  <pre class="out">mean    22.91
+median  20.10
+skew    2.57
+
+within 1 sd: 79.4%   (a bell shape gives 68%)
+within 2 sd: 94.6%   (a bell shape gives 95%)</pre>
+  <p class="legend">Every line here says the same thing. The mean sits well above the median, the skewness is far beyond 1, and too much of the data is packed within one standard deviation. This column is strongly lopsided, so the 68–95–99.7 rule and the standard deviation outlier rule should both be avoided on it.</p>
+
+  <div class="card">
+    <h3>The full summary, in one call</h3>
+    <p>Everything in this concept is available from a single pandas method you have been using since the start of the course.</p>
+    <pre class="code" style="margin-top:12px">print(df['marks'].describe())</pre>
+    <pre class="out">count    500.00
+mean      26.80
+std       10.38
+min       12.00
+25%       19.00      <span style="color:#4A6862">&lt;- Q1</span>
+50%       26.50      <span style="color:#4A6862">&lt;- median</span>
+75%       34.00      <span style="color:#4A6862">&lt;- Q3</span>
+max       44.00
+</pre>
+    <p style="margin-bottom:0">The five-number summary is sitting inside <code class="inl">describe()</code> and always has been. The IQR is 34 − 19 = 15, the fences are at −3.5 and 56.5, and the mean and median are close enough to suggest a roughly balanced column. That is most of this concept read off one output.</p>
+  </div>
+
+  <div class="later">
+    <b>What this sets up.</b> The next two concepts look at two quantities together rather than one — how strongly they move in step, and how to fit a line that predicts one from the other. Both are severely distorted by a single extreme point, so the box plot and the IQR rule from this concept become the first thing you run before either of them.
+  </div>
+
+  <div class="card">
+    <h3>What this concept deliberately leaves out</h3>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Idea</th><th>What it will add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Outliers in two dimensions</strong></td><td>A point can be ordinary on each quantity separately and very unusual in combination — which only shows up when the two are plotted together</td></tr>
+          <tr><td><strong>Formal tests for a bell shape</strong></td><td>Procedures that return a p-value for whether a column departs from a bell curve, rather than the four informal checks used here</td></tr>
+          <tr><td><strong>Transforming a lopsided column</strong></td><td>Taking logarithms to pull a long trail of large values back in, and when doing so helps</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">Six places where quartiles, shape or an outlier rule decide what happens next.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">Every one of them is a check you run <strong>before</strong> the interesting work, not after. Five minutes on the shape of each column saves hours of explaining why a model behaves strangely, and it is the difference between an analysis that survives questioning and one that does not.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six cases, including two where deleting the outlier would have destroyed the finding.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Six problems. All the arithmetic is by hand, because these are the calculations most likely to appear in an examination.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions. Outlier handling comes up in almost every data-science interview, usually as "what would you do with this column".</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions using this concept and the five before it.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  uses:[
+    {
+      name:"The first look at every new column",
+      what:"A dataset arrives with forty columns. Before anything else, you need to know which ones are well behaved and which will cause trouble.",
+      how:"One call to <code>describe()</code> gives the five-number summary for every numeric column at once. Read the min and max for impossible values, compare the mean against the median for lopsidedness, and look at the gap between Q3 and the maximum — when the maximum sits far beyond Q3 while Q1 and Q3 are close together, there is a long trail of large values.",
+      code:"summary = df.describe().T\nsummary['iqr']  = summary['75%'] - summary['25%']\nsummary['skew'] = df.skew()\nsummary['mean_vs_median'] = summary['mean'] - summary['50%']\n\nprint(summary[['mean', '50%', 'iqr', 'skew', 'max']].round(2))",
+      note:"Sort that table by skewness and the columns needing attention rise to the top. It is the fastest triage there is on a new dataset."
+    },
+    {
+      name:"Flagging values worth investigating",
+      what:"Before trusting a column you want a defensible list of values to look at, rather than an impression that something looks odd.",
+      how:"Apply the IQR rule. It produces a specific list you can take to whoever owns the data and ask about, and because it is a stated rule rather than a judgement, a reader can check it. Use the IQR version rather than the standard deviation version, since a severe outlier inflates the standard deviation and can hide inside its own fences.",
+      code:"def iqr_outliers(s):\n    q1, q3 = s.quantile([0.25, 0.75])\n    iqr = q3 - q1\n    lo, hi = q1 - 1.5*iqr, q3 + 1.5*iqr\n    return s[(s < lo) | (s > hi)]\n\nflagged = iqr_outliers(df['transaction_value'])\nprint(f'{len(flagged)} values flagged out of {len(df)}')\nprint(flagged.sort_values(ascending=False).head())",
+      note:"Expect roughly 1 in 150 values to be flagged from a well-behaved bell-shaped column, so a handful of flags is normal. Hundreds of flags means the column is lopsided rather than dirty."
+    },
+    {
+      name:"Reporting service performance honestly",
+      what:"A dashboard shows an average response time of 200 milliseconds. Users complain that the service is slow. Both are correct.",
+      how:"Response times are strongly lopsided — most requests are fast and a minority are very slow — so the mean sits near the bulk while the complaints come from the trail. Report percentiles instead. The 95th and 99th percentiles describe the experience of the users having the worst time, which is precisely the group generating the complaints and precisely the group the mean hides.",
+      code:"perf = df.groupby('endpoint')['response_ms'].agg(\n    median='median',\n    p90=lambda s: s.quantile(0.90),\n    p95=lambda s: s.quantile(0.95),\n    p99=lambda s: s.quantile(0.99),\n).round(0)\nprint(perf.sort_values('p99', ascending=False).head())",
+      note:"This is standard practice across the software industry, and it is one of the clearest everyday uses of percentiles. Service commitments are almost always written against a percentile rather than a mean."
+    },
+    {
+      name:"Comparing groups at a glance",
+      what:"You have a numeric column and a grouping column, and you want to see how the groups differ — in centre, in spread and in shape.",
+      how:"Box plots side by side. Each box shows a group's middle half, the line shows its median, and the dots show its outliers. One picture tells you which group is higher, which is more variable, which is lopsided and which has extreme values, all of which would take a table of a dozen numbers to convey.",
+      code:"df.boxplot(column='salary', by='department', figsize=(10, 5))\n\n# the same information as numbers\nprint(df.groupby('department')['salary']\n        .describe()[['25%', '50%', '75%']].round(0))",
+      note:"When one group's box sits entirely above another's, the difference is almost certainly real. When the boxes overlap heavily, you are back to the tests from Concept 5."
+    },
+    {
+      name:"Deciding whether the bell-shaped methods are safe",
+      what:"Several methods you already have assume a bell shape and give wrong answers without one — the 68–95–99.7 rule, and the standard deviation outlier rule.",
+      how:"Run the four checks before relying on either. Compare the mean against the median, compute the skewness, count how much falls within one and two standard deviations, and look at a histogram. If the column fails, use the median and IQR instead of the mean and standard deviation, and use the IQR outlier rule rather than the standard deviation one.",
+      code:"def looks_bell_shaped(s):\n    m, sd = s.mean(), s.std()\n    within1 = ((s > m - sd) & (s < m + sd)).mean()\n    print(f'mean {m:.2f} vs median {s.median():.2f}')\n    print(f'skew {s.skew():.2f}   within 1 sd {within1:.1%} (bell gives 68%)')\n\nlooks_bell_shaped(df['income'])",
+      note:"Very few real columns pass all four checks cleanly. That is not a problem — it just means choosing the robust summaries, which is what the two families in Concept 1 were for."
+    },
+    {
+      name:"Setting thresholds and grades",
+      what:"An examination board needs a distinction mark. A scholarship covers the top 10 percent. A retailer wants to flag its highest-value customers.",
+      how:"Every one of these is a percentile. Rather than choosing a round number and discovering afterwards how many people qualified, choose the proportion you want and read off the value. It also keeps the criterion stable across years when the difficulty of the examination changes.",
+      code:"marks = df['final_marks']\n\nprint('distinction at', marks.quantile(0.95).round(1))   # top 5%\nprint('scholarship at', marks.quantile(0.90).round(1))   # top 10%\n\n# where does a particular student stand?\nscore = 78\nprint(f'a score of {score} is at percentile',\n      round(100 * (marks < score).mean(), 1))",
+      note:"Note the trade-off. A percentile-based cut-off keeps the proportion fixed and lets the standard drift; a fixed mark keeps the standard and lets the proportion drift. Which you want is a policy question, not a statistical one."
+    }
+  ],
+
+  examples:[
+    {
+      title:"The ozone hole that was nearly deleted",
+      color:"var(--stop)",
+      body:"Satellite readings over Antarctica in the late 1970s and early 1980s showed ozone levels far below anything expected. The processing software treated readings that low as instrument errors and set them aside.",
+      numbers:"The values were flagged as outliers because they sat far outside the range of everything previously recorded. The ozone hole was eventually identified from ground-based measurements, and the satellite data was then reprocessed and found to have recorded it all along.",
+      lesson:"The most cited cautionary tale about automatic outlier removal. A value far outside everything seen before is exactly what a genuine discovery looks like, and the rule cannot tell that apart from a broken instrument."
+    },
+    {
+      title:"Why response times are reported as percentiles",
+      color:"var(--teal)",
+      body:"A web service reports a mean response time of 200 milliseconds and receives steady complaints about slowness. Engineering cannot reproduce the problem, because most requests really are fast.",
+      numbers:"The median is 120 ms, the 95th percentile is 800 ms and the 99th percentile is 3,200 ms. One request in a hundred takes more than three seconds — and with millions of requests a day that is tens of thousands of frustrated users the mean says nothing about.",
+      lesson:"When a quantity is strongly lopsided, the mean describes the comfortable majority and hides the suffering minority. Service commitments across the software industry are written against percentiles for exactly this reason."
+    },
+    {
+      title:"A single fraudulent transaction",
+      color:"var(--saffron)",
+      body:"A bank's monitoring flags a transaction more than fifty times the customer's usual amount. The IQR rule caught it on the day it happened.",
+      numbers:"The customer's transactions had Q1 = ₹450 and Q3 = ₹2,100, giving an IQR of ₹1,650 and an upper fence of ₹4,575. The flagged transaction was ₹118,000 — far outside, and unmissable by that rule.",
+      lesson:"Here the outlier <em>is</em> the finding, and removing it would have removed the entire point of the analysis. Fraud detection, fault detection and network intrusion are all fields where the unusual values are what you are looking for."
+    },
+    {
+      title:"A test score that means nothing without a percentile",
+      color:"var(--blue)",
+      body:"A student scores 62 in a competitive examination. Whether that is excellent or poor depends entirely on what everybody else scored, and the raw number carries none of that.",
+      numbers:"In one year the paper was hard and 62 fell at the 94th percentile. Two years later an easier paper put the same 62 at the 61st percentile. The score is identical and the achievement is not remotely comparable.",
+      lesson:"Percentiles convert a raw value into a position within the group, which is what makes results comparable across years and across different papers. It is why competitive examinations report a percentile alongside the mark."
+    },
+    {
+      title:"Two outliers that hid each other",
+      color:"var(--stop)",
+      body:"An analyst checks a small salary dataset for outliers using the three-standard-deviation rule and finds none. The dataset contains two executives earning five times everybody else.",
+      numbers:"With the two large values included, the mean rises to ₹96.8k and the standard deviation to ₹97.8k. Three standard deviations reaches to ₹390k — well beyond both executives at ₹250k and ₹260k. The rule finds nothing.",
+      lesson:"Masking, and it worsens with each additional outlier. The IQR rule on the same data flags both immediately, because quartiles do not move when the values at the ends get more extreme."
+    },
+    {
+      title:"The customer who was worth keeping",
+      color:"var(--teal)",
+      body:"An e-commerce team cleaning its data removes all customers flagged as outliers on annual spend before building a model, on the grounds that they are unrepresentative.",
+      numbers:"The removed group was 0.4 percent of customers and accounted for 23 percent of revenue. The model that resulted was well fitted to customers who barely mattered commercially.",
+      lesson:"Outliers are unrepresentative by definition, and that is not the same as unimportant. Whether to exclude depends on the question being asked, and 'the rule flagged it' is never a sufficient reason on its own."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — The five-number summary by hand",
+      prompt:"Ten students scored 22, 35, 12, 28, 44, 18, 31, 25, 38, 15. Find the five-number summary and the IQR.",
+      steps:[
+        {h:"Sort the values first",
+         b:"Nothing in this concept works on unsorted data.<br><br><code class='inl'>12, 15, 18, 22, 25, 28, 31, 35, 38, 44</code><br><br>Minimum = <strong>12</strong>, maximum = <strong>44</strong>. Two of the five numbers found already."},
+        {h:"Find the median",
+         b:"Ten values, an even number, so the median is the mean of the 5th and the 6th.<br><br><code class='inl'>(25 + 28) ÷ 2 = 26.5</code><br><br>Median = <strong>26.5</strong>"},
+        {h:"Find Q1 — the median of the lower half",
+         b:"The lower half is the five values below the median: <code class='inl'>12, 15, 18, 22, 25</code><br><br>Five values, an odd number, so the middle one is the 3rd: <strong>18</strong>.<br><br>Pandas reports 19 here rather than 18, because it interpolates between values when the count does not divide evenly. On a dataset of any real size the difference disappears. Use whichever convention your course specifies and say which you used."},
+        {h:"Find Q3 — the median of the upper half",
+         b:"The upper half is <code class='inl'>28, 31, 35, 38, 44</code><br><br>The middle one is <strong>35</strong>. Pandas gives 34 by the same interpolation."},
+        {h:"Assemble the answer",
+         b:"Five-number summary: <strong>12, 18, 26.5, 35, 44</strong><br><br>IQR = <code class='inl'>35 − 18 = 17</code><br><br>Read it as a sentence: the middle half of the class scored between 18 and 35, which is a span of 17 marks, and the whole class ran from 12 to 44."}
+      ],
+      answer:"Minimum 12, Q1 18, median 26.5, Q3 35, maximum 44. IQR = 17. (Pandas gives Q1 = 19 and Q3 = 34 using interpolation, so the IQR comes to 15.)"
+    },
+    {
+      title:"Problem 2 — Applying the IQR rule",
+      prompt:"Waiting times in minutes: 4, 5, 5, 6, 7, 7, 8, 8, 9, 10, 11, 32. Using Q1 = 5.75 and Q3 = 9.25, find the fences and identify any outliers.",
+      steps:[
+        {h:"Compute the IQR",
+         b:"<code class='inl'>IQR = Q3 − Q1 = 9.25 − 5.75 = 3.5</code> minutes<br><br>The middle half of the waits span just three and a half minutes, which is a tightly grouped set of values."},
+        {h:"Compute 1.5 × IQR",
+         b:"<code class='inl'>1.5 × 3.5 = 5.25</code><br><br>This is how far beyond each end of the box the whiskers are allowed to reach."},
+        {h:"Find the two fences",
+         b:"Lower fence: <code class='inl'>5.75 − 5.25 = 0.5</code> minutes<br>Upper fence: <code class='inl'>9.25 + 5.25 = 14.5</code> minutes<br><br>Anything outside 0.5 to 14.5 is flagged."},
+        {h:"Check every value",
+         b:"Going through the list: 4, 5, 5, 6, 7, 7, 8, 8, 9, 10 and 11 all sit inside the fences.<br><br><strong>32 is above the upper fence of 14.5</strong> and is flagged as an outlier."},
+        {h:"Say what to do about it",
+         b:"The rule has flagged it; it has not told you what it is. A 32-minute wait is entirely possible — a system failure, a staff shortage, one very complicated customer.<br><br>So investigate rather than delete. If it turns out to be a genuine wait, keep it and report the median of 7.5 rather than the mean of 9.3, since that single value has pulled the mean nearly two minutes above where most people's experience actually was."}
+      ],
+      answer:"IQR = 3.5, fences at 0.5 and 14.5 minutes. The value 32 is flagged. It is plausible as a real wait, so investigate rather than delete, and report the median of 7.5 rather than the mean of 9.3."
+    },
+    {
+      title:"Problem 3 — Where the standard deviation rule fails",
+      prompt:"Seven salaries in thousands: 38, 41, 44, 45, 47, 49, 250. The mean is 73.43 and the standard deviation is 77.95, with Q1 = 42.5 and Q3 = 48. Apply both outlier rules and explain the difference.",
+      steps:[
+        {h:"Apply the standard deviation rule",
+         b:"Three standard deviations either side of the mean:<br><br><code class='inl'>73.43 − 3 × 77.95 = −160.4</code><br><code class='inl'>73.43 + 3 × 77.95 = 307.3</code><br><br>The rule flags anything outside −160 to 307. The largest value is 250, which is comfortably inside.<br><br><strong>The rule flags nothing at all.</strong>"},
+        {h:"Apply the IQR rule",
+         b:"<code class='inl'>IQR = 48 − 42.5 = 5.5</code><br><code class='inl'>1.5 × 5.5 = 8.25</code><br><br>Lower fence: <code class='inl'>42.5 − 8.25 = 34.25</code><br>Upper fence: <code class='inl'>48 + 8.25 = 56.25</code><br><br><strong>250 is far above 56.25 and is flagged immediately.</strong>"},
+        {h:"Explain why they disagree",
+         b:"Look at what the founder's salary did to each rule's ingredients.<br><br>Without it, the six salaries have a standard deviation of 4. With it, the standard deviation is 78 — nearly twenty times larger. The rule then uses that inflated figure to decide what counts as extreme, so the fences stretch to 307 and the outlier fits comfortably inside its own net.<br><br>The quartiles barely moved, because Q1 and Q3 depend on position in the sorted list rather than on the size of the values at the ends."},
+        {h:"The name for it",
+         b:"This is called <strong>masking</strong>: an outlier inflates the spread enough to hide itself.<br><br>It gets worse with more than one. Add a second executive on 260 and the standard deviation rises further, so the two conceal each other even more effectively while the IQR rule catches both without difficulty."},
+        {h:"The practical rule",
+         b:"<strong>Use the IQR rule by default.</strong><br><br>The standard deviation rule is defensible only when you already know the column is bell-shaped and free of severe outliers — which is precisely the situation in which you do not need to check for outliers."}
+      ],
+      answer:"The standard deviation rule flags nothing, because the outlier inflated the standard deviation from 4 to 78 and stretched the fences to ±307. The IQR rule flags 250 immediately, since fences at 34.25 and 56.25 are unaffected by it. This is masking, and it is why the IQR rule is the default."
+    },
+    {
+      title:"Problem 4 — Reading lopsidedness three ways",
+      prompt:"A column of house prices has a mean of ₹82 lakh, a median of ₹54 lakh, Q1 = ₹41 lakh, Q3 = ₹88 lakh and a maximum of ₹640 lakh. Without computing anything further, describe the shape and say which summary to report.",
+      steps:[
+        {h:"Check the mean against the median",
+         b:"The mean of 82 sits well above the median of 54 — a gap of 28 lakh, which is more than half the median itself.<br><br>The mean is pulled towards the trail, so <strong>the trail is on the high side</strong>. This is positive lopsidedness."},
+        {h:"Check the distances from the median to each quartile",
+         b:"Median to Q1: <code class='inl'>54 − 41 = 13</code> lakh<br>Median to Q3: <code class='inl'>88 − 54 = 34</code> lakh<br><br>The upper quarter of the box is nearly three times as wide as the lower one. Even the middle half of the data leans upward, before any extreme values are considered."},
+        {h:"Check the distance from Q3 to the maximum",
+         b:"<code class='inl'>IQR = 88 − 41 = 47</code> lakh, so the upper fence sits at <code class='inl'>88 + 70.5 = 158.5</code> lakh.<br><br>The maximum is 640 — more than four times the fence. There is a long trail of very expensive properties well beyond where the bulk of the market sits."},
+        {h:"State the conclusion",
+         b:"All three checks agree: the column is <strong>strongly lopsided with a long trail of high values</strong>, which is what house prices look like everywhere.<br><br>Report the <strong>median of ₹54 lakh</strong> as the typical price, with the IQR of ₹47 lakh as the spread. The mean of ₹82 lakh describes very few actual properties — a family looking for a typical home would be badly misled by it."},
+        {h:"What the skewness number would add",
+         b:"It would put a size on what you have already established from the direction. Given a gap this large it would come out well above 1, probably above 2.<br><br>Its real value is comparability: a skewness of 2.4 for house prices and 2.6 for incomes can be compared directly, whereas a gap of 28 lakh and a gap of ₹9,000 cannot."}
+      ],
+      answer:"Strongly lopsided with a long trail of high values — the mean sits 28 lakh above the median, the upper half of the box is nearly three times the lower, and the maximum is four times the upper fence. Report the median of ₹54 lakh with an IQR of ₹47 lakh."
+    },
+    {
+      title:"Problem 5 — Percentiles and what they mean",
+      prompt:"In a competitive examination, a student scores 62 and is told this is the 94th percentile. (a) What does that mean? (b) A friend two years later scores 62 and is told it is the 61st percentile. Explain. (c) Which is the better measure of the student's standing?",
+      steps:[
+        {h:"(a) What the 94th percentile means",
+         b:"94 percent of candidates scored below 62, so the student is in the top 6 percent.<br><br>Note carefully what it does <em>not</em> mean. It does not mean the student answered 94 percent of the paper correctly — that would be the score, and the score was 62. Percentile is a position within the group, not a proportion of the marks."},
+        {h:"(b) Why the same score gives a different percentile",
+         b:"The percentile depends entirely on what everybody else scored. A hard paper pushes the whole set of scores down, so 62 sits near the top. An easy paper pushes them up, so the same 62 sits in the middle.<br><br>Same score, same student, very different achievement relative to the group — and only the percentile captures that."},
+        {h:"(c) Which measure is better",
+         b:"It depends on what you are measuring.<br><br>The <strong>percentile</strong> is better for comparing candidates across different years or different papers, which is why competitive examinations report it.<br><br>The <strong>raw score</strong> is better if the marks mean something absolute — a driving test needs a fixed standard of competence, not the top 30 percent of whoever turned up that week."},
+        {h:"The general point",
+         b:"A percentile converts a value into a position within a group. That makes it comparable across groups and destroys any absolute meaning.<br><br>The same trade appears whenever a threshold is set. A percentile cut-off fixes the proportion who qualify and lets the standard drift; a fixed cut-off holds the standard and lets the proportion drift. Which you want is a policy decision."}
+      ],
+      answer:"(a) 94 percent of candidates scored below 62. (b) The percentile reflects the group, so an easier paper lowers the same score's position. (c) The percentile for comparing across years, the raw score when an absolute standard matters."
+    },
+    {
+      title:"Problem 6 — Is this column bell-shaped?",
+      prompt:"A column has mean 22.91, median 20.10, skewness 2.57, and 79.4 percent of values within one standard deviation of the mean. Decide whether the bell-shaped methods are safe on it, and say what to use instead.",
+      steps:[
+        {h:"Check 1 — mean against median",
+         b:"22.91 against 20.10, a gap of 2.81 on a median of 20 — about 14 percent of the median.<br><br>A bell shape would put these almost on top of each other. <strong>Fails</strong>, and the direction says the trail is on the high side."},
+        {h:"Check 2 — the skewness number",
+         b:"2.57 is far beyond the rough threshold of 1 for 'strongly lopsided'.<br><br><strong>Fails clearly.</strong> This is the sort of value you see for income, price and waiting-time columns."},
+        {h:"Check 3 — the 68 percent test",
+         b:"A bell shape puts about 68 percent within one standard deviation. This column has 79.4 percent.<br><br><strong>Fails</strong>, and the direction of the failure is informative: too much is packed near the middle, which means the rest is spread further out than a bell curve allows. A tight core with a long trail."},
+        {h:"Check 4 — look at the histogram",
+         b:"Not given here, and it should still be drawn. The three numbers already agree, and only a picture catches things such as two separate humps or a pile-up at a rounded value.<br><br>Never skip this step just because the numbers have already decided the question."},
+        {h:"The verdict and what to use",
+         b:"The column is <strong>not bell-shaped</strong>, and two things you have already met must therefore be avoided on it:<br><br>The <strong>68–95–99.7 rule</strong> from Concept 2 — it would give wrong answers, as check 3 already demonstrates.<br>The <strong>standard deviation outlier rule</strong> — its fences would be in the wrong place.<br><br>Use instead: the <strong>median</strong> for the centre, the <strong>IQR</strong> for the spread, the <strong>IQR rule</strong> for outliers, and <strong>percentiles</strong> for any threshold."}
+      ],
+      answer:"Not bell-shaped — all three numeric checks fail in the same direction, showing a tight core with a long trail of high values. Avoid the 68–95–99.7 rule and the standard deviation outlier rule; use the median, the IQR, the IQR rule and percentiles instead."
+    }
+  ],
+
+  interview:[
+    {
+      q:"What is the IQR and why would you use it instead of the standard deviation?",
+      a:"The IQR is Q3 minus Q1 — the span of the middle half of the data. You use it when the column contains extreme values or is strongly lopsided, because it ignores the top and bottom quarters entirely and so cannot be dragged by them.<br><br>The standard deviation uses every value, which makes it more informative on well-behaved data and unreliable when a few values sit far from the rest. The two belong to the same pair of families as the median and the mean, and the choice between them is the same choice.",
+      probe:"A straightforward definition question. Connecting it back to the robust-versus-sensitive distinction shows you see the structure rather than a list of formulas."
+    },
+    {
+      q:"How would you detect outliers in a column?",
+      a:"The IQR rule: flag anything below Q1 minus 1.5 times the IQR or above Q3 plus 1.5 times the IQR. It is a stated rule so a reader can check it, and it is robust because quartiles do not move when the extreme values get more extreme.<br><br>The alternative — more than three standard deviations from the mean — has a serious flaw. An outlier inflates the mean and the standard deviation, so the fences stretch and the outlier can end up inside them. That is called masking, and it gets worse with several outliers.<br><br>I would also plot the column, because some things only show up visually.",
+      probe:"Naming both rules is expected. Explaining masking, ideally with the mechanism, is what distinguishes a strong answer."
+    },
+    {
+      q:"You find an outlier. What do you do with it?",
+      a:"Investigate before deciding, because the rule flags values and never tells you what they are.<br><br>If it is impossible — a negative age, a mark above the maximum — it is an error, so correct it or remove it and record that. If it is a traceable recording mistake, fix it. If it is real but from a different population, such as a wholesale order in retail data, exclude it and state the exclusion. If it is real and genuinely part of what you are studying, keep it and switch to the median and IQR for summarising.<br><br>What I would not do is delete it because a rule flagged it. In fraud detection and fault monitoring the outliers are the entire point of the analysis.",
+      probe:"This is the most commonly asked outlier question and the one where candidates most often give a mechanical answer. Interviewers want to hear investigation before deletion."
+    },
+    {
+      q:"What does a box plot show?",
+      a:"The five-number summary drawn as a picture. The box runs from Q1 to Q3, so it covers the middle half; the line inside it is the median; the whiskers reach to the furthest values within 1.5 IQRs of the box; and anything beyond appears as an individual dot.<br><br>What makes it useful is that it shows centre, spread, lopsidedness and outliers at once. If the median sits nearer one end of the box, or one whisker is much longer than the other, the column is lopsided in that direction. Several box plots side by side compare groups faster than any table.",
+      probe:"They want the components and what each conveys. Adding that whisker asymmetry reveals lopsidedness shows you read them rather than just produce them."
+    },
+    {
+      q:"A column has a mean of 82 and a median of 54. What does that tell you, and what would you report?",
+      a:"The mean sits well above the median, so there is a long trail of large values pulling it up — the column is strongly lopsided in the positive direction. Income, price and waiting-time columns almost always look like this.<br><br>I would report the median of 54 as the typical value and the IQR as the spread, and I would say explicitly that the distribution is lopsided rather than quietly substituting one number for another. I would also avoid the 68–95–99.7 rule and the standard deviation outlier rule on this column, since both assume a bell shape.",
+      probe:"The observation is easy; the consequences are the answer. Mentioning which previously learned methods now become unsafe is what shows the pieces are connected."
+    },
+    {
+      q:"What is skewness and how do you interpret the number?",
+      a:"A single number measuring lopsidedness. Zero means balanced, positive means a long trail of large values with the mean above the median, and negative means the trail is on the low side with the mean below.<br><br>As rough bands: between −0.5 and 0.5 is roughly balanced, beyond 1 either way is strongly lopsided. Income and price data routinely exceed 2.<br><br>Its advantage over simply comparing the mean and median is comparability — a skewness of 2.4 and one of 2.6 can be compared directly, whereas a gap of ₹28 lakh and a gap of ₹9,000 cannot.",
+      probe:"The bands are worth knowing roughly. The comparability point explains why the number exists at all when the mean-median gap already gives the direction."
+    },
+    {
+      q:"How would you check whether a column is normally distributed?",
+      a:"Four checks in increasing order of effort. Compare the mean against the median — close is consistent with a bell shape, far apart rules it out. Compute the skewness and see whether it is near zero. Count what fraction falls within one and two standard deviations and compare against 68 and 95 percent. And draw a histogram and look at it.<br><br>The last one catches what the numbers miss — two humps, a hard floor at zero, a pile-up at a rounded value. There are formal tests that return a p-value for this, and for most practical purposes the four checks are enough to decide whether the bell-shaped methods are safe.",
+      probe:"Listing several checks rather than one is the good answer, and insisting on looking at the histogram signals practical experience."
+    },
+    {
+      q:"Why do engineering teams report the 95th and 99th percentiles rather than average response time?",
+      a:"Because response times are strongly lopsided. Most requests are fast, a minority are very slow, and the mean sits near the comfortable majority while the complaints come from the trail.<br><br>A service can have a mean of 200 milliseconds and a 99th percentile of 3 seconds — meaning one request in a hundred takes more than three seconds. At scale that is tens of thousands of users a day whose experience the mean says nothing about.<br><br>Percentiles describe the users having the worst time, which is the group that decides whether a service is judged good.",
+      probe:"A very common applied question. Being able to give plausible numbers showing the mean and the 99th percentile telling different stories makes the answer concrete."
+    },
+    {
+      q:"Should you always remove outliers before building a model?",
+      a:"No, and doing so automatically is a common way to destroy an analysis.<br><br>It depends on what the outliers are and what the question is. If they are errors, remove them. If they are real and rare but genuinely part of the population you are modelling, removing them makes the model fit a population that does not exist — an e-commerce team that removes its highest-spending customers is left with a model of customers who barely matter commercially.<br><br>And in fraud detection, fault monitoring or intrusion detection, the outliers are the thing being predicted. Removing them removes the problem.",
+      probe:"They are checking whether you treat cleaning as a mechanical step. The 'depends on the question' answer with a concrete counter-example is what is wanted."
+    },
+    {
+      q:"A student scores 62 and is told it is the 94th percentile. What does that mean, and why report it?",
+      a:"94 percent of candidates scored below 62, so the student is in the top 6 percent. It does not mean 94 percent of the paper was answered correctly — the percentile is a position within the group, not a proportion of the marks.<br><br>It is reported because the raw score's meaning depends entirely on the difficulty of the paper. The same 62 might be the 94th percentile one year and the 61st two years later on an easier paper. The percentile makes results comparable across years and papers, which a raw mark cannot do.",
+      probe:"The distinction between percentile and percentage-correct catches a surprising number of candidates. The comparability-across-years reason is the second half."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"What does the IQR measure?",
+      opts:[
+        {t:"The difference between the largest and smallest values",
+         fb:"That is the range, which is defined entirely by the two most extreme values — the opposite of what the IQR is for."},
+        {t:"The typical distance of a value from the mean",
+         fb:"That describes the standard deviation. The IQR does not reference the mean at all."},
+        {t:"The span covered by the middle half of the data, once the top and bottom quarters are set aside", ok:true,
+         fb:"Right — Q3 minus Q1. It ignores the top and bottom quarters entirely, which is exactly why extreme values cannot move it."},
+        {t:"The average gap between neighbouring sorted values",
+         fb:"No standard measure is defined that way, and the IQR depends only on two values, Q1 and Q3."}
+      ]
+    },
+    {
+      stem:"A dataset has Q1 = 20 and Q3 = 32. Where are the IQR fences?",
+      opts:[
+        {t:"At 2 and 50", ok:true,
+         fb:"Right: IQR = 12, so 1.5 × 12 = 18. The fences are 20 − 18 = 2 and 32 + 18 = 50."},
+        {t:"At 20 and 32",
+         fb:"Those are the quartiles themselves — the ends of the box. The fences sit 1.5 IQRs beyond them."},
+        {t:"At 8 and 44",
+         fb:"That would be one IQR beyond each end rather than 1.5. The multiplier in the standard rule is 1.5."},
+        {t:"It cannot be determined without knowing the median and the total number of values in the dataset",
+         fb:"The rule needs only Q1 and Q3, which is precisely what makes it quick to apply."}
+      ]
+    },
+    {
+      stem:"Seven salaries are 38, 41, 44, 45, 47, 49 and 250. The three-standard-deviation rule flags nothing. Why?",
+      opts:[
+        {t:"Because 250 is a genuine salary rather than an error",
+         fb:"Whether it is genuine has no bearing on whether a rule flags it. The rule is arithmetic, and the arithmetic is what failed."},
+        {t:"Because the rule only works on samples larger than thirty",
+         fb:"There is no such requirement. The problem here would persist at any sample size."},
+        {t:"Because 250 inflated the standard deviation to 78, stretching the fences past itself", ok:true,
+         fb:"Right — this is masking. The outlier widens its own net until it fits inside. The IQR rule flags it immediately, since quartiles do not move when the ends get more extreme."},
+        {t:"Because the mean of 73.4 sits between the ordinary salaries and the founder's, so the rule cannot decide which group to measure the distance from",
+         fb:"The rule measures from the mean without difficulty. What defeats it is the size of the standard deviation, not the position of the mean."}
+      ]
+    },
+    {
+      stem:"A column has a mean of 45 and a median of 31. What follows?",
+      opts:[
+        {t:"There is a long trail of large values pulling the mean up", ok:true,
+         fb:"Right. The mean is dragged towards the trail while the median stays with the bulk, so a mean well above the median means the trail is on the high side."},
+        {t:"There is a long trail of small values pulling the mean down",
+         fb:"That would put the mean <em>below</em> the median. Here the mean is the larger of the two."},
+        {t:"The data is evenly balanced and the difference is a rounding artefact",
+         fb:"A gap of 14 on a median of 31 is far too large to be rounding. It is a real feature of the column."},
+        {t:"There must be an error in the calculation, since the mean and the median of a column should not be able to differ by that much",
+         fb:"They can and routinely do. Income and price columns show gaps this size as a matter of course."}
+      ]
+    },
+    {
+      stem:"Which outlier rule should you prefer by default, and why?",
+      opts:[
+        {t:"The standard deviation rule, because it uses every value in the column",
+         fb:"Using every value is what makes it vulnerable. The outlier gets a say in setting its own threshold."},
+        {t:"The IQR rule, because quartiles are not moved by the extreme values it is looking for", ok:true,
+         fb:"Right. The rule's ingredients stay put no matter how extreme the flagged value is, so it cannot be defeated by the thing it is meant to catch."},
+        {t:"Whichever one flags fewer values, since a rule that flags many values is clearly too sensitive",
+         fb:"Choosing the rule by its answer is backwards. On lopsided data the IQR rule correctly flags many values."},
+        {t:"Neither, because outlier rules should never be used and every value in a dataset ought to be retained regardless of how extreme it is",
+         fb:"Flagging is not deleting. The rules identify values worth investigating, and investigating is always worthwhile."}
+      ]
+    },
+    {
+      stem:"A box plot shows the median line sitting close to the bottom of the box, with a much longer whisker above than below. What does that indicate?",
+      opts:[
+        {t:"An error in how the plot was drawn",
+         fb:"This is a perfectly normal box plot, and it is telling you something specific about the column."},
+        {t:"The data is lopsided with a trail of larger values", ok:true,
+         fb:"Right. Both features point the same way — the upper quarter of the box is wider than the lower, and the values above stretch further out."},
+        {t:"The data contains no outliers at all",
+         fb:"Outliers appear as separate dots beyond the whiskers, and the question says nothing about those. Whisker length describes the shape."},
+        {t:"The median has been computed incorrectly, since it should always fall exactly at the centre of the box in a correctly drawn plot",
+         fb:"The median sits at the centre of the box only when the data is evenly balanced. Its position within the box is informative."}
+      ]
+    },
+    {
+      stem:"You are told a column's skewness is 2.8. What should you report as its typical value?",
+      opts:[
+        {t:"The mean, because it uses more of the information available",
+         fb:"On a column this lopsided the mean sits well above most of the values and describes very few of them."},
+        {t:"The mode, since a lopsided column has a clear peak",
+         fb:"The mode is available and rarely the right summary for a continuous quantity, where it may not even exist."},
+        {t:"The mean and median averaged together to give a balanced figure",
+         fb:"Averaging an honest summary with a misleading one produces a figure that is neither."},
+        {t:"The median, with the IQR as the spread", ok:true,
+         fb:"Right. A skewness of 2.8 is strongly lopsided, so both robust measures are the honest choice — and it is worth saying in the report that the column is lopsided rather than quietly swapping numbers."}
+      ]
+    },
+    {
+      stem:"An analyst removes every value flagged by the IQR rule before building a model of customer spending. What is the risk?",
+      opts:[
+        {t:"None — removing outliers always improves a model",
+         fb:"It sometimes does and it is never automatic. What the removed values are decides whether it helps or destroys the analysis."},
+        {t:"The model will run more slowly with fewer rows",
+         fb:"Fewer rows run faster. The risk is about what the model learns rather than how long it takes."},
+        {t:"The removed customers may be a small share of the people and a very large share of the revenue", ok:true,
+         fb:"Right. High-value customers are outliers by definition and are often the commercially important ones. The result is a model well fitted to customers who barely matter."},
+        {t:"The IQR rule cannot be applied to a continuous column such as spending",
+         fb:"The rule applies perfectly well to continuous quantities. The problem is what is done with the values it flags."}
+      ]
+    },
+    {
+      stem:"A student scores 62 and is told it is the 94th percentile. What does that mean?",
+      opts:[
+        {t:"The student answered 94 percent of the questions correctly",
+         fb:"That would be the score, and the score was 62. A percentile is a position within the group, not a proportion of the marks."},
+        {t:"94 percent of the candidates who sat the examination scored below 62", ok:true,
+         fb:"Right — the student is in the top 6 percent. This is why the same score can be a different percentile in a different year, since the percentile depends on what everybody else scored."},
+        {t:"The student scored 94 marks after the results were adjusted for the difficulty of the paper",
+         fb:"No adjustment of the score takes place. The percentile reports position and leaves the mark alone."},
+        {t:"94 percent of candidates scored above 62, placing the student low in the group",
+         fb:"The direction is reversed — a percentile counts the proportion falling <em>below</em> the value."}
+      ]
+    },
+    {
+      stem:"A column has 79 percent of its values within one standard deviation of the mean. What does that suggest?",
+      opts:[
+        {t:"The column is bell-shaped, since 79 percent is close to 68 percent",
+         fb:"Eleven percentage points is a substantial departure, and it points in a specific direction rather than being noise."},
+        {t:"The calculation must be wrong, because the figure cannot exceed 68 percent",
+         fb:"There is no upper limit of 68 percent. That figure applies to a bell shape, and other shapes give other values."},
+        {t:"The column is not bell-shaped — it has a tighter core and a longer trail than a bell curve", ok:true,
+         fb:"Right, and the direction of the failure is informative. More packed near the middle means the remainder is spread further out, which is the signature of a lopsided column."},
+        {t:"The standard deviation has been computed by dividing by n instead of n − 1, which is what has pushed the percentage above the value a bell curve would give",
+         fb:"That choice changes the standard deviation only slightly, and nothing like enough to move the figure eleven points."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [2,0,3,1,2,3,0,2,1,3];
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+/* ---- quantile, pandas linear method ---- */
+function quantile(sorted, p){
+  const i = p*(sorted.length-1), lo = Math.floor(i), frac = i-lo;
+  return sorted[lo] + (sorted[Math.min(lo+1, sorted.length-1)] - sorted[lo]) * frac;
+}
+function summarise(arr){
+  const s=[...arr].sort((a,b)=>a-b), n=s.length;
+  const mean=s.reduce((a,b)=>a+b,0)/n;
+  const sd=Math.sqrt(s.reduce((a,b)=>a+(b-mean)**2,0)/(n-1));
+  const q1=quantile(s,0.25), med=quantile(s,0.5), q3=quantile(s,0.75);
+  return {s, n, mean, sd, q1, med, q3, iqr:q3-q1, min:s[0], max:s[n-1]};
+}
+
+/* ---- box plot widget ---- */
+const BASE=[38,41,44,45,47,49];
+function drawBox(){
+  const v=+$("#sl").value;
+  const d=[...BASE, v];
+  const st=summarise(d);
+  $("#slv").textContent="₹"+v+"k";
+  $("#s_q1").textContent=st.q1.toFixed(1);
+  $("#s_med").textContent=st.med.toFixed(1);
+  $("#s_q3").textContent=st.q3.toFixed(1);
+  $("#s_iqr").textContent=st.iqr.toFixed(1);
+  $("#s_sd").textContent=st.sd.toFixed(1);
+
+  const fLo=st.q1-1.5*st.iqr, fHi=st.q3+1.5*st.iqr;
+  const sLo=st.mean-3*st.sd,  sHi=st.mean+3*st.sd;
+  const iqrOut=d.filter(x=>x<fLo||x>fHi);
+  const sdOut =d.filter(x=>x<sLo||x>sHi);
+
+  $("#v_iqr").innerHTML=`<div class="verdict ${iqrOut.length?"rej":"keep"}">
+    <strong>IQR rule.</strong> Fences at ${fLo.toFixed(1)} and ${fHi.toFixed(1)}. ${
+    iqrOut.length ? `Flags ${iqrOut.map(x=>"₹"+x+"k").join(", ")}.` : "Flags nothing."}</div>`;
+  $("#v_sd").innerHTML=`<div class="verdict ${sdOut.length?"rej":"keep"}">
+    <strong>Standard deviation rule.</strong> Fences at ${sLo.toFixed(1)} and ${sHi.toFixed(1)}. ${
+    sdOut.length ? `Flags ${sdOut.map(x=>"₹"+x+"k").join(", ")}.` : "Flags nothing — the fences have stretched past every value."}</div>`;
+
+  const W=640,H=200,L=34,R=24,xMax=420, yBox=74, bh=44;
+  const sx=x=>L+(x/xMax)*(W-L-R);
+  let g="";
+  for(let t=0;t<=400;t+=100) g+=`<line x1="${sx(t)}" y1="26" x2="${sx(t)}" y2="${H-40}" stroke="#EDF2F0"/>`+
+    `<text x="${sx(t)}" y="${H-22}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${t}</text>`;
+  const inside=st.s.filter(x=>x>=fLo&&x<=fHi);
+  const wLo=Math.min(...inside), wHi=Math.max(...inside);
+  const box=`<line x1="${sx(wLo)}" y1="${yBox+bh/2}" x2="${sx(st.q1)}" y2="${yBox+bh/2}" stroke="#0F5B4F" stroke-width="1.6"/>`+
+    `<line x1="${sx(wHi)}" y1="${yBox+bh/2}" x2="${sx(st.q3)}" y2="${yBox+bh/2}" stroke="#0F5B4F" stroke-width="1.6"/>`+
+    `<line x1="${sx(wLo)}" y1="${yBox+8}" x2="${sx(wLo)}" y2="${yBox+bh-8}" stroke="#0F5B4F" stroke-width="1.6"/>`+
+    `<line x1="${sx(wHi)}" y1="${yBox+8}" x2="${sx(wHi)}" y2="${yBox+bh-8}" stroke="#0F5B4F" stroke-width="1.6"/>`+
+    `<rect x="${sx(st.q1)}" y="${yBox}" width="${Math.max(2,sx(st.q3)-sx(st.q1))}" height="${bh}" fill="#E2EDE9" stroke="#0F5B4F" stroke-width="1.6"/>`+
+    `<line x1="${sx(st.med)}" y1="${yBox}" x2="${sx(st.med)}" y2="${yBox+bh}" stroke="#0F5B4F" stroke-width="2.6"/>`;
+  const outs=d.filter(x=>x<fLo||x>fHi).map(x=>
+    `<circle cx="${sx(x)}" cy="${yBox+bh/2}" r="5" fill="none" stroke="#A63A1E" stroke-width="2"/>`).join("");
+  const fence=`<line x1="${sx(fHi)}" y1="${yBox-14}" x2="${sx(fHi)}" y2="${yBox+bh+14}" stroke="#3C6E8F" stroke-width="1.6" stroke-dasharray="4 3"/>`+
+    `<text x="${sx(fHi)}" y="${yBox-19}" font-size="10.5" fill="#3C6E8F" text-anchor="middle" font-family="IBM Plex Mono">IQR fence ${fHi.toFixed(0)}</text>`;
+  const sdf = sHi<=xMax
+    ? `<line x1="${sx(sHi)}" y1="${yBox-14}" x2="${sx(sHi)}" y2="${yBox+bh+14}" stroke="#A63A1E" stroke-width="1.6" stroke-dasharray="4 3"/>`+
+      `<text x="${sx(sHi)}" y="${yBox+bh+27}" font-size="10.5" fill="#A63A1E" text-anchor="middle" font-family="IBM Plex Mono">3 sd fence ${sHi.toFixed(0)}</text>`
+    : `<text x="${W-R}" y="${yBox+bh+27}" font-size="10.5" fill="#A63A1E" text-anchor="end" font-family="IBM Plex Mono">3 sd fence ${sHi.toFixed(0)} — off the chart</text>`;
+  $("#boxplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A box plot of seven salaries with both outlier fences marked">
+    ${g}${box}${outs}${fence}${sdf}
+    <line x1="${L}" y1="${H-40}" x2="${W-R}" y2="${H-40}" stroke="#12312B"/>
+    <text x="${W-R}" y="${H-6}" font-size="10.5" fill="#4A6862" text-anchor="end">salary, thousands of rupees</text></svg>`;
+}
+$("#sl").addEventListener("input", drawBox);
+drawBox();
+
+/* ---- skewness widget ---- */
+function drawSkew(){
+  const k=(+$("#sk").value)/10;
+  const n=600, vals=[];
+  let sd=4242;
+  const r=()=>{ sd=(sd*1103515245+12345)&0x7fffffff; return sd/0x7fffffff; };
+  for(let i=0;i<n;i++){
+    let u=r(); u=Math.max(1e-6,Math.min(1-1e-6,u));
+    let g=0; for(let j=0;j<4;j++) g+=r(); g=(g-2)/0.577;
+    let v = k>=0 ? g + k*(-Math.log(1-u)-1) : g - Math.abs(k)*(-Math.log(1-u)-1);
+    vals.push(v);
+  }
+  const st=summarise(vals);
+  const mean=st.mean, sdv=st.sd;
+  const skew = vals.reduce((a,b)=>a+((b-mean)/sdv)**3,0) * n/((n-1)*(n-2));
+  $("#skv").textContent=(k>=0?"+":"")+k.toFixed(1);
+  $("#k_mean").textContent=mean.toFixed(2);
+  $("#k_med").textContent=st.med.toFixed(2);
+  $("#k_gap").textContent=(mean-st.med>=0?"+":"")+(mean-st.med).toFixed(2);
+  $("#k_skew").textContent=(skew>=0?"+":"")+skew.toFixed(2);
+
+  const W=640,H=200,L=34,R=20,T=24,BM=34, lo=-8, hi=12, bins=44;
+  const h=new Array(bins).fill(0), bw=(hi-lo)/bins;
+  vals.forEach(v=>{const i=Math.floor((v-lo)/bw); if(i>=0&&i<bins) h[i]++;});
+  const mx=Math.max(...h,1);
+  const sx=v=>L+((v-lo)/(hi-lo))*(W-L-R), sy=c=>H-BM-(c/mx)*(H-BM-T);
+  const barW=(W-L-R)/bins;
+  const bars=h.map((c,i)=>`<rect x="${(L+i*barW).toFixed(1)}" y="${sy(c).toFixed(1)}" width="${Math.max(1,barW-0.7).toFixed(1)}" height="${(H-BM-sy(c)).toFixed(1)}" fill="#0F5B4F" opacity="0.6"/>`).join("");
+  let g="";
+  for(let v=-8;v<=12;v+=4) g+=`<text x="${sx(v)}" y="${H-BM+16}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  const mk=(v,col,lab,dy)=>`<line x1="${sx(v)}" y1="${dy}" x2="${sx(v)}" y2="${H-BM}" stroke="${col}" stroke-width="2"/>`+
+    `<text x="${sx(v)}" y="${dy-4}" font-size="10.5" fill="${col}" text-anchor="middle" font-family="IBM Plex Mono">${lab}</text>`;
+  $("#skewplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A histogram whose lopsidedness changes with the slider">
+    ${g}${bars}${mk(st.med,"#3C6E8F","median",T+14)}${mk(mean,"#A63A1E","mean",T-2)}
+    <line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/></svg>`;
+}
+$("#sk").addEventListener("input", drawSkew);
+drawSkew();
+
+/* ---- content ---- */
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card"><h3>${i+1}. ${u.name}</h3><p>${u.what}</p><p>${u.how}</p>
+  <pre class="code">${esc(u.code)}</pre>
+  <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p></div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}"><h3>${e.title}</h3><p>${e.body}</p>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+  <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p></div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card"><h3>${p.title}</h3>
+  <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+  ${p.steps.map((s,si)=>`
+    <div class="step" id="st${pi}_${si}">
+      <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+      <div class="body"><p>${s.b}</p></div></div>`).join("")}
+  <div class="step" id="st${pi}_ans">
+    <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+    <div class="body"><div class="answerline"><b>${p.answer}</b></div></div></div></div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div></div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pc=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pc} percent.</p>
+      <p style="margin-bottom:0">${pc>=80
+        ? "Concept 1 is now complete, and you have the checks the last two concepts depend on."
+        : "Go back to the salary box plot and drag it to ₹250k while watching the two verdict lines. Several of these questions come straight from what it shows."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>

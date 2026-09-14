@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept 4 · Sampling and Sampling Distributions — Statistics Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F0; --card:#FFFFFF; --ink:#12312B; --ink-soft:#4A6862; --rule:#D2DDD8;
+  --teal:#0F5B4F; --teal-dim:#E2EDE9; --saffron:#D98A05; --saffron-dim:#FBEFD9;
+  --ok:#1B6F52; --ok-dim:#DFF0E7; --stop:#A63A1E; --stop-dim:#FAE7E1;
+  --blue:#3C6E8F; --blue-dim:#E4EDF2;
+  --code-bg:#0E2622; --code-ink:#CFE3DD; --radius:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:28px 28px;background-position:-1px -1px;
+  color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 80px}
+header.top{background:var(--teal);color:#EAF3F0;border-bottom:3px solid var(--saffron)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.eyebrow{font-size:.82rem;color:#9DC4BA;margin:0 0 6px}
+h1{font-size:clamp(1.5rem,3.6vw,2.1rem);margin:0 0 8px;font-weight:600;line-height:1.15}
+header.top p.lede{margin:0;max-width:64ch;color:#C6DDD6;font-size:.98rem}
+.backlink{display:inline-flex;align-items:center;gap:6px;color:#9DC4BA;text-decoration:none;font-size:.83rem;margin:0 0 12px}
+.backlink:hover{color:#EAF3F0}
+nav.rail{position:sticky;top:0;z-index:30;background:rgba(238,242,240,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail-inner{max-width:1060px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+.stage-btn{flex:0 0 auto;appearance:none;background:none;border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;color:var(--ink-soft);padding:14px 12px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.stage-btn:hover{color:var(--ink)}
+.stage-btn .num{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);display:grid;place-items:center;font-size:.75rem;font-weight:600;font-family:"IBM Plex Mono",monospace}
+.stage-btn[aria-selected="true"]{color:var(--teal);border-bottom-color:var(--saffron);font-weight:600}
+.stage-btn[aria-selected="true"] .num{border-color:var(--teal);background:var(--teal);color:#fff}
+.stage-btn.done .num{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage-btn:focus-visible{outline:2px solid var(--saffron);outline-offset:-4px}
+.panel{display:none;padding-top:30px}
+.panel.active{display:block}
+h2{font-size:1.35rem;margin:0 0 6px;font-weight:600}
+.sub{color:var(--ink-soft);margin:0 0 22px;max-width:72ch}
+h3{font-size:1.02rem;margin:26px 0 8px;font-weight:600}
+h4{font-size:.95rem;margin:18px 0 6px;font-weight:600}
+p{max-width:74ch}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin:0 0 18px}
+.card.key{border-left:4px solid var(--teal);background:#F7FBFA}
+.card.tip{border-left:4px solid var(--saffron);background:#FDF9F1}
+.card.newword{border-left:4px solid var(--blue);background:var(--blue-dim)}
+.card.recall{border-left:4px solid var(--ok);background:var(--ok-dim)}
+.card.warn{border-left:4px solid var(--stop);background:#FDF3F0}
+.card h3:first-child,.card h4:first-child{margin-top:0}
+.tagline{font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.card.tip .tagline{color:#8A5602}
+.card.newword .tagline{color:var(--blue)}
+.card.recall .tagline{color:var(--ok)}
+.card.warn .tagline{color:var(--stop)}
+.newword dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:9px 16px;align-items:baseline}
+@media(max-width:620px){.newword dl{grid-template-columns:1fr;gap:2px 0}.newword dd{margin-bottom:12px}}
+.newword dt{font-weight:600;font-size:.94rem;white-space:nowrap}
+.newword dd{margin:0;font-size:.94rem}
+.later{border-left:3px solid var(--saffron);background:var(--saffron-dim);border-radius:0 6px 6px 0;padding:10px 14px;margin:0 0 16px;font-size:.9rem;color:#7A4E02;max-width:74ch}
+.later b{font-weight:600}
+.later::before{content:"COMING LATER";display:block;font-size:.68rem;font-weight:700;letter-spacing:.07em;color:#A8720B;margin:0 0 3px}
+ul.plain,ol.plain{margin:0 0 14px;padding-left:22px;max-width:74ch}
+ul.plain li,ol.plain li{margin:0 0 9px;font-size:.96rem}
+pre,code{font-family:"IBM Plex Mono",monospace}
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:15px 17px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:0 0 14px}
+pre.code .cm{color:#7FA79E}
+pre.out{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--teal);border-radius:8px;padding:13px 15px;overflow-x:auto;font-size:.83rem;line-height:1.65;margin:0 0 14px;white-space:pre}
+code.inl{background:var(--teal-dim);color:var(--teal);padding:1px 5px;border-radius:4px;font-size:.87em}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:#fff;margin:0 0 18px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{background:#F5F8F7;font-weight:600;font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem;white-space:nowrap}
+tr.bad td:first-child{border-left:3px solid var(--stop)}
+.legend{font-size:.85rem;color:var(--ink-soft);margin:0 0 20px;max-width:74ch}
+.livebox{background:#fff;border:1px solid var(--rule);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px}
+.sliderow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px}
+.sliderow label{font-size:.9rem;font-weight:600;white-space:nowrap;min-width:132px}
+input[type=range]{flex:1;min-width:170px;accent-color:var(--teal)}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.95rem;font-weight:600;color:var(--teal);min-width:52px;text-align:right}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px;align-items:center}
+.chip{appearance:none;border:1px solid var(--rule);background:#fff;border-radius:20px;font:inherit;font-size:.86rem;padding:7px 15px;cursor:pointer;color:var(--ink)}
+.chip:hover{border-color:var(--teal);background:var(--teal-dim)}
+.chip[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
+.chip:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0 0}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:9px 13px}
+.stat .l{font-size:.74rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.16rem;font-weight:600;line-height:1.25;color:var(--teal)}
+.stat.hi .v{color:var(--stop)}
+.step{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff;overflow:hidden}
+.step > button{width:100%;text-align:left;background:#F7FAF9;border:0;border-bottom:1px solid transparent;font:inherit;font-size:.93rem;font-weight:600;padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:11px;color:var(--ink)}
+.step > button:hover{background:var(--teal-dim)}
+.step > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.step > button .sn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;background:var(--teal);color:#fff;width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:0 0 auto}
+.step > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s}
+.step.open > button{border-bottom-color:var(--rule)}
+.step.open > button .chev{transform:rotate(90deg)}
+.step .body{display:none;padding:15px 17px 4px}
+.step.open .body{display:block}
+.step .body p{margin:0 0 12px;font-size:.95rem}
+.answerline{background:var(--ok-dim);border-left:3px solid var(--ok);border-radius:6px;padding:10px 13px;font-size:.94rem;margin:0 0 12px}
+.answerline b{color:#16523E}
+.qa{border:1px solid var(--rule);border-radius:8px;margin:0 0 10px;background:#fff}
+.qa > button{width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.96rem;font-weight:600;padding:14px 16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;color:var(--ink)}
+.qa > button:hover{background:#F7FAF9}
+.qa > button:focus-visible{outline:2px solid var(--saffron);outline-offset:-2px}
+.qa > button .qn{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--teal);background:var(--teal-dim);padding:2px 7px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+.qa > button .chev{margin-left:auto;color:var(--ink-soft);transition:transform .15s;flex:0 0 auto}
+.qa.open > button .chev{transform:rotate(90deg)}
+.qa .body{display:none;padding:0 16px 16px 55px}
+.qa.open .body{display:block}
+.qa .body p{margin:0 0 11px;font-size:.94rem}
+.probe{font-size:.87rem;color:#8A5602;background:var(--saffron-dim);border-radius:6px;padding:9px 12px;margin:12px 0 0}
+.probe b{font-weight:600}
+.q{margin:0 0 20px}
+.q .stem{font-weight:600;margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:11px 13px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.opt .key{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;width:20px;height:20px;border-radius:4px;background:var(--teal-dim);color:var(--teal);display:grid;place-items:center;margin-top:1px}
+.opt.right{background:var(--ok-dim);border-color:var(--ok)}
+.opt.right .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--stop-dim);border-color:var(--stop)}
+.opt.wrong .key{background:var(--stop);color:#fff}
+.opt:disabled{cursor:default;opacity:.85}
+.opt.right:disabled,.opt.wrong:disabled{opacity:1}
+.fb{margin:10px 0 0;padding:11px 14px;border-radius:8px;font-size:.93rem;line-height:1.5}
+.fb.good{background:var(--ok-dim);border-left:3px solid var(--ok);color:#16523E}
+.fb.bad{background:var(--stop-dim);border-left:3px solid var(--stop);color:#7E2C16}
+.fb strong{font-weight:600}
+.scorecard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:var(--radius);padding:18px 20px;margin:0 0 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.scorecard .big{font-family:"IBM Plex Mono",monospace;font-size:1.7rem;font-weight:600;color:var(--teal)}
+.scorecard .lbl{font-size:.86rem;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:8px;font:inherit;font-weight:600;font-size:.93rem;padding:11px 20px;cursor:pointer;background:var(--teal);color:#fff}
+.btn:hover{background:#0B4A40}
+.btn:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.btn.ghost{background:#fff;color:var(--teal);border:1px solid var(--teal)}
+.btn.ghost:hover{background:var(--teal-dim)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 0}
+svg{display:block;max-width:100%;height:auto}
+.plotwrap{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:12px;margin:0 0 16px}
+.quad{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:0 0 18px}
+.qcard{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.qcard h4{margin:0 0 2px;font-size:.93rem}
+.qcard .lab{font-size:.77rem;color:var(--ink-soft);margin:0 0 8px}
+.qcard p{font-size:.88rem;margin:8px 0 0}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="backlink" href="/" target="_top">&larr; All concepts</a>
+    <p class="eyebrow">Statistics for Data Science · Concept 4 of 8</p>
+    <h1>Sampling and Sampling Distributions</h1>
+    <p class="lede">How to take a sample worth trusting, what happens to a number when it is computed from one, and how to turn a single answer into an honest range.</p>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="rail-inner" role="tablist" id="rail"></div></nav>
+
+<main class="wrap">
+
+<section class="panel" id="p0" role="tabpanel">
+  <h2>Fundamentals</h2>
+  <p class="sub">Concept 3 showed that sample means behave predictably. This one shows how to collect a sample properly in the first place, and what to do with the result.</p>
+
+  <div class="card recall">
+    <p class="tagline">From Concept 3</p>
+    <p style="margin-bottom:0">Three things carry forward. A <strong>sample</strong> is the part of the population you measured. The sample means from many samples form a <strong>bell shape centred on the population mean</strong>. And their spread is the <strong>standard error</strong>, equal to the population's standard deviation divided by the square root of the sample size. Everything here builds on those.</p>
+  </div>
+
+  <div class="card">
+    <h3>Where this concept sits</h3>
+    <p>Concept 3 answered a question about behaviour: <em>what happens to sample means if you take lots of samples?</em> That is a fact about the world, and you never actually take lots of samples.</p>
+    <p style="margin-bottom:0">In real work you take <strong>one</strong>. This concept is about the two practical questions that raises — <strong>how do I take that one sample so it is worth trusting</strong>, and <strong>what may I honestly claim from it</strong>.</p>
+  </div>
+
+  <h3>Part 1 · Taking a sample worth trusting</h3>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Sampling frame</dt>
+      <dd>The list you actually draw your sample from — the electoral roll, the customer database, the register of households in a ward. It is meant to be a complete list of the population, and when it is not, everybody it leaves out is invisible to your study no matter how large a sample you take.</dd>
+      <dt>Bias</dt>
+      <dd>A systematic tendency to land on the wrong answer. Not bad luck — bad method. A biased sample gives an answer that is wrong in the same direction every time you repeat it, so collecting more data does not help.</dd>
+      <dt>Representative</dt>
+      <dd>A sample is representative when its make-up resembles the population's. The point of a good sampling method is to make this likely without you having to arrange it by hand.</dd>
+    </dl>
+  </div>
+
+  <h4>Five ways to draw a sample</h4>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Method</th><th>How it works</th><th>When it is used</th><th>What can go wrong</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Simple random</strong></td>
+          <td>Every member of the population has an equal chance of being picked, like drawing names from a hat</td>
+          <td>The default, and the one all the mathematics assumes</td>
+          <td>Needs a complete list to draw from, which is often the hard part</td>
+        </tr>
+        <tr>
+          <td><strong>Systematic</strong></td>
+          <td>Pick every 10th name from the list, starting at a random point</td>
+          <td>Easy to carry out on the ground — every 10th shopper, every 20th part</td>
+          <td>If the list has a repeating pattern that matches your interval, you lock onto it</td>
+        </tr>
+        <tr>
+          <td><strong>Stratified</strong></td>
+          <td>Split the population into groups first — by city, by year of study — then take a random sample within each</td>
+          <td>When you want every group properly represented, especially small ones</td>
+          <td>You need to know the group sizes in advance to get the proportions right</td>
+        </tr>
+        <tr>
+          <td><strong>Cluster</strong></td>
+          <td>Split into natural groups, pick a few groups at random, and survey everybody in those</td>
+          <td>When travel or access is expensive — pick 20 villages, visit every house in them</td>
+          <td>People within one cluster tend to resemble each other, so it is less precise than it looks</td>
+        </tr>
+        <tr class="bad">
+          <td><strong>Convenience</strong></td>
+          <td>Whoever is easy to reach — the students in your class, the people who answer the form</td>
+          <td>Quick, cheap, and almost never trustworthy</td>
+          <td>Produces bias you cannot measure or correct. Included here so you can recognise and avoid it</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card warn">
+    <p class="tagline">The one that ruins everything</p>
+    <p>Every method above except the last aims at the same thing: giving each member of the population a known, fair chance of being picked. That is what the mathematics of Concept 3 assumes, and it is what a convenience sample abandons.</p>
+    <p style="margin-bottom:0">The damage is worse than it appears. A small fair sample gives a rough answer with a large margin, and you know it is rough. A large unfair sample gives a wrong answer with a small margin — <strong>and it looks authoritative</strong>. Size cannot fix a bad method; it only makes the wrong answer more confident.</p>
+  </div>
+
+  <h4>Two different ways to be wrong</h4>
+  <p>It helps to separate the two problems, because only one of them is fixed by collecting more data.</p>
+  <div class="quad" id="quad"></div>
+  <p class="legend">Each panel shows where twelve samples landed. The centre of the target is the truth. Bias moves the whole cluster off-centre; variability spreads it out. More data tightens the cluster — it never moves it back to the middle.</p>
+
+  <h3>Part 2 · What happens to a number computed from a sample</h3>
+
+  <div class="card newword">
+    <p class="tagline">New words</p>
+    <dl>
+      <dt>Estimate</dt>
+      <dd>Any number you compute from a sample in order to say something about the population. A sample mean is an estimate of the population mean; a sample percentage is an estimate of the population percentage.</dd>
+      <dt>Sampling distribution</dt>
+      <dd>The pattern an estimate would form if you took sample after sample and wrote down the answer each time. You met this in Concept 3 for the sample mean without it having a name. Every estimate has one.</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <h4>The idea in one line</h4>
+    <p style="margin-bottom:0">An estimate computed from a sample is <strong>itself a quantity that varies</strong>. It has a centre, it has a spread, and it has a shape — exactly like any column of data. The sampling distribution is that centre, spread and shape, and knowing it is what lets you say how much to trust the one estimate you actually have.</p>
+  </div>
+
+  <h4>The two you will use constantly</h4>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Estimating</th><th>Centred on</th><th>Standard error</th><th>Shape</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>A <strong>mean</strong> — average height, average bill</td>
+          <td>The population mean</td>
+          <td class="mono">σ ÷ √n</td>
+          <td>Bell, for n of about 30 or more</td>
+        </tr>
+        <tr>
+          <td>A <strong>percentage</strong> — share who say yes, click rate</td>
+          <td>The population percentage</td>
+          <td class="mono">√( p(1−p) ÷ n )</td>
+          <td>Bell, when both n×p and n×(1−p) are above about 10</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card tip">
+    <p class="tagline">💡 Why a percentage needs its own formula</p>
+    <p>A percentage is really a mean in disguise — count each "yes" as 1 and each "no" as 0, and the average of those is the proportion saying yes. So the same <span class="mono">÷ √n</span> logic applies.</p>
+    <p style="margin-bottom:0">What is different is that you do not need a separate standard deviation. For a yes-or-no quantity the spread is decided entirely by <span class="mono">p</span> itself, which is why the formula contains only <span class="mono">p</span> and <span class="mono">n</span>. It is largest at <span class="mono">p = 0.5</span> — opinion split down the middle is the hardest case to measure precisely, which is why polls quote their margin for a 50-50 split.</p>
+  </div>
+
+  <h3>Part 3 · From one number to an honest range</h3>
+  <p>You have a sample mean of 74.6. You know it is not the population mean, and you know roughly how far off it is likely to be. So report a range rather than a number.</p>
+
+  <div class="card newword">
+    <p class="tagline">New word</p>
+    <dl>
+      <dt>Confidence interval</dt>
+      <dd>A range built around your estimate, wide enough that ranges built this way capture the true value a stated share of the time. A 95 percent confidence interval is built so that 95 percent of such intervals contain the truth.</dd>
+    </dl>
+  </div>
+
+  <div class="card key">
+    <p class="tagline">★ How to build one</p>
+    <p>It is one line of arithmetic, and every piece of it you already have:</p>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:1.02rem;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;text-align:center">estimate ± ( multiplier × standard error )</p>
+    <p>The multiplier comes from the bell shape and the 68–95–99.7 rule of Concept 2. For 95 percent confidence it is <strong>1.96</strong>, which is where the "about 2 standard deviations" of that rule comes from — 2 was the rounded version all along.</p>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Confidence</th><th class="mono">Multiplier</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>90 percent</td><td class="mono">1.645</td><td>Narrower range, misses more often</td></tr>
+          <tr><td>95 percent</td><td class="mono">1.96</td><td>The usual choice</td></tr>
+          <tr><td>99 percent</td><td class="mono">2.576</td><td>Wider range, misses less often</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h4>Watch the intervals being built</h4>
+  <p>Below, twenty-five samples are drawn from a population whose true mean is 50 — a number you would never know in real life. Each sample produces one interval, drawn as a horizontal line. The ones that miss the truth are marked in red.</p>
+
+  <div class="livebox">
+    <div class="chips" id="conflevel"><span style="font-size:.9rem;font-weight:600;margin-right:4px">Confidence</span></div>
+    <div class="sliderow">
+      <label for="cn">Sample size</label>
+      <input type="range" id="cn" min="5" max="120" step="5" value="30">
+      <span class="readout" id="cnv">30</span>
+    </div>
+    <div class="btnrow" style="margin:0 0 12px"><button class="btn ghost" id="redraw">Draw 25 fresh samples</button></div>
+    <div class="plotwrap" style="border:0;padding:6px 0 0"><div id="ciplot"></div></div>
+    <div class="statgrid">
+      <div class="stat"><div class="l">Intervals that captured 50</div><div class="v" id="c_hit">—</div></div>
+      <div class="stat hi"><div class="l">Intervals that missed</div><div class="v" id="c_miss">—</div></div>
+      <div class="stat"><div class="l">Standard error</div><div class="v" id="c_se">—</div></div>
+      <div class="stat"><div class="l">Typical width</div><div class="v" id="c_w">—</div></div>
+    </div>
+  </div>
+  <p class="legend">Press the button several times. The number of misses jumps around — sometimes 0, sometimes 3 — but averages close to 1 in 20 at 95 percent confidence. Now raise the sample size and watch the lines get shorter while the miss rate stays put. More data buys precision, not certainty. Then drop to 90 percent confidence: the lines shorten again, and the misses become more frequent.</p>
+
+  <div class="card warn">
+    <p class="tagline">The interpretation trap</p>
+    <p>Here is the sentence almost everybody gets wrong. A 95 percent confidence interval of 72 to 77 does <strong>not</strong> mean "there is a 95 percent chance the true value is between 72 and 77".</p>
+    <p>The true value is a fixed number. It is either inside your interval or it is not — there is no chance about it, you simply do not know which. What the 95 percent describes is <strong>the procedure</strong>: if you repeated the whole exercise many times, about 95 percent of the intervals you built would contain the truth.</p>
+    <p style="margin-bottom:0">The widget above makes it concrete. Before you draw a sample, there is a 95 percent chance you will get one of the good intervals. Once it is drawn and sitting on the page, it either contains 50 or it does not. Look at the red lines — nothing about them looks any different from the others.</p>
+  </div>
+
+  <div class="card">
+    <h4>What makes an interval wider or narrower</h4>
+    <div class="tablewrap" style="margin-bottom:12px">
+      <table>
+        <thead><tr><th>Change</th><th>Effect on the interval</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Larger sample</td><td>Narrower</td><td>The standard error falls with √n</td></tr>
+          <tr><td>More variable population</td><td>Wider</td><td>A larger σ on top of the standard error</td></tr>
+          <tr><td>Higher confidence</td><td>Wider</td><td>A larger multiplier — certainty is bought with vagueness</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0">That last row is the trade nobody escapes. You can have a narrow interval or a high chance of being right, and moving one moves the other. A 100 percent confidence interval would run from minus infinity to plus infinity — perfectly reliable and perfectly useless.</p>
+  </div>
+
+  <div class="card tip">
+    <p class="tagline">💡 One honest caveat about the multiplier</p>
+    <p style="margin-bottom:0">The multiplier of 1.96 assumes you know the population's standard deviation. In practice you almost never do — you estimate it from your own sample, which adds a little extra uncertainty that 1.96 does not account for. With a large sample the difference is negligible. With a small one, the correct multiplier is somewhat larger: for a sample of 12 it is about 2.20 rather than 1.96, making the interval a little wider. That adjustment comes from the t distribution mentioned in Concept 2, and it is covered properly later. Until then, treat intervals from small samples as slightly optimistic.</p>
+  </div>
+
+  <h3>All of it in Python</h3>
+  <pre class="code"><span class="cm"># a confidence interval for a mean, built from the pieces</span>
+import numpy as np
+
+scores = np.array([72, 75, 68, 80, 78, 74, 71, 77, 69, 82, 73, 76])
+
+n    = len(scores)
+mean = scores.mean()
+sd   = scores.std(ddof=1)          <span class="cm"># n-1, as in Concept 1</span>
+se   = sd / np.sqrt(n)             <span class="cm"># the standard error</span>
+
+lo, hi = mean - 1.96*se, mean + 1.96*se
+print(f"mean {mean:.2f}   se {se:.2f}   95% interval {lo:.2f} to {hi:.2f}")
+
+<span class="cm"># and for a percentage</span>
+n_asked, n_yes = 400, 248
+p  = n_yes / n_asked
+se = np.sqrt(p * (1 - p) / n_asked)
+print(f"{p*100:.1f}%   95% interval {(p-1.96*se)*100:.1f}% to {(p+1.96*se)*100:.1f}%")</pre>
+  <pre class="out">mean 74.58   se 1.23   95% interval 72.17 to 77.00
+62.0%   95% interval 57.2% to 66.8%</pre>
+
+  <div class="later">
+    <b>The yes-or-no version of the same question.</b> A confidence interval answers "what values are plausible?". The next concept answers a different question about the same data: "is this result big enough that chance alone probably did not produce it?" The two turn out to be closely connected — if a range of plausible differences does not include zero, the difference is one the next concept would call real. That connection, and the vocabulary that goes with it, is the whole of Concept 5.
+  </div>
+
+  <div class="card">
+    <h3>What this concept deliberately leaves out</h3>
+    <div class="tablewrap" style="margin-bottom:0">
+      <table>
+        <thead><tr><th>Idea</th><th>What it will add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Testing a claim</strong></td><td>Turning a range into a yes-or-no verdict, and the vocabulary for stating what is being tested</td></tr>
+          <tr><td><strong>The two ways of being wrong</strong></td><td>What it costs to raise a false alarm, and what it costs to miss something real</td></tr>
+          <tr><td><strong>Small-sample multipliers</strong></td><td>The correct replacement for 1.96 when the population spread has to be estimated from a small sample</td></tr>
+          <tr><td><strong>Comparing two groups properly</strong></td><td>Combining two margins into a single calculation rather than eyeballing whether two intervals overlap</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="btnrow"><button class="btn" data-goto="1">Next: how it is used in data science</button></div>
+</section>
+
+<section class="panel" id="p1" role="tabpanel">
+  <h2>How the concept is used in data science</h2>
+  <p class="sub">Six places where how the data was collected, or the range around a result, decides what can be claimed.</p>
+  <div id="uses"></div>
+  <div class="card key">
+    <p class="tagline">★ The thread running through all six</p>
+    <p style="margin-bottom:0">Two habits cover all of them. <strong>Ask how the data was collected before you analyse it</strong> — no calculation repairs a sample that was not fairly drawn. And <strong>report a range rather than a number</strong>, because a bare estimate hides the one thing a reader most needs to know about it.</p>
+  </div>
+  <div class="btnrow"><button class="btn" data-goto="2">Next: real world examples</button></div>
+</section>
+
+<section class="panel" id="p2" role="tabpanel">
+  <h2>Real world examples</h2>
+  <p class="sub">Six cases where sampling method or interval width changed the conclusion.</p>
+  <div id="examples"></div>
+  <div class="btnrow"><button class="btn" data-goto="3">Next: solved problems</button></div>
+</section>
+
+<section class="panel" id="p3" role="tabpanel">
+  <h2>Solved problems</h2>
+  <p class="sub">Six problems. The arithmetic is short throughout; the marks are in choosing the right formula and stating the conclusion without overclaiming.</p>
+  <div id="solved"></div>
+  <div class="btnrow"><button class="btn" data-goto="4">Next: interview questions</button></div>
+</section>
+
+<section class="panel" id="p4" role="tabpanel">
+  <h2>Interview questions</h2>
+  <p class="sub">Ten questions. The interpretation of a confidence interval is asked constantly and answered badly constantly, so it appears here more than once.</p>
+  <div id="interview"></div>
+  <div class="btnrow"><button class="btn" data-goto="5">Next: test yourself</button></div>
+</section>
+
+<section class="panel" id="p5" role="tabpanel">
+  <h2>Test your understanding</h2>
+  <p class="sub">Ten questions using this concept and the three before it.</p>
+  <div class="scorecard">
+    <div><div class="big" id="score">0 / 10</div><div class="lbl">answered correctly</div></div>
+    <div><div class="big" id="firstgo">0</div><div class="lbl">right on the first attempt</div></div>
+  </div>
+  <div id="mcq"></div>
+  <div id="mcqdone"></div>
+</section>
+
+</main>
+
+<script>
+const CONCEPT = {
+  quad:[
+    {t:"Low bias, low variability", lab:"What you want", bias:0, spread:0.10,
+     p:"The samples cluster tightly around the truth. A fair method and enough data."},
+    {t:"Low bias, high variability", lab:"Fixable with more data", bias:0, spread:0.30,
+     p:"Scattered but centred on the truth. Any one sample may be well off, and the average of many is right. More data tightens it."},
+    {t:"High bias, low variability", lab:"The dangerous one", bias:0.34, spread:0.10,
+     p:"Tightly clustered around the wrong answer. Looks precise, is confidently wrong, and more data makes it worse rather than better."},
+    {t:"High bias, high variability", lab:"Both problems", bias:0.34, spread:0.30,
+     p:"Off-centre and scattered. At least the scatter is a visible warning that something is unreliable."}
+  ],
+
+  uses:[
+    {
+      name:"Reporting any result computed from a sample",
+      what:"A model scores 84 percent. A survey finds 62 percent satisfied. An average basket is ₹840. Every one of those is an estimate from a sample and none of them should be reported alone.",
+      how:"Attach the interval. It takes two extra lines and it changes what a reader can do with the number — 84 percent give or take 5 supports a very different decision from 84 percent give or take 0.5. The habit also protects you, because it forces you to notice when your own sample is too small to support the claim you were about to make.",
+      code:"import numpy as np\n\ndef interval(values, conf=1.96):\n    n  = len(values)\n    m  = values.mean()\n    se = values.std(ddof=1) / np.sqrt(n)\n    return m, m - conf*se, m + conf*se\n\nm, lo, hi = interval(basket_values)\nprint(f'average basket Rs {m:.0f}  (95% interval {lo:.0f} to {hi:.0f})')",
+      note:"If the interval is embarrassingly wide, that is information rather than a failure. It means the sample cannot yet answer the question, which is worth knowing before somebody acts on it."
+    },
+    {
+      name:"Checking how the data was collected",
+      what:"Before any analysis, the question that decides whether the analysis means anything: where did these rows come from?",
+      how:"Look for who could not have appeared in the data. A satisfaction survey collected in-app never hears from people who uninstalled. A sales dataset from one region cannot speak for the country. A model trained on customers who were approved for a loan knows nothing about those who were refused. In every case the missing group is invisible, and no amount of data repairs it.",
+      code:"# the checks worth running before anything else\nprint(df['city'].value_counts(normalize=True))    # do the proportions match reality?\nprint(df['signup_date'].min(), df['signup_date'].max())\nprint('rows:', len(df), 'of an expected population of', population_size)\n\n# and the question no code can answer:\n# who is in the population but could never have appeared in this table?",
+      note:"This is the least technical item in the whole course and the one that ruins the most analyses. It is worth writing the answer down at the top of every notebook."
+    },
+    {
+      name:"Deciding whether an improvement is real",
+      what:"A change to a page lifts the conversion rate from 4.0 to 4.5 percent. Roll it out or not?",
+      how:"Build an interval around each rate. If the two intervals overlap heavily, the observed lift is well within what sampling variation produces on its own, and rolling out would be acting on noise. If they are far apart, the lift is worth taking seriously. This is a rough version of a comparison — the exact method is a later concept — and it catches most of the cases where a team is about to fool itself.",
+      code:"import numpy as np\n\ndef prop_interval(successes, n):\n    p  = successes / n\n    se = np.sqrt(p * (1 - p) / n)\n    return p - 1.96*se, p + 1.96*se\n\nprint('before:', prop_interval(200, 5000))\nprint('after :', prop_interval(225, 5000))\n# before: (0.0346, 0.0454)\n# after : (0.0393, 0.0507)   -> heavy overlap, not yet convincing",
+      note:"Two intervals that overlap slightly can still represent a real difference, so treat the overlap check as a screen rather than a verdict. The proper test comes next concept."
+    },
+    {
+      name:"Sizing a study before collecting anything",
+      what:"Somebody asks how many responses are needed. Answering by instinct wastes money in one direction or produces a useless study in the other.",
+      how:"Work backwards from the width you need. For a percentage, the widest case is a 50-50 split, so plan for that and you are covered whatever the answer turns out to be. Wanting a margin of 3 percentage points at 95 percent confidence needs about 1,067 responses; wanting 2 points needs about 2,401. Those two numbers settle most survey-planning arguments in one line.",
+      code:"import numpy as np\n\ndef needed(margin, p=0.5, conf=1.96):\n    return int(np.ceil((conf**2 * p * (1-p)) / margin**2))\n\nfor m in [0.05, 0.03, 0.02, 0.01]:\n    print(f'margin {m*100:.0f} points -> {needed(m):,} responses')\n# margin 5 points ->   385 responses\n# margin 3 points -> 1,068 responses\n# margin 2 points -> 2,401 responses\n# margin 1 point  -> 9,604 responses",
+      note:"Look at the last line. Going from 2 points to 1 costs four times the sample, which is the √n rule from Concept 3 turning up in a budget meeting."
+    },
+    {
+      name:"Making a subgroup breakdown honest",
+      what:"A dashboard splits results by city, and the small cities swing wildly from week to week. Somebody wants to know what is happening in them.",
+      how:"Usually nothing is happening. The standard error depends on the sample size within each group, so a city contributing 40 rows has an interval several times wider than one contributing 4,000. Showing the interval alongside each group makes the small groups visibly uncertain, and stops a team chasing movements that are entirely sampling variation.",
+      code:"import numpy as np\n\ng = df.groupby('city')['spend'].agg(['count', 'mean', 'std'])\ng['se'] = g['std'] / np.sqrt(g['count'])\ng['lo'] = g['mean'] - 1.96 * g['se']\ng['hi'] = g['mean'] + 1.96 * g['se']\nprint(g[['count', 'mean', 'lo', 'hi']].round(1))",
+      note:"A useful dashboard rule: any group below about 30 rows gets its interval shown or its row greyed out. It removes a whole category of pointless investigation."
+    },
+    {
+      name:"Choosing a sampling method for fieldwork",
+      what:"A survey has to be carried out across a district with limited time and money. The method chosen shapes everything that follows.",
+      how:"Stratified sampling is usually the best value when the population splits into groups that differ — sample within each city, or each year of study, in proportion to their size, and you guarantee representation instead of hoping for it. Cluster sampling is what you use when travel dominates the cost: choose villages at random and survey everybody in them. Convenience sampling is what you use when you have given up.",
+      code:"# stratified sample: 200 rows, in proportion to each group's size\nshare = df['city'].value_counts(normalize=True)\n\nsample = (df.groupby('city', group_keys=False)\n            .apply(lambda g: g.sample(int(round(200 * share[g.name])),\n                                      random_state=1)))\nprint(sample['city'].value_counts())",
+      note:"Whichever method you use, write it down in the report. A reader cannot judge your margin of error without knowing how the sample was drawn."
+    }
+  ],
+
+  examples:[
+    {
+      title:"The poll that got an election completely wrong",
+      color:"var(--stop)",
+      body:"A famous American magazine polled a huge number of people before the 1936 presidential election and confidently predicted the wrong winner. The sample was enormous — over two million replies — and the prediction was out by a wide margin.",
+      numbers:"The names came from telephone directories and car registration lists. In 1936 these were disproportionately the well-off, whose voting preferences differed sharply from the country as a whole. Two million responses from the wrong sampling frame beat a competitor's few thousand fairly drawn ones.",
+      lesson:"The single clearest demonstration that sample size cannot rescue a bad sampling frame. It is still the standard cautionary tale ninety years later because the mistake is still made constantly."
+    },
+    {
+      title:"Why polls quote a margin for a 50-50 split",
+      color:"var(--teal)",
+      body:"A pre-election poll of 1,000 people reports 47 percent support and a margin of about 3 points. The margin is quoted as one number even though different questions in the same poll come out at very different percentages.",
+      numbers:"The standard error for a percentage is largest when the split is closest to 50-50 — at p = 0.5 with n = 1,000 it is 1.58 points, giving a margin of about 3.1. At p = 0.9 it falls to 0.95 points. Quoting the widest case means the stated margin is never an understatement.",
+      lesson:"A single quoted margin is a deliberate worst case. Questions where opinion is lopsided are measured more precisely than the headline figure suggests."
+    },
+    {
+      title:"A drug trial that changed how results are reported",
+      color:"var(--blue)",
+      body:"Medical journals now require confidence intervals alongside results, rather than a bare finding. The reason is that two studies can reach the same verdict while telling completely different stories about how large an effect is.",
+      numbers:"One trial finds a benefit with a plausible range of 2 to 4 percentage points. Another finds a benefit with a plausible range of 0.1 to 19 points. Both would be reported as showing a benefit. Only the first tells a doctor anything usable about what to expect.",
+      lesson:"An interval reports the size of an effect as well as its existence. That is why it is now considered better practice than a verdict alone across medicine and the social sciences."
+    },
+    {
+      title:"Counting tigers without counting tigers",
+      color:"var(--saffron)",
+      body:"India's tiger census cannot find and count every animal. It surveys sample areas intensively and scales up, and reports the result as a range rather than a single number.",
+      numbers:"A recent estimate reported roughly 3,000 tigers with a range of about 2,600 to 3,300. Headlines quote the middle figure; the range is what tells a conservation body whether an apparent rise between two surveys is a real recovery or two overlapping estimates.",
+      lesson:"When two consecutive estimates have overlapping ranges, the population may not have changed at all. The range is what stops a survey-to-survey wobble being reported as a trend."
+    },
+    {
+      title:"A quality inspection that sampled the wrong end",
+      color:"var(--stop)",
+      body:"A buyer inspects a consignment by opening the boxes nearest the loading door — the easiest ones to reach. The inspection passes, and the consignment turns out to be substandard.",
+      numbers:"The boxes near the door were loaded last, from the top of a stack that had been repacked after an earlier check. The sample was not representative of the whole consignment, and the inspection would have failed had 40 boxes been chosen at random from throughout the container.",
+      lesson:"Convenience sampling in a physical setting is easy to fall into precisely because the convenient items are often systematically different. Random selection here costs a little more walking and buys a valid answer."
+    },
+    {
+      title:"Splitting a survey by group to get small groups right",
+      color:"var(--teal)",
+      body:"An institute with 900 students wants satisfaction figures for each year of study. A simple random sample of 200 would give plenty of second and third years and very few from the small final-year cohort.",
+      numbers:"Stratified sampling takes a fixed share from each year — say 50 from each of four years. The final-year figure then has the same margin as the others, roughly 14 percentage points at n = 50, instead of an unusable margin from a handful of responses.",
+      lesson:"When you need answers for each group and not only overall, stratified sampling guarantees the group sizes rather than leaving them to chance."
+    }
+  ],
+
+  solved:[
+    {
+      title:"Problem 1 — A confidence interval for a mean",
+      prompt:"Twelve students score 72, 75, 68, 80, 78, 74, 71, 77, 69, 82, 73, 76. The standard deviation of these values is 4.27. Build a 95 percent confidence interval for the true mean of the whole class, and state what it means.",
+      steps:[
+        {h:"Find the sample mean",
+         b:"Add the twelve values and divide by 12.<br><br><code class='inl'>72+75+68+80+78+74+71+77+69+82+73+76 = 895</code><br><code class='inl'>895 ÷ 12 = 74.58</code><br><br>This is your estimate — your single best guess at the true mean."},
+        {h:"Find the standard error",
+         b:"The standard error is the standard deviation divided by the square root of the sample size.<br><br><code class='inl'>4.27 ÷ √12 = 4.27 ÷ 3.464 = 1.23</code><br><br>So sample means of 12 students from this class wobble with a spread of about 1.2 marks."},
+        {h:"Apply the multiplier",
+         b:"For 95 percent confidence the multiplier is 1.96.<br><br><code class='inl'>1.96 × 1.23 = 2.41</code><br><br>That 2.41 is the margin — the amount you go either side of your estimate."},
+        {h:"Write the interval",
+         b:"<code class='inl'>74.58 − 2.41 = 72.17</code><br><code class='inl'>74.58 + 2.41 = 77.00</code><br><br>The 95 percent confidence interval is <strong>72.17 to 77.00</strong>."},
+        {h:"State what it means, carefully",
+         b:"Correct: <em>\"Our best estimate of the class mean is 74.6, and the plausible range is 72.2 to 77.0. Intervals built this way capture the true mean about 95 percent of the time.\"</em><br><br>Wrong: <em>\"There is a 95 percent chance the true mean is between 72.2 and 77.0.\"</em> The true mean is a fixed number — it is either in there or it is not.<br><br>One honest caveat: with only 12 values the standard deviation was itself estimated from the sample, so the correct multiplier is slightly above 1.96 — about 2.20 here, giving a marginally wider interval of 71.9 to 77.3. Treat small-sample intervals as slightly optimistic until that adjustment is covered."}
+      ],
+      answer:"Mean 74.58, standard error 1.23, 95 percent interval 72.17 to 77.00 — meaning intervals built this way capture the true mean about 95 percent of the time."
+    },
+    {
+      title:"Problem 2 — A confidence interval for a percentage",
+      prompt:"Of 400 customers surveyed, 248 said they would recommend the product. Build a 95 percent confidence interval for the true percentage across all customers.",
+      steps:[
+        {h:"Find the sample percentage",
+         b:"<code class='inl'>248 ÷ 400 = 0.62</code>, or 62 percent.<br><br>This is the estimate. Note that a percentage is really a mean — score each 'yes' as 1 and each 'no' as 0, and 0.62 is the average of those 400 numbers."},
+        {h:"Use the percentage formula for the standard error",
+         b:"For a percentage the standard error is <code class='inl'>√( p(1−p) ÷ n )</code>, and you need no separate standard deviation.<br><br><code class='inl'>√( 0.62 × 0.38 ÷ 400 ) = √( 0.2356 ÷ 400 ) = √0.000589 = 0.0243</code><br><br>That is 2.43 percentage points."},
+        {h:"Apply the multiplier and write the interval",
+         b:"<code class='inl'>1.96 × 0.0243 = 0.0476</code>, or 4.76 percentage points<br><br><code class='inl'>62.0 − 4.8 = 57.2</code> and <code class='inl'>62.0 + 4.8 = 66.8</code><br><br>The 95 percent interval is <strong>57.2 to 66.8 percent</strong>."},
+        {h:"Sense-check it",
+         b:"Roughly 62 percent give or take about 5 points. If somebody had claimed 'a clear majority', that claim survives — the entire interval sits above 50. If somebody had claimed 'two thirds', it does not survive comfortably, since 66.7 sits right at the top edge.<br><br>That is the value of the interval. It does not just report a number, it tells you which claims the data can support."}
+      ],
+      answer:"62 percent, with a 95 percent interval of 57.2 to 66.8 percent — a margin of about 4.8 percentage points."
+    },
+    {
+      title:"Problem 3 — How many people must you survey?",
+      prompt:"You are planning a survey and want the margin on a percentage to be no more than 3 percentage points at 95 percent confidence. How many responses do you need? And for 2 points?",
+      steps:[
+        {h:"Plan for the worst case",
+         b:"The standard error for a percentage depends on p, which you do not know yet — that is what you are surveying to find out.<br><br>The solution is to plan for the value that makes it largest. <code class='inl'>p(1−p)</code> is at its maximum when <code class='inl'>p = 0.5</code>, giving <code class='inl'>0.25</code>. Plan for that and your margin is guaranteed no worse than promised, whatever the answer turns out to be."},
+        {h:"Set up the equation",
+         b:"margin = <code class='inl'>1.96 × √( 0.25 ÷ n )</code>, and you want that to equal 0.03.<br><br><code class='inl'>1.96 × 0.5 ÷ √n = 0.03</code><br><code class='inl'>√n = 1.96 × 0.5 ÷ 0.03 = 32.67</code><br><code class='inl'>n = 32.67² = 1,067</code>"},
+        {h:"Now for 2 points",
+         b:"<code class='inl'>√n = 1.96 × 0.5 ÷ 0.02 = 49</code><br><code class='inl'>n = 49² = 2,401</code>"},
+        {h:"Read the cost",
+         b:"Tightening the margin from 3 points to 2 — a reduction of only a third — costs 1,334 extra responses, more than doubling the survey.<br><br>This is the √n rule from Concept 3 appearing as a budget line. It is also why national polls settle at around a thousand responses: 3 points is usually good enough, and 2 points costs twice as much."}
+      ],
+      answer:"About 1,067 responses for a 3-point margin, and about 2,401 for a 2-point margin — more than double, for a one-third improvement."
+    },
+    {
+      title:"Problem 4 — Reading an interval correctly",
+      prompt:"A study reports: \"Mean improvement 4.2 marks, 95 percent confidence interval 0.3 to 8.1.\" Four statements are made about it. Decide which are correct.<br><br>(a) There is a 95 percent chance the true improvement is between 0.3 and 8.1.<br>(b) The data is consistent with an improvement anywhere from almost nothing to over 8 marks.<br>(c) The true improvement is definitely positive.<br>(d) A larger study would probably produce a narrower interval.",
+      steps:[
+        {h:"(a) The probability statement",
+         b:"<strong>Incorrect.</strong> This is the trap. The true improvement is a fixed number — it is either inside this interval or outside it, and there is no probability attached to a fact.<br><br>The 95 percent belongs to the procedure: if the study were repeated many times, about 95 percent of the intervals produced would contain the truth. This particular one either does or does not."},
+        {h:"(b) The range of plausible values",
+         b:"<strong>Correct, and it is the most useful reading of the result.</strong> The interval runs from 0.3 to 8.1, so the data is compatible with an improvement so small as to be worthless and with one large enough to matter a great deal.<br><br>An interval this wide is really saying the study was too small to pin the effect down."},
+        {h:"(c) Certainty about the direction",
+         b:"<strong>Incorrect as stated.</strong> 'Definitely' is too strong. The interval excludes zero, which does support the improvement being genuinely positive — but 95 percent confidence is not certainty, and about 1 interval in 20 built this way misses the truth entirely.<br><br>'The evidence points to a positive improvement' would be fine. 'Definitely' would not."},
+        {h:"(d) The effect of a larger study",
+         b:"<strong>Correct.</strong> The width comes from the standard error, which falls as √n grows. Four times the participants would roughly halve the width.<br><br>Note what would <em>not</em> change: the centre of the interval would not necessarily move, and the confidence level would still be 95 percent. More data buys precision, not certainty."},
+        {h:"The pattern in the wrong answers",
+         b:"Both incorrect statements make the same mistake in different clothes — treating 95 percent confidence as though it were knowledge about this particular interval. Statement (a) turns it into a probability and statement (c) turns it into certainty.<br><br>The safe habit is to phrase every conclusion about the method rather than about the individual interval."}
+      ],
+      answer:"(b) and (d) are correct. (a) misstates confidence as a probability about a fixed value, and (c) overstates 95 percent confidence as certainty."
+    },
+    {
+      title:"Problem 5 — Do two results disagree?",
+      prompt:"Method A gives a mean of 68 across 40 students; method B gives 64 across 38. Marks vary with a standard deviation of about 12 in both groups. Build a 95 percent interval for each and say whether the methods differ.",
+      steps:[
+        {h:"Interval for method A",
+         b:"<code class='inl'>se = 12 ÷ √40 = 12 ÷ 6.32 = 1.90</code><br><code class='inl'>margin = 1.96 × 1.90 = 3.72</code><br><br>Interval: <strong>64.3 to 71.7</strong>"},
+        {h:"Interval for method B",
+         b:"<code class='inl'>se = 12 ÷ √38 = 12 ÷ 6.16 = 1.95</code><br><code class='inl'>margin = 1.96 × 1.95 = 3.82</code><br><br>Interval: <strong>60.2 to 67.8</strong>"},
+        {h:"Compare them",
+         b:"A runs from 64.3 to 71.7 and B from 60.2 to 67.8. They <strong>overlap</strong> between 64.3 and 67.8.<br><br>Both are consistent with a true value somewhere around 66, so the observed 4-mark gap is within what sampling variation alone could produce. On this evidence the two methods have not been shown to differ."},
+        {h:"State the conclusion without overclaiming",
+         b:"'The two methods have not been shown to differ' is correct. <strong>'The two methods are the same' is not.</strong><br><br>Failing to demonstrate a difference is not the same as demonstrating there is none — the study may simply be too small. With 200 students per group the intervals would be roughly half as wide and the same 4-mark gap might well separate them cleanly."},
+        {h:"A caution about the method",
+         b:"Comparing two intervals by asking whether they overlap is a rough screen rather than a proper test. It is slightly conservative — two intervals can overlap a little and the difference still be real.<br><br>The correct approach combines the two margins into a single calculation, and that is the next concept."}
+      ],
+      answer:"A: 64.3 to 71.7. B: 60.2 to 67.8. The intervals overlap, so the 4-mark gap is within ordinary sampling variation — the methods have not been shown to differ, which is not the same as showing they are the same."
+    },
+    {
+      title:"Problem 6 — Choosing and criticising a sampling method",
+      prompt:"For each plan, name the method and say what could go wrong. (a) Survey every 25th name on the student register. (b) Ask the first 100 people who reply to an email. (c) Pick 30 students at random from each of the four years. (d) Choose 10 villages at random from a district and survey every household in them.",
+      steps:[
+        {h:"(a) Every 25th name on the register",
+         b:"<strong>Systematic sampling.</strong> Simple to carry out, and usually gives results close to a simple random sample.<br><br>The risk is a repeating pattern in the list that lines up with the interval of 25. If the register happened to be ordered by hostel room with 25 rooms to a floor, every 25th name could be the same room number on each floor. Check how the list is ordered before choosing an interval."},
+        {h:"(b) The first 100 to reply",
+         b:"<strong>Convenience sampling</strong> — and the worst of the four.<br><br>People who reply quickly to a survey differ systematically from those who never reply: they tend to be more engaged, and more likely to hold strong opinions. Nothing in the result can be corrected for this, and collecting 1,000 replies instead of 100 would narrow the margin around the same wrong answer."},
+        {h:"(c) Thirty from each year",
+         b:"<strong>Stratified sampling.</strong> The right choice when you want a usable answer for each year, because every year gets the same margin regardless of how many students it contains.<br><br>One thing to watch: if the years differ greatly in size, the combined overall figure must be weighted by the real year sizes before it is quoted. Otherwise a small year gets the same influence as a large one — which is the weighted-mean trap from Concept 1."},
+        {h:"(d) Ten villages, every household",
+         b:"<strong>Cluster sampling.</strong> The practical choice when travel is the dominant cost, since visiting 10 villages fully is far cheaper than visiting 300 households scattered across a district.<br><br>The catch is that households within one village tend to resemble each other — similar occupations, similar water supply, similar income. So 400 households from 10 villages carry less information than 400 households chosen at random across the district, and the true margin is wider than the sample size suggests."},
+        {h:"The ranking",
+         b:"For accuracy, (c) is the strongest here, followed by (a), then (d), with (b) not worth carrying out.<br><br>But cost matters too, and (d) exists precisely because (a) and (c) may be unaffordable across a large district. The right choice balances the two — and whichever you pick, the report must say which, because a reader cannot judge the margin without it."}
+      ],
+      answer:"(a) Systematic — risk of a repeating pattern matching the interval. (b) Convenience — biased, and unfixable by size. (c) Stratified — strongest here, but weight the groups when combining. (d) Cluster — cheap, and less precise than the raw sample size suggests."
+    }
+  ],
+
+  interview:[
+    {
+      q:"What is a sampling distribution?",
+      a:"The pattern an estimate would form if you took sample after sample from the same population and wrote down the answer each time. It has a centre, a spread and a shape, exactly like any set of numbers.<br><br>The important point is that an estimate computed from a sample is itself a quantity that varies. The sampling distribution describes that variation, and it is what lets you say how much to trust the single estimate you actually have.",
+      probe:"They want to hear that the object being described is the estimate, not the data. Candidates who describe the data's distribution have missed the idea entirely."
+    },
+    {
+      q:"What is the difference between the standard deviation and the standard error?",
+      a:"The standard deviation describes how spread out the individual values are. The standard error describes how spread out an estimate is across repeated samples, and for a mean it equals the standard deviation divided by the square root of the sample size.<br><br>So the standard error is always the smaller, and it shrinks as the sample grows while the standard deviation does not — the population's spread is a fixed fact about the population, whereas the standard error is a property of your sampling.",
+      probe:"Asked in almost every interview covering this material. Saying which one shrinks with n, and why, is what separates understanding from recall."
+    },
+    {
+      q:"Interpret a 95 percent confidence interval of 72 to 77 for a mean.",
+      a:"The best estimate is around 74.5, and values between 72 and 77 are plausible for the true mean given this sample. The 95 percent describes the method: intervals built this way capture the true value about 95 percent of the time.<br><br>What it does <em>not</em> mean is that there is a 95 percent probability the true mean lies between 72 and 77. The true mean is a fixed number — it is either in this interval or it is not, and no probability attaches to a fact. Before you draw the sample there is a 95 percent chance you will get a good interval; afterwards you simply do not know whether you did.",
+      probe:"This is the single most common interview question on the topic and the most commonly failed. Saying the wrong version confidently is worse than hesitating, so practise the correct phrasing until it is automatic."
+    },
+    {
+      q:"What makes a confidence interval narrower?",
+      a:"Three things, and they are not equally attractive. A larger sample narrows it, because the standard error falls with the square root of n — that is the honest route. A less variable population narrows it, but you do not usually control that.<br><br>And lowering the confidence level narrows it, which is worth being careful about: moving from 95 percent to 90 percent gives you a tighter-looking range purely by accepting a higher chance of being wrong. That is a presentational choice rather than an improvement, and it should be stated rather than done quietly.",
+      probe:"Listing all three is good. Noting that the third is not really an improvement is what shows judgement rather than memorisation."
+    },
+    {
+      q:"A colleague has 100,000 responses to an online poll and says the margin is under half a point. What do you say?",
+      a:"That the margin is correct and may be beside the point. The margin measures sampling variation only, and an online poll answered by whoever chose to respond is not a fair sample of anybody except people who choose to respond to online polls.<br><br>What 100,000 responses buys is a very precise estimate of the wrong quantity. Sample size fixes variability and does nothing at all for bias — and a large biased sample is more dangerous than a small one, because the narrow margin makes it look authoritative.",
+      probe:"A judgement question. The sentence they are listening for is that size addresses variability and not bias."
+    },
+    {
+      q:"When would you use stratified sampling rather than simple random sampling?",
+      a:"When the population splits into groups that differ from each other and you need each group properly represented — particularly when some groups are small.<br><br>A simple random sample of 200 students from an institute would give plenty from the large years and possibly a handful from a small final-year cohort, leaving that group's figure useless. Stratified sampling takes a planned number from each year, so every group gets a usable margin.<br><br>The thing to remember afterwards is that if the groups were sampled in different proportions from their real sizes, the overall combined figure must be weighted by the real sizes before it is quoted.",
+      probe:"The weighting point at the end is the detail that marks out someone who has actually run a stratified survey rather than read about one."
+    },
+    {
+      q:"Two groups have 95 percent intervals that overlap slightly. Does that mean they are the same?",
+      a:"No, on both counts. Overlapping intervals mean the difference has not been demonstrated — they do not mean the groups are the same. Failing to find a difference and establishing there is none are quite different conclusions, and a study that is simply too small produces the first while proving nothing about the second.<br><br>There is also a technical point: comparing two intervals by eye is slightly conservative. Two intervals can overlap a little and the difference still be real, because the correct comparison combines the two margins into a single calculation rather than looking at each separately.",
+      probe:"Two separate errors are being tested here. Catching both — the absence-of-evidence point and the conservativeness of the overlap check — is the complete answer."
+    },
+    {
+      q:"How would you decide how many people to survey?",
+      a:"Work backwards from the margin you need. For a percentage, plan for a 50-50 split because that is the case with the largest standard error, so your margin is guaranteed no worse than promised whatever the answer turns out to be.<br><br>The arithmetic is short: a 3-point margin at 95 percent confidence needs about 1,067 responses and a 2-point margin needs about 2,401. Quoting those two numbers usually settles the discussion, because it shows that a one-third improvement in precision costs more than double the fieldwork.",
+      probe:"They want to see you turn a vague request into a number. Mentioning the 50-50 worst case shows you have thought about the case where p is unknown."
+    },
+    {
+      q:"Why does the standard error formula for a percentage look different from the one for a mean?",
+      a:"It is the same idea in a special case. A percentage is a mean — score each yes as 1 and each no as 0, and the average of those is the proportion saying yes. So the √n in the denominator is doing exactly the same job.<br><br>What changes is the top. For a yes-or-no quantity the spread is decided entirely by p itself rather than needing to be measured separately, which is why the formula contains only p and n. It is largest when p is 0.5, meaning an evenly split opinion is the hardest case to measure precisely.",
+      probe:"Recognising a proportion as a mean of zeros and ones is the insight being tested. It also explains why the Central Limit Theorem applies to percentages at all."
+    },
+    {
+      q:"You are handed a dataset and asked to analyse it. What do you check before starting?",
+      a:"How it was collected, and who could not have appeared in it. Those two questions decide whether anything computed afterwards means anything.<br><br>Concretely: what was the sampling frame, and does it cover the population somebody will apply the conclusion to? A satisfaction survey collected inside an app never hears from people who uninstalled it. A dataset of approved loans says nothing about applicants who were refused. In each case the missing group is invisible, and no sample size or clever method brings it back.<br><br>It is the least technical check in the whole subject and the one that ruins the most analyses.",
+      probe:"An open question designed to see whether you reach for the data or for its provenance first. Answering with modelling steps rather than sampling questions is a common miss."
+    }
+  ],
+
+  mcq:[
+    {
+      stem:"A survey is answered by whoever chooses to respond, and collects 90,000 replies. What is the main problem?",
+      opts:[
+        {t:"The sample is too large to analyse efficiently",
+         fb:"Ninety thousand rows is trivial for any computer, and size is not the difficulty here."},
+        {t:"The margin will be too wide to be useful",
+         fb:"The margin will in fact be very narrow — under half a percentage point. That is precisely what makes the situation dangerous."},
+        {t:"The people who chose to respond may differ systematically from those who did not, and no sample size corrects that", ok:true,
+         fb:"Right. This is bias rather than variability, and only the sampling method can fix it. A large biased sample gives a narrow margin around the wrong answer."},
+        {t:"The confidence level cannot be computed without knowing the population's standard deviation in advance",
+         fb:"For a percentage the standard error needs only p and n. The problem lies in how the sample was obtained, not in the arithmetic."}
+      ]
+    },
+    {
+      stem:"What does the standard error of the mean measure?",
+      opts:[
+        {t:"How spread out the individual values in the sample are",
+         fb:"That is the standard deviation. The standard error describes something computed from those values rather than the values themselves."},
+        {t:"How far a sample mean typically lands from the population mean", ok:true,
+         fb:"Right. It is the spread of the estimate across repeated samples, and it falls as the sample grows while the standard deviation does not."},
+        {t:"The mistakes made while recording the data",
+         fb:"Nothing to do with recording mistakes. It measures ordinary variation from one fairly drawn sample to the next."},
+        {t:"The difference between the largest and the smallest value in the sample, expressed on a standardised scale",
+         fb:"That describes the range rather than the standard error, and the range is not standardised in any case."}
+      ]
+    },
+    {
+      stem:"A 95 percent confidence interval for a mean runs from 48 to 56. Which statement is correct?",
+      opts:[
+        {t:"There is a 95 percent probability that the true mean lies between 48 and 56",
+         fb:"This is the classic trap. The true mean is a fixed number — it is either inside this interval or outside it, with no probability attached."},
+        {t:"95 percent of the individual values in the population lie between 48 and 56",
+         fb:"The interval is about the mean, not about individual values. Individual values are far more spread out than sample means are."},
+        {t:"If the study were repeated many times, about 95 percent of the intervals built this way would contain the true mean", ok:true,
+         fb:"Right. The confidence belongs to the procedure rather than to any one interval. Before you sample there is a 95 percent chance of getting a good one; afterwards you cannot tell whether you did."},
+        {t:"The true mean is definitely inside the interval, since 95 percent confidence is high enough to treat the conclusion as settled",
+         fb:"About one interval in twenty misses entirely, and nothing about a missing one looks any different from the rest."}
+      ]
+    },
+    {
+      stem:"Of 400 people surveyed, 248 say yes. What is the standard error of that percentage?",
+      opts:[
+        {t:"About 2.4 percentage points", ok:true,
+         fb:"Right: p is 0.62, so √(0.62 × 0.38 ÷ 400) = 0.0243, or 2.43 percentage points. The 95 percent margin is 1.96 times that, about 4.8 points."},
+        {t:"About 4.8 percentage points, which is the figure usually quoted alongside a survey result",
+         fb:"That is the 95 percent margin — the standard error multiplied by 1.96. The standard error itself is the smaller figure."},
+        {t:"About 0.62 percentage points",
+         fb:"0.62 is the proportion saying yes, not the standard error. The standard error is computed from it using the sample size."},
+        {t:"It cannot be worked out without also knowing the standard deviation of the responses in the sample",
+         fb:"For a yes-or-no question no separate standard deviation is needed — the spread is decided by p alone, which is why the formula uses only p and n."}
+      ]
+    },
+    {
+      stem:"You want to halve the width of a confidence interval. What must you do?",
+      opts:[
+        {t:"Double the sample size, since width and sample size move together in direct proportion",
+         fb:"Doubling divides the width by about 1.41 rather than 2, because the sample size sits under a square root."},
+        {t:"Quadruple the sample size", ok:true,
+         fb:"Right. The standard error falls with √n, so four times the data halves the interval. This is the same relationship that makes precision expensive in survey budgets."},
+        {t:"Lower the confidence level from 95 percent to 90 percent",
+         fb:"That does narrow the interval, and it narrows it by accepting a higher chance of missing the truth rather than by learning more."},
+        {t:"Nothing can halve it, because the width is fixed by the variability of the population and cannot be changed by the person running the study",
+         fb:"The population's variability is one ingredient; the sample size is the other, and it is entirely under your control."}
+      ]
+    },
+    {
+      stem:"An institute wants satisfaction figures for each of four years of study, and the final year is much smaller than the others. Which sampling method is most suitable?",
+      opts:[
+        {t:"Convenience sampling, since it is quickest",
+         fb:"Speed is its only merit. It produces bias that cannot be measured or corrected, whatever the population looks like."},
+        {t:"Simple random sampling across all students",
+         fb:"Workable overall, and it would return very few final-year students, leaving that group's figure with a margin too wide to use."},
+        {t:"Stratified sampling, taking a planned number from each year", ok:true,
+         fb:"Right. Sampling within each year guarantees every group a usable margin instead of leaving the small group to chance."},
+        {t:"Cluster sampling, choosing a few classes at random and surveying everybody in those classes rather than sampling individuals",
+         fb:"Cluster sampling saves travel cost, which is not the constraint here — and students within one class resemble each other, making it less precise than it looks."}
+      ]
+    },
+    {
+      stem:"Two treatments have 95 percent intervals of 64.3 to 71.7 and 60.2 to 67.8. What follows?",
+      opts:[
+        {t:"The two treatments have been shown to be equally effective",
+         fb:"Failing to demonstrate a difference is not the same as demonstrating there is none. The study may simply be too small."},
+        {t:"The first treatment is definitely better, since its interval is centred higher",
+         fb:"The centres differ, and the ranges overlap between 64.3 and 67.8 — so a true value common to both is entirely plausible."},
+        {t:"The intervals overlap, so a difference has not been demonstrated on this evidence", ok:true,
+         fb:"Right, and the wording matters. 'Not demonstrated' is the honest conclusion; 'shown to be the same' would be an overclaim."},
+        {t:"Nothing can be said at all, because two confidence intervals computed from separate samples can never be compared with each other",
+         fb:"They can be compared, and the overlap check is a reasonable rough screen. It is only rough because the proper method combines the two margins into one calculation."}
+      ]
+    },
+    {
+      stem:"For a percentage, when is the standard error at its largest for a given sample size?",
+      opts:[
+        {t:"When p is close to 0",
+         fb:"At p near 0 almost everybody answers the same way, so there is very little variation to measure and the standard error is small."},
+        {t:"When p is close to 1, because almost everyone then gives the same answer",
+         fb:"Same reasoning at the other end — near-unanimous answers are measured precisely."},
+        {t:"When p is close to 0.5", ok:true,
+         fb:"Right, and this is why survey planners assume a 50-50 split when sizing a study. Doing so guarantees the margin is no worse than promised whatever the answer turns out to be."},
+        {t:"The standard error for a percentage does not depend on p at all, only on how many people were surveyed",
+         fb:"It depends on both. The formula contains p explicitly, and it is that dependence which makes a 50-50 split the hardest case."}
+      ]
+    },
+    {
+      stem:"A sample is drawn tightly but from the wrong part of the population. Which description fits?",
+      opts:[
+        {t:"Low bias with high variability",
+         fb:"Reversed. Being drawn from the wrong part is bias, and being tightly clustered is low variability."},
+        {t:"High bias with low variability — the most dangerous combination", ok:true,
+         fb:"Right, and dangerous because it looks precise. Repeating the study gives the same wrong answer with a narrow margin, and more data makes the wrong answer more confident."},
+        {t:"High bias with high variability",
+         fb:"The bias is right, and 'tightly' tells you the variability is low. The scatter that comes with high variability at least warns a reader that something is unreliable."},
+        {t:"Neither bias nor variability, because a tightly clustered sample is by definition an accurate one whatever part of the population it came from",
+         fb:"Tight clustering describes consistency, not accuracy. A method can be perfectly consistent about landing in the wrong place."}
+      ]
+    },
+    {
+      stem:"Which is the honest way to report a model's accuracy measured on a test set of 200 rows?",
+      opts:[
+        {t:"84 percent",
+         fb:"A bare figure hides the fact that it was measured on a sample of rows, and a different 200 rows would have produced a different number."},
+        {t:"84 percent, measured on 200 rows, with an interval of roughly 79 to 89 percent", ok:true,
+         fb:"Right. The interval tells the reader how much of that 84 is solid, and on 200 rows the honest answer is that a few points either way is ordinary."},
+        {t:"About 84 percent, give or take a bit",
+         fb:"Closer in spirit and still not usable — 'a bit' could mean half a point or ten, and those support very different decisions."},
+        {t:"84 percent, which can be treated as exact because the test rows were held back and never used during training of the model",
+         fb:"Holding rows back makes the estimate honest rather than exact. Those rows are still a sample, and the score still carries sampling variation."}
+      ]
+    }
+  ]
+};
+
+const TABS = ["Fundamentals","In Data Science","Real World","Solved Problems","Interview Qs","Test Yourself"];
+const MCQ_KEY = [2,1,3,0,1,2,3,1,2,0];
+
+const state = {tab:0, answered:0, correctFirst:0};
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => {const n=document.createElement(t); if(c)n.className=c; if(h!==undefined)n.innerHTML=h; return n;};
+const KEYS = "ABCDE";
+const esc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const chev = '<svg class="chev" width="9" height="13" viewBox="0 0 9 13" fill="none" aria-hidden="true"><path d="M2 2l5 4.5L2 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function placeCorrect(opts, target){
+  const rest = opts.filter(o=>!o.ok), right = opts.find(o=>o.ok);
+  const out = rest.slice();
+  out.splice(Math.min(target, opts.length-1), 0, right);
+  return out;
+}
+function drawRail(){
+  const rail=$("#rail"); rail.innerHTML="";
+  TABS.forEach((s,i)=>{
+    const b=el("button","stage-btn",`<span class="num">${i+1}</span>${s}`);
+    b.setAttribute("role","tab"); b.setAttribute("aria-selected", state.tab===i);
+    if(i===5 && state.answered===CONCEPT.mcq.length) b.classList.add("done");
+    b.onclick=()=>go(i); rail.appendChild(b);
+  });
+}
+function go(i){
+  state.tab=i;
+  document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("active",k===i));
+  drawRail(); window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll("[data-goto]").forEach(b=>b.onclick=()=>go(+b.dataset.goto));
+
+let seed = 20250908;
+function rnd(){ seed = (seed*1103515245 + 12345) & 0x7fffffff; return seed/0x7fffffff; }
+function gauss(){ let s=0; for(let i=0;i<4;i++) s+=rnd(); return (s-2)/0.577; }
+
+/* ---- bias vs variability panels ---- */
+$("#quad").innerHTML = CONCEPT.quad.map((q,qi)=>{
+  const S=150, c=S/2, R=S*0.44;
+  let dots="";
+  let sd = 987 + qi*211;
+  const r2=()=>{ sd=(sd*1103515245+12345)&0x7fffffff; return sd/0x7fffffff; };
+  const g2=()=>{ let s=0; for(let i=0;i<4;i++) s+=r2(); return (s-2)/0.577; };
+  for(let i=0;i<12;i++){
+    const x=c + (q.bias + g2()*q.spread)*R*1.35;
+    const y=c + (g2()*q.spread)*R*1.35;
+    dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" fill="#A63A1E" opacity="0.62"/>`;
+  }
+  return `<div class="qcard">
+    <h4>${q.t}</h4><p class="lab">${q.lab}</p>
+    <svg viewBox="0 0 ${S} ${S}" role="img" aria-label="${q.t}">
+      <circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="#D2DDD8"/>
+      <circle cx="${c}" cy="${c}" r="${R*0.62}" fill="none" stroke="#D2DDD8"/>
+      <circle cx="${c}" cy="${c}" r="${R*0.28}" fill="#E2EDE9" stroke="#0F5B4F"/>
+      <line x1="${c-6}" y1="${c}" x2="${c+6}" y2="${c}" stroke="#0F5B4F"/>
+      <line x1="${c}" y1="${c-6}" x2="${c}" y2="${c+6}" stroke="#0F5B4F"/>
+      ${dots}</svg>
+    <p>${q.p}</p></div>`;
+}).join("");
+
+/* ---- confidence interval simulator ---- */
+const LEVELS=[{lab:"90%",z:1.645},{lab:"95%",z:1.96},{lab:"99%",z:2.576}];
+let level=LEVELS[1];
+$("#conflevel").innerHTML += LEVELS.map(l=>
+  `<button class="chip" data-z="${l.z}" aria-pressed="${l.lab==='95%'}">${l.lab}</button>`).join("");
+document.querySelectorAll("#conflevel .chip").forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll("#conflevel .chip").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    level = LEVELS.find(l=>l.z===+b.dataset.z);
+    drawCI();
+  };
+});
+function drawCI(){
+  const n=+$("#cn").value, TRUE=50, SIGMA=10;
+  $("#cnv").textContent=n;
+  const se=SIGMA/Math.sqrt(n), half=level.z*se;
+  const rows=[];
+  for(let i=0;i<25;i++){
+    let t=0; for(let k=0;k<n;k++) t += TRUE + gauss()*SIGMA;
+    const m=t/n;
+    rows.push({m, lo:m-half, hi:m+half, hit:(m-half<=TRUE && TRUE<=m+half)});
+  }
+  const hits=rows.filter(r=>r.hit).length;
+  $("#c_hit").textContent = hits+" / 25";
+  $("#c_miss").textContent = (25-hits);
+  $("#c_se").textContent = se.toFixed(2);
+  $("#c_w").textContent = (2*half).toFixed(1);
+  const W=640,H=300,L=44,R=18,T=22,BM=32;
+  const lo=40,hi=60;
+  const sx=v=>L+((v-lo)/(hi-lo))*(W-L-R);
+  const rowH=(H-BM-T)/25;
+  let g="";
+  for(let v=40;v<=60;v+=5) g+=`<line x1="${sx(v)}" y1="${T-6}" x2="${sx(v)}" y2="${H-BM}" stroke="#EDF2F0"/>`+
+    `<text x="${sx(v)}" y="${H-BM+17}" font-size="10.5" fill="#4A6862" text-anchor="middle" font-family="IBM Plex Mono">${v}</text>`;
+  const truth=`<line x1="${sx(50)}" y1="${T-10}" x2="${sx(50)}" y2="${H-BM}" stroke="#12312B" stroke-width="2"/>`+
+    `<text x="${sx(50)}" y="${T-14}" font-size="11" fill="#12312B" text-anchor="middle" font-family="IBM Plex Mono">true mean 50</text>`;
+  const bars=rows.map((r,i)=>{
+    const y=T+i*rowH+rowH/2, col=r.hit?"#3C6E8F":"#A63A1E", w=r.hit?1.6:2.4;
+    return `<line x1="${sx(Math.max(lo,r.lo))}" y1="${y}" x2="${sx(Math.min(hi,r.hi))}" y2="${y}" stroke="${col}" stroke-width="${w}"/>`+
+           `<circle cx="${sx(r.m)}" cy="${y}" r="2.6" fill="${col}"/>`;
+  }).join("");
+  $("#ciplot").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Twenty-five confidence intervals with the ones missing the true mean shown in red">
+    ${g}${bars}${truth}<line x1="${L}" y1="${H-BM}" x2="${W-R}" y2="${H-BM}" stroke="#12312B"/></svg>`;
+}
+$("#cn").addEventListener("input", drawCI);
+$("#redraw").onclick = drawCI;
+drawCI();
+
+/* ---- content ---- */
+$("#uses").innerHTML = CONCEPT.uses.map((u,i)=>`
+  <div class="card"><h3>${i+1}. ${u.name}</h3><p>${u.what}</p><p>${u.how}</p>
+  <pre class="code">${esc(u.code)}</pre>
+  <p style="margin-bottom:0;font-size:.9rem;color:var(--ink-soft)"><strong>Worth knowing:</strong> ${u.note}</p></div>`).join("");
+
+$("#examples").innerHTML = CONCEPT.examples.map(e=>`
+  <div class="card" style="border-left:4px solid ${e.color}"><h3>${e.title}</h3><p>${e.body}</p>
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:.88rem;background:#F5F8F7;border-radius:6px;padding:11px 13px">${e.numbers}</p>
+  <p style="margin-bottom:0"><strong>The lesson:</strong> ${e.lesson}</p></div>`).join("");
+
+$("#solved").innerHTML = CONCEPT.solved.map((p,pi)=>`
+  <div class="card"><h3>${p.title}</h3>
+  <p style="background:var(--saffron-dim);border-radius:6px;padding:12px 14px;font-size:.95rem">${p.prompt}</p>
+  ${p.steps.map((s,si)=>`
+    <div class="step" id="st${pi}_${si}">
+      <button type="button" onclick="toggleStep('st${pi}_${si}')"><span class="sn">${si+1}</span>${s.h}${chev}</button>
+      <div class="body"><p>${s.b}</p></div></div>`).join("")}
+  <div class="step" id="st${pi}_ans">
+    <button type="button" onclick="toggleStep('st${pi}_ans')"><span class="sn" style="background:var(--ok)">✓</span>Final answer${chev}</button>
+    <div class="body"><div class="answerline"><b>${p.answer}</b></div></div></div></div>`).join("");
+function toggleStep(id){ document.getElementById(id).classList.toggle("open"); }
+
+$("#interview").innerHTML = CONCEPT.interview.map((q,i)=>`
+  <div class="qa" id="qa${i}">
+    <button type="button" onclick="toggleStep('qa${i}')"><span class="qn">Q${i+1}</span><span>${q.q}</span>${chev}</button>
+    <div class="body"><p>${q.a}</p><div class="probe"><b>What is being tested:</b> ${q.probe}</div></div></div>`).join("");
+
+(function(){
+  const host=$("#mcq");
+  CONCEPT.mcq.forEach((q,qi)=>{
+    const box=el("div","q");
+    box.appendChild(el("p","stem",`${qi+1}. ${q.stem}`));
+    const opts=el("div","opts"), fbBox=el("div");
+    let answered=false, tries=0;
+    placeCorrect(q.opts, MCQ_KEY[qi]).forEach((o,oi)=>{
+      const b=el("button","opt",`<span class="key">${KEYS[oi]}</span><span>${o.t}</span>`);
+      b.onclick=()=>{
+        if(answered) return;
+        tries++;
+        if(o.ok){
+          answered=true; state.answered++;
+          if(tries===1) state.correctFirst++;
+          b.classList.add("right");
+          opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+          fbBox.innerHTML=`<p class="fb good"><strong>Correct.</strong> ${o.fb}</p>`;
+          updateScore();
+        }else{
+          b.classList.add("wrong"); b.disabled=true;
+          fbBox.innerHTML=`<p class="fb bad"><strong>Not that one.</strong> ${o.fb}</p>`;
+        }
+      };
+      opts.appendChild(b);
+    });
+    box.appendChild(opts); box.appendChild(fbBox); host.appendChild(box);
+  });
+})();
+function updateScore(){
+  const n=CONCEPT.mcq.length;
+  $("#score").textContent = `${state.answered} / ${n}`;
+  $("#firstgo").textContent = state.correctFirst;
+  if(state.answered===n && !$("#allrightcard")){
+    const pc=Math.round(state.correctFirst/n*100);
+    $("#mcqdone").innerHTML=`<div class="card key" id="allrightcard">
+      <p class="tagline">★ Section complete</p>
+      <p>You answered all ${n} questions, ${state.correctFirst} of them right first time — ${pc} percent.</p>
+      <p style="margin-bottom:0">${pc>=80
+        ? "Ready for the next concept, which turns these ranges into a yes-or-no verdict."
+        : "Go back to the interval simulator and press the draw button a dozen times while watching the red lines. Most of what these questions test is visible in it."}</p></div>`;
+  }
+  drawRail();
+}
+
+drawRail(); go(0);
+</script>
+</body>
+</html>
